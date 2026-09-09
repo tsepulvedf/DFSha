@@ -1,0 +1,7 @@
+graft proto
+graft third_party
+graft scripts
+graft deploy
+include requirements.lock
+include README.md
+global-exclude __pycache__ *.py[cod]

@@ -1,0 +1,3950 @@
+{
+  "scope": "Auditoria estructural de documentos de etapa 1; no son pruebas funcionales de DFSha",
+  "contextDate": "2026-09-07",
+  "executedAtUtc": "2026-09-07T18:44:11.061Z",
+  "tool": "Node.js v22.16.0",
+  "status": "EJECUTADO",
+  "summary": {
+    "documents": 5,
+    "localLinks": 96,
+    "externalLinkOccurrences": 50,
+    "tableRows": 368,
+    "matrixIds": 50,
+    "checks": 603,
+    "failed": 0
+  },
+  "documents": [
+    {
+      "file": "docs/especificacion.md",
+      "bytes": 29380,
+      "lines": 232,
+      "sha256": "024998a174dd1292e3389025e641239408572cbf57ce9b6c84a52bda2155f79a"
+    },
+    {
+      "file": "docs/arquitectura.md",
+      "bytes": 40076,
+      "lines": 401,
+      "sha256": "2a7114f6512ee2b4efabb9af076ee55c2385646b727eb180a0eafcd8969196db"
+    },
+    {
+      "file": "docs/decisiones.md",
+      "bytes": 17443,
+      "lines": 105,
+      "sha256": "8a4f27dbf7ae5fe288219305b715e1ab2478691efd225f20157aa2edbe23df2a"
+    },
+    {
+      "file": "docs/matriz-requisitos.md",
+      "bytes": 25880,
+      "lines": 136,
+      "sha256": "0ce05c2415c8764f47b8400d2c87e80798b8196358c09a4ca03ddc0f2af4dafc"
+    },
+    {
+      "file": "docs/estado.md",
+      "bytes": 16748,
+      "lines": 142,
+      "sha256": "c554ef41061ba496ceec07e9feae583c05857c263a28939d1241491ba7b223ff"
+    }
+  ],
+  "pdfHash": "0EC8CC4CF92F9CF9345D5CF147D096A9CC74F78146AABCE823D3890A31B446BF",
+  "guideHash": "755D2BEBC288133E54E4F3161A433C35E6D08A9F0A7C8DCE9B9B031E41C902B3",
+  "failures": [],
+  "checks": [
+    {
+      "name": "exists:docs/especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "utf8:docs/especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "fences:docs/especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->enunciado/SI3007-262-proyecto1-dfs.docx.pdf",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->evidencias/etapa1/lectura-pdf.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->propuesta/Prompts_Codex_DFSha_Opcion1_CS.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/especificacion.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/especificacion.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/especificacion.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/especificacion.md->estado.md#plan",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/especificacion.md->estado.md#plan",
+      "status": "PASS"
+    },
+    {
+      "name": "table:docs/especificacion.md:1",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:2",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:3",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:4",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:5",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:6",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:7",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:8",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:9",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:10",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:11",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:12",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:13",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:14",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:15",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:16",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:17",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:18",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:19",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:20",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:21",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:22",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:23",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:24",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:25",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:26",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:27",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:28",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:29",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:30",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:31",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:32",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:33",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:34",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:35",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:36",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:37",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:38",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:39",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:40",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:41",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:42",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:43",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:44",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:45",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:46",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:47",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:48",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:49",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:50",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:51",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:52",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:53",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:54",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:55",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:56",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:57",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:58",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:59",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:60",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:61",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:62",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:63",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:64",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:65",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:66",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:67",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/especificacion.md:68",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "exists:docs/arquitectura.md",
+      "status": "PASS"
+    },
+    {
+      "name": "utf8:docs/arquitectura.md",
+      "status": "PASS"
+    },
+    {
+      "name": "fences:docs/arquitectura.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/arquitectura.md->especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/arquitectura.md->decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/arquitectura.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/arquitectura.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/arquitectura.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "table:docs/arquitectura.md:69",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:70",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:71",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:72",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:73",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:74",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:75",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:76",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:77",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:78",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:79",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:80",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:81",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:82",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:83",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:84",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:85",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:86",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:87",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:88",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:89",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:90",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:91",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:92",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:93",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:94",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:95",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:96",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:97",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:98",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:99",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:100",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:101",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:102",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:103",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:104",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:105",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:106",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:107",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:108",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:109",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:110",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:111",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:112",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:113",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:114",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:115",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:116",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:117",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:118",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:119",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:120",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:121",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:122",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:123",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:124",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:125",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:126",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:127",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:128",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:129",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:130",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:131",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:132",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:133",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:134",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:135",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:136",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/arquitectura.md:137",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "exists:docs/decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "utf8:docs/decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "fences:docs/decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->enunciado/SI3007-262-proyecto1-dfs.docx.pdf",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->propuesta/Prompts_Codex_DFSha_Opcion1_CS.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->especificacion.md#s7",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->especificacion.md#s7",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/decisiones.md->especificacion.md#s10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/decisiones.md->especificacion.md#s10",
+      "status": "PASS"
+    },
+    {
+      "name": "table:docs/decisiones.md:138",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:139",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:140",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:141",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:142",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:143",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:144",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:145",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:146",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:147",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:148",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:149",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:150",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:151",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:152",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:153",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:154",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:155",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:156",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:157",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:158",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:159",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:160",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:161",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:162",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:163",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:164",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:165",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:166",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:167",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:168",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:169",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:170",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:171",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:172",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:173",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:174",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:175",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:176",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:177",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:178",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:179",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:180",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:181",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:182",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:183",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:184",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:185",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:186",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:187",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:188",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:189",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:190",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:191",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:192",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:193",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:194",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:195",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:196",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:197",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:198",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:199",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:200",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:201",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:202",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:203",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:204",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:205",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:206",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:207",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/decisiones.md:208",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "exists:docs/matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "utf8:docs/matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "fences:docs/matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->enunciado/SI3007-262-proyecto1-dfs.docx.pdf",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->estado.md#plan",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->estado.md#plan",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a5",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s7",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s7",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a3",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->decisiones.md#aclaraciones",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->decisiones.md#aclaraciones",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a2",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a1",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a7",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s6",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a8",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a10",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a4",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->arquitectura.md#a9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->especificacion.md#s9",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/matriz-requisitos.md->decisiones.md#adr",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/matriz-requisitos.md->decisiones.md#adr",
+      "status": "PASS"
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:209",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:210",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:211",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:212",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:213",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:214",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:215",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:216",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:217",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:218",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:219",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:220",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:221",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:222",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:223",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:224",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:225",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:226",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:227",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:228",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:229",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:230",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:231",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:232",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:233",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:234",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:235",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:236",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:237",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:238",
+      "status": "PASS",
+      "detail": {
+        "expected": 7,
+        "actual": 7
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:239",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:240",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:241",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:242",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:243",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:244",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:245",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:246",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:247",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:248",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:249",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:250",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:251",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:252",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:253",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:254",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:255",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:256",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:257",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:258",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:259",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:260",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:261",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:262",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:263",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:264",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:265",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:266",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:267",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:268",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:269",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:270",
+      "status": "PASS",
+      "detail": {
+        "expected": 6,
+        "actual": 6
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:271",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:272",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:273",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:274",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:275",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:276",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:277",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:278",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:279",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:280",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:281",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:282",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:283",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:284",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:285",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:286",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:287",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:288",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:289",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:290",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:291",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:292",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:293",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/matriz-requisitos.md:294",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "exists:docs/estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "utf8:docs/estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "fences:docs/estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->enunciado/SI3007-262-proyecto1-dfs.docx.pdf",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->propuesta/Prompts_Codex_DFSha_Opcion1_CS.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->decisiones.md#fuentes",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/estado.md->decisiones.md#fuentes",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->especificacion.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->arquitectura.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->estado.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->evidencias/etapa1/lectura-pdf.txt",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->evidencias/etapa1/verificacion-documental.json",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->matriz-requisitos.md#entregables",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/estado.md->matriz-requisitos.md#entregables",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->matriz-requisitos.md#rubrica",
+      "status": "PASS"
+    },
+    {
+      "name": "anchor:docs/estado.md->matriz-requisitos.md#rubrica",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->matriz-requisitos.md",
+      "status": "PASS"
+    },
+    {
+      "name": "link:docs/estado.md->decisiones.md",
+      "status": "PASS"
+    },
+    {
+      "name": "table:docs/estado.md:295",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:296",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:297",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:298",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:299",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:300",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:301",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:302",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:303",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:304",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:305",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:306",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:307",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:308",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:309",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:310",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:311",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:312",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:313",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:314",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:315",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:316",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:317",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:318",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:319",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:320",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:321",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:322",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:323",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:324",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:325",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:326",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:327",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:328",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:329",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:330",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:331",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:332",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:333",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:334",
+      "status": "PASS",
+      "detail": {
+        "expected": 3,
+        "actual": 3
+      }
+    },
+    {
+      "name": "table:docs/estado.md:335",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:336",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:337",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:338",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:339",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:340",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:341",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:342",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:343",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:344",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:345",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:346",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:347",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:348",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:349",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:350",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:351",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:352",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:353",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:354",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:355",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:356",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:357",
+      "status": "PASS",
+      "detail": {
+        "expected": 4,
+        "actual": 4
+      }
+    },
+    {
+      "name": "table:docs/estado.md:358",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:359",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:360",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:361",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:362",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:363",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:364",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:365",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:366",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:367",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "table:docs/estado.md:368",
+      "status": "PASS",
+      "detail": {
+        "expected": 2,
+        "actual": 2
+      }
+    },
+    {
+      "name": "matrix:OBJ-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RF1",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RF2",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RF3",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF1",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF2",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF3",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF4",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF5",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF6",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF7",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:RNF8",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:DEF-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:OP-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-00",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-02",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-03",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-04",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:COM-05",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:API-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:INF-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:INF-02",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:INF-03",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:ENT-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:ENT-02",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:ENT-03",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-06",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-07",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-08",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-10",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-12",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:H-13",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-01",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-02",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-03",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-04",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-05",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-06",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:EV-07",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-STAGE",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-RF3",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-CONC",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-ATOMIC",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-DEL",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-HA",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-DATA",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-SEC",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:USR-EVID",
+      "status": "PASS"
+    },
+    {
+      "name": "matrix:DIS-METAS",
+      "status": "PASS"
+    },
+    {
+      "name": "rubric-total",
+      "status": "PASS",
+      "detail": [
+        15,
+        15,
+        15,
+        15,
+        15,
+        15,
+        10
+      ]
+    },
+    {
+      "name": "mermaid-diagrams",
+      "status": "PASS",
+      "detail": {
+        "count": 6,
+        "rendered": false
+      }
+    },
+    {
+      "name": "pdf-source-preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "guide-source-hash",
+      "status": "PASS"
+    },
+    {
+      "name": "pdf-seven-pages",
+      "status": "PASS"
+    },
+    {
+      "name": "scope-documentation-only",
+      "status": "PASS"
+    }
+  ]
+}

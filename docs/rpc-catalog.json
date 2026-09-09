@@ -1,0 +1,506 @@
+{
+  "version": "dfsha.v1",
+  "semantic_contract": "docs/protocolos.md",
+  "rpcs": [
+    {
+      "rpc": "dfsha.v1.DiagnosticService.Health",
+      "path": "/dfsha.v1.DiagnosticService/Health",
+      "request": "dfsha.v1.HealthRequest",
+      "response": "dfsha.v1.HealthResponse",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "DIAGNOSTIC",
+      "source": "proto/dfsha/v1/diagnostic.proto"
+    },
+    {
+      "rpc": "dfsha.v1.DiagnosticService.StreamDigest",
+      "path": "/dfsha.v1.DiagnosticService/StreamDigest",
+      "request": "dfsha.v1.DiagnosticFrame",
+      "response": "dfsha.v1.DigestResult",
+      "client_streaming": true,
+      "server_streaming": false,
+      "implementation": "DIAGNOSTIC",
+      "source": "proto/dfsha/v1/diagnostic.proto"
+    },
+    {
+      "rpc": "dfsha.v1.DiagnosticService.GenerateStream",
+      "path": "/dfsha.v1.DiagnosticService/GenerateStream",
+      "request": "dfsha.v1.GenerateRequest",
+      "response": "dfsha.v1.DiagnosticChunk",
+      "client_streaming": false,
+      "server_streaming": true,
+      "implementation": "DIAGNOSTIC",
+      "source": "proto/dfsha/v1/diagnostic.proto"
+    },
+    {
+      "rpc": "dfsha.v1.AuthenticationService.Login",
+      "path": "/dfsha.v1.AuthenticationService/Login",
+      "request": "dfsha.v1.LoginRequest",
+      "response": "dfsha.v1.Session",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.AuthenticationService.Logout",
+      "path": "/dfsha.v1.AuthenticationService/Logout",
+      "request": "dfsha.v1.SessionRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.AuthenticationService.RefreshSession",
+      "path": "/dfsha.v1.AuthenticationService/RefreshSession",
+      "request": "dfsha.v1.SessionRequest",
+      "response": "dfsha.v1.Session",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.CreateUser",
+      "path": "/dfsha.v1.IdentityService/CreateUser",
+      "request": "dfsha.v1.CreateUserRequest",
+      "response": "dfsha.v1.User",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.SetUser",
+      "path": "/dfsha.v1.IdentityService/SetUser",
+      "request": "dfsha.v1.SetUserRequest",
+      "response": "dfsha.v1.User",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.CreateGroup",
+      "path": "/dfsha.v1.IdentityService/CreateGroup",
+      "request": "dfsha.v1.CreateGroupRequest",
+      "response": "dfsha.v1.Group",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.SetGroupMembers",
+      "path": "/dfsha.v1.IdentityService/SetGroupMembers",
+      "request": "dfsha.v1.SetGroupMembersRequest",
+      "response": "dfsha.v1.Group",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.GetAcl",
+      "path": "/dfsha.v1.IdentityService/GetAcl",
+      "request": "dfsha.v1.GetAclRequest",
+      "response": "dfsha.v1.Acl",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.IdentityService.SetAcl",
+      "path": "/dfsha.v1.IdentityService/SetAcl",
+      "request": "dfsha.v1.SetAclRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NamespaceService.List",
+      "path": "/dfsha.v1.NamespaceService/List",
+      "request": "dfsha.v1.ListRequest",
+      "response": "dfsha.v1.ListResponse",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/namespace.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NamespaceService.Stat",
+      "path": "/dfsha.v1.NamespaceService/Stat",
+      "request": "dfsha.v1.PathRequest",
+      "response": "dfsha.v1.Entry",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/namespace.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NamespaceService.Mkdir",
+      "path": "/dfsha.v1.NamespaceService/Mkdir",
+      "request": "dfsha.v1.PathRequest",
+      "response": "dfsha.v1.Entry",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/namespace.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NamespaceService.Rmdir",
+      "path": "/dfsha.v1.NamespaceService/Rmdir",
+      "request": "dfsha.v1.PathRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/namespace.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NamespaceService.Remove",
+      "path": "/dfsha.v1.NamespaceService/Remove",
+      "request": "dfsha.v1.PathRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/namespace.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.BeginUpload",
+      "path": "/dfsha.v1.UploadService/BeginUpload",
+      "request": "dfsha.v1.BeginUploadRequest",
+      "response": "dfsha.v1.UploadPlan",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.AllocateBlocks",
+      "path": "/dfsha.v1.UploadService/AllocateBlocks",
+      "request": "dfsha.v1.AllocateBlocksRequest",
+      "response": "dfsha.v1.BlockPlan",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.StageManifestPage",
+      "path": "/dfsha.v1.UploadService/StageManifestPage",
+      "request": "dfsha.v1.StageManifestPageRequest",
+      "response": "dfsha.v1.PageReceipt",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.SealManifest",
+      "path": "/dfsha.v1.UploadService/SealManifest",
+      "request": "dfsha.v1.SealManifestRequest",
+      "response": "dfsha.v1.PageReceipt",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.CommitUpload",
+      "path": "/dfsha.v1.UploadService/CommitUpload",
+      "request": "dfsha.v1.CommitUploadRequest",
+      "response": "dfsha.v1.CommitResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.AbortUpload",
+      "path": "/dfsha.v1.UploadService/AbortUpload",
+      "request": "dfsha.v1.OperationRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.GetOperation",
+      "path": "/dfsha.v1.UploadService/GetOperation",
+      "request": "dfsha.v1.GetOperationRequest",
+      "response": "dfsha.v1.OperationStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.Open",
+      "path": "/dfsha.v1.FileAccessService/Open",
+      "request": "dfsha.v1.OpenRequest",
+      "response": "dfsha.v1.Handle",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.Close",
+      "path": "/dfsha.v1.FileAccessService/Close",
+      "request": "dfsha.v1.HandleRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.RenewHandle",
+      "path": "/dfsha.v1.FileAccessService/RenewHandle",
+      "request": "dfsha.v1.HandleRequest",
+      "response": "dfsha.v1.Handle",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.BeginWrite",
+      "path": "/dfsha.v1.FileAccessService/BeginWrite",
+      "request": "dfsha.v1.BeginWriteRequest",
+      "response": "dfsha.v1.WritePlan",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.CommitWrite",
+      "path": "/dfsha.v1.FileAccessService/CommitWrite",
+      "request": "dfsha.v1.CommitWriteRequest",
+      "response": "dfsha.v1.CommitResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.AbortWrite",
+      "path": "/dfsha.v1.FileAccessService/AbortWrite",
+      "request": "dfsha.v1.OperationRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.Lock",
+      "path": "/dfsha.v1.FileAccessService/Lock",
+      "request": "dfsha.v1.LockRequest",
+      "response": "dfsha.v1.Fence",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.Unlock",
+      "path": "/dfsha.v1.FileAccessService/Unlock",
+      "request": "dfsha.v1.FenceRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.RenewLock",
+      "path": "/dfsha.v1.FileAccessService/RenewLock",
+      "request": "dfsha.v1.FenceRequest",
+      "response": "dfsha.v1.Fence",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.ResolveBlocks",
+      "path": "/dfsha.v1.FileAccessService/ResolveBlocks",
+      "request": "dfsha.v1.ResolveBlocksRequest",
+      "response": "dfsha.v1.BlockPlan",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.BlockService.PutBlock",
+      "path": "/dfsha.v1.BlockService/PutBlock",
+      "request": "dfsha.v1.PutBlockFrame",
+      "response": "dfsha.v1.DurableReceipt",
+      "client_streaming": true,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/data.proto"
+    },
+    {
+      "rpc": "dfsha.v1.BlockService.PatchBlock",
+      "path": "/dfsha.v1.BlockService/PatchBlock",
+      "request": "dfsha.v1.PatchBlockFrame",
+      "response": "dfsha.v1.DurableReceipt",
+      "client_streaming": true,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/data.proto"
+    },
+    {
+      "rpc": "dfsha.v1.BlockService.GetBlock",
+      "path": "/dfsha.v1.BlockService/GetBlock",
+      "request": "dfsha.v1.GetBlockRequest",
+      "response": "dfsha.v1.ReadBlockFrame",
+      "client_streaming": false,
+      "server_streaming": true,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/data.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ReplicaService.StoreReplica",
+      "path": "/dfsha.v1.ReplicaService/StoreReplica",
+      "request": "dfsha.v1.ReplicaFrame",
+      "response": "dfsha.v1.DurableReceipt",
+      "client_streaming": true,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/data.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ReplicaService.GetReplica",
+      "path": "/dfsha.v1.ReplicaService/GetReplica",
+      "request": "dfsha.v1.GetReplicaRequest",
+      "response": "dfsha.v1.ReplicaFrame",
+      "client_streaming": false,
+      "server_streaming": true,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/data.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NodeRegistryService.RegisterNode",
+      "path": "/dfsha.v1.NodeRegistryService/RegisterNode",
+      "request": "dfsha.v1.RegisterNodeRequest",
+      "response": "dfsha.v1.NodeLease",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NodeRegistryService.Heartbeat",
+      "path": "/dfsha.v1.NodeRegistryService/Heartbeat",
+      "request": "dfsha.v1.HeartbeatRequest",
+      "response": "dfsha.v1.NodeLease",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NodeRegistryService.BlockReport",
+      "path": "/dfsha.v1.NodeRegistryService/BlockReport",
+      "request": "dfsha.v1.BlockReportRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NodeRegistryService.ReportDurable",
+      "path": "/dfsha.v1.NodeRegistryService/ReportDurable",
+      "request": "dfsha.v1.ReportDurableRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.NodeRegistryService.ReportTask",
+      "path": "/dfsha.v1.NodeRegistryService/ReportTask",
+      "request": "dfsha.v1.ReportTaskRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.InternalAuthorizationService.AuthorizeBlock",
+      "path": "/dfsha.v1.InternalAuthorizationService/AuthorizeBlock",
+      "request": "dfsha.v1.AuthorizeBlockRequest",
+      "response": "dfsha.v1.AuthorizationDecision",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.InternalAuthorizationService.AuthorizeInternal",
+      "path": "/dfsha.v1.InternalAuthorizationService/AuthorizeInternal",
+      "request": "dfsha.v1.AuthorizeInternalRequest",
+      "response": "dfsha.v1.AuthorizationDecision",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.StorageAdministrationService.VerifyReceipt",
+      "path": "/dfsha.v1.StorageAdministrationService/VerifyReceipt",
+      "request": "dfsha.v1.VerifyReceiptRequest",
+      "response": "dfsha.v1.DurableReceipt",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.StorageAdministrationService.ReplicateBlock",
+      "path": "/dfsha.v1.StorageAdministrationService/ReplicateBlock",
+      "request": "dfsha.v1.ReplicateBlockRequest",
+      "response": "dfsha.v1.TaskStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.StorageAdministrationService.GetTask",
+      "path": "/dfsha.v1.StorageAdministrationService/GetTask",
+      "request": "dfsha.v1.GetTaskRequest",
+      "response": "dfsha.v1.TaskStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.StorageAdministrationService.DeleteRetiredBlock",
+      "path": "/dfsha.v1.StorageAdministrationService/DeleteRetiredBlock",
+      "request": "dfsha.v1.DeleteRetiredBlockRequest",
+      "response": "dfsha.v1.TaskStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    }
+  ]
+}

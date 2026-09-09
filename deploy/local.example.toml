@@ -1,0 +1,23 @@
+# Solo diagnóstico local. Rutas relativas a la carpeta canónica del proyecto.
+[server]
+public_bind = "127.0.0.1:17443"
+internal_bind = "127.0.0.1:17445"
+certificate_dir = ".runtime/certs"
+max_workers = 4
+max_concurrent_rpcs = 8
+grace_seconds = 3
+metadata_backend = "sqlite"
+sqlite_path = ".runtime/monolith/metadata.sqlite3"
+block_path = ".runtime/monolith/blocks"
+
+[client]
+public_target = "localhost:17443"
+internal_target = "localhost:17445"
+deadline_seconds = 5
+stream_deadline_seconds = 15
+
+[etcd_probe]
+# Proceso separado del monolito; nunca requerido para arrancar dfsha-server.
+target = "localhost:12379"
+peer_target = "localhost:12380"
+key_prefix = "/dfsha-stage2/"

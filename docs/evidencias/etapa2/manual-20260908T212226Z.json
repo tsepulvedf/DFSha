@@ -1,0 +1,61 @@
+{
+  "status": "EJECUTADO",
+  "commands": [
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/generate_certs.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"EJECUTADO\", \"certificates\": 10, \"valid_days\": 7, \"private_material\": \"excluded from Git; local ACL/permissions\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/dev.py",
+        "start"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"pid\": 15156, \"filesystem_implemented\": false, \"public_target\": \"localhost:17443\", \"internal_target\": \"localhost:17445\", \"stop_file\": \"F:\\\\DFSha\\\\.runtime\\\\dev\\\\3ecbef8b-dbef-480d-854b-30f8aabf1541\\\\stop\", \"log_file\": \"F:\\\\DFSha\\\\.runtime\\\\dev\\\\3ecbef8b-dbef-480d-854b-30f8aabf1541\\\\server.log\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "-m",
+        "dfsha.client.diagnostic",
+        "--target",
+        "localhost:17443"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"EJECUTADO\", \"version\": \"0.2.0\", \"listener\": \"public\", \"diagnostic_ready\": true, \"filesystem_implemented\": false, \"uploaded_bytes\": 8388625, \"downloaded_bytes\": 8388625, \"sha256\": \"e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc\", \"chunks\": 33, \"max_chunk_bytes\": 262144}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "-m",
+        "dfsha.client.diagnostic",
+        "--target",
+        "localhost:17445",
+        "--identity",
+        "client"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"EJECUTADO\", \"version\": \"0.2.0\", \"listener\": \"internal\", \"diagnostic_ready\": true, \"filesystem_implemented\": false, \"uploaded_bytes\": 8388625, \"downloaded_bytes\": 8388625, \"sha256\": \"e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc\", \"chunks\": 33, \"max_chunk_bytes\": 262144}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/dev.py",
+        "stop"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"status\": \"EJECUTADO\", \"action\": \"stop_requested\", \"verification\": \"wait for stopped event in server log\"}\n",
+      "stderr": ""
+    }
+  ],
+  "orderly_stop_observed": true
+}

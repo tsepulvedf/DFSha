@@ -1,0 +1,48 @@
+[
+  {
+    "event": "listening",
+    "listener": "public",
+    "pid": 39988
+  },
+  {
+    "event": "listening",
+    "listener": "internal",
+    "pid": 39988
+  },
+  {
+    "event": "health",
+    "listener": "public",
+    "request_id": "b3cd5cfe-45a3-473f-ba18-6e188255b54c"
+  },
+  {
+    "bytes": 8388625,
+    "chunks": 33,
+    "event": "stream_digest",
+    "request_id": "af21776e-5b3a-4905-a0b6-5440f6efb29e"
+  },
+  {
+    "bytes": 8388625,
+    "event": "generate_stream",
+    "request_id": "9464a4bf-b3f4-4646-9578-e1ab3cb4a8c5"
+  },
+  {
+    "event": "health",
+    "listener": "internal",
+    "request_id": "9b8d36e3-d24e-42f6-a311-3bd7dd5d192c"
+  },
+  {
+    "bytes": 8388625,
+    "chunks": 33,
+    "event": "stream_digest",
+    "request_id": "b9a86fe0-d6e7-4836-b019-02940c40356d"
+  },
+  {
+    "bytes": 8388625,
+    "event": "generate_stream",
+    "request_id": "2933c373-8d25-4a19-b635-3846ac346f8b"
+  },
+  {
+    "event": "stopped",
+    "pid": 39988
+  }
+]

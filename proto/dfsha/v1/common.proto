@@ -1,0 +1,116 @@
+syntax = "proto3";
+package dfsha.v1;
+
+// Límites y obligatoriedad semántica: docs/protocolos.md y rpc-catalog.json.
+// Los uint64 se interpretan como bytes/revisiones, nunca como float.
+message RequestContext {
+  string request_id = 1; // UUID; clave de idempotencia ligada a actor y época.
+  string user_id = 2; // Debe coincidir con el sujeto autenticado, no concede identidad.
+  string service_epoch = 3;
+  bytes intent_sha256 = 4; // Exactamente 32 bytes para mutaciones idempotentes.
+}
+message PathRef {
+  string path = 1; // UTF-8 NFC, <=4096 bytes, <=32 niveles; sin NUL ni backslash.
+  string cwd_path = 2; // Obligatorio para ruta relativa.
+  string cwd_id = 3; // Previene usar un cwd eliminado/recreado.
+}
+message PageRequest { uint32 limit = 1; string cursor = 2; } // limit 1..100.
+message Empty {}
+message Revision { uint64 value = 1; }
+enum ErrorReason {
+  ERROR_REASON_UNSPECIFIED = 0;
+  INVALID_ARGUMENT = 1;
+  LIMIT_EXCEEDED = 2;
+  NOT_IMPLEMENTED_STAGE2 = 3;
+  UNAUTHENTICATED = 4;
+  PERMISSION_DENIED = 5;
+  NOT_FOUND = 6;
+  ALREADY_EXISTS = 7;
+  NOT_DIRECTORY = 8;
+  IS_DIRECTORY = 9;
+  DIRECTORY_NOT_EMPTY = 10;
+  ROOT_PROTECTED = 11;
+  CWD_GONE = 12;
+  LIST_CHANGED = 13;
+  VERSION_CONFLICT = 14;
+  LOCK_CONFLICT = 15;
+  LOCK_EXPIRED = 16;
+  LOCK_BUSY = 17;
+  STALE_HANDLE = 18;
+  HANDLE_BUSY = 19;
+  SPARSE_WRITE_UNSUPPORTED = 20;
+  UNSUPPORTED_MODE = 21;
+  IDEMPOTENCY_MISMATCH = 22;
+  OUTCOME_UNKNOWN = 23;
+  NO_SPACE = 24;
+  INSUFFICIENT_REPLICAS = 25;
+  METADATA_QUORUM_LOST = 26;
+  DATA_UNAVAILABLE = 27;
+  DATA_LOSS = 28;
+  CHECKSUM_MISMATCH = 29;
+  SERVICE_UNAVAILABLE = 30;
+  DEADLINE_EXCEEDED = 31;
+  OPERATION_EXPIRED = 32;
+  NOT_RETIRED = 33;
+}
+// Trailer binario dfsha-error-bin, además del StatusCode gRPC. Nunca secretos.
+message ErrorDetail { ErrorReason reason = 1; string request_id = 2; bool retryable = 3; }
+enum ObjectKind { OBJECT_KIND_UNSPECIFIED = 0; FILE = 1; DIRECTORY = 2; }
+enum AccessAction {
+  ACCESS_ACTION_UNSPECIFIED = 0;
+  READ_DATA = 1; WRITE_DATA = 2; READ_REPLICA = 3; STORE_REPLICA = 4;
+  DELETE_RETIRED = 5; READ_PATCH_BASE = 6;
+}
+message AclEntry { string principal_id = 1; bool is_group = 2; uint32 permissions = 3; }
+message Acl {
+  string owner_id = 1; string group_id = 2;
+  uint32 owner_permissions = 3; uint32 group_permissions = 4; uint32 other_permissions = 5;
+  repeated AclEntry entries = 6; // <=64; bits r=4,w=2,x=1; solo concesiones.
+  uint64 authz_revision = 7;
+}
+message SnapshotRef {
+  string file_id = 1; uint64 content_epoch = 2; uint64 file_version = 3;
+  string manifest_root = 4; uint64 size_bytes = 5;
+  bytes manifest_sha256 = 6;
+  optional bytes file_sha256 = 7; // Presente si se calculó sobre TODO el contenido.
+}
+message BlockRef {
+  string file_id = 1; string block_version_id = 2; uint64 block_index = 3;
+  uint64 size_bytes = 4; bytes plaintext_sha256 = 5; // <=4 MiB; SHA-256 de 32 bytes.
+}
+message Fence {
+  string lock_id = 1; string handle_id = 2; string service_epoch = 3;
+  uint64 generation = 4; int64 lease_id = 5;
+  repeated uint64 block_indices = 6; // <=5 ordenados, o whole_file=true.
+  bool whole_file = 7; bool includes_size = 8; uint64 expires_at_unix_ms = 9;
+}
+message BlockLocation {
+  string node_id = 1; uint64 boot_generation = 2; string client_endpoint = 3;
+  string private_endpoint = 4; string failure_domain = 5;
+}
+message BlockGrant {
+  bytes capability = 1; // Secreto opaco de 32 bytes, nunca en logs/digest.
+  AccessAction action = 2; BlockRef block = 3; string node_id = 4;
+  uint64 offset = 5; uint64 length = 6; uint64 expires_at_unix_ms = 7;
+}
+message PlannedBlock {
+  BlockRef block = 1; repeated BlockLocation locations = 2; repeated BlockGrant grants = 3;
+  // BeginWrite: base íntegra si patch=true; destino nuevo si patch=false.
+  // El hash del resultado de un patch todavía no existe: lo devuelve el DN en su recibo.
+  string replacement_block_version_id = 4;
+  bool patch = 5;
+  uint64 delta_offset = 6; uint64 block_offset = 7; uint64 delta_length = 8;
+}
+message DurableReceipt {
+  string receipt_id = 1; string operation_id = 2; BlockRef block = 3;
+  string node_id = 4; uint64 boot_generation = 5; string failure_domain = 6;
+  uint64 stored_size_bytes = 7; bytes ciphertext_sha256 = 8;
+  uint64 durable_at_unix_ms = 9;
+}
+enum OperationState { OPERATION_STATE_UNSPECIFIED = 0; PREPARING = 1; COMMITTED = 2; ABORTED = 3; EXPIRED = 4; }
+message OperationRef { string operation_id = 1; string request_id = 2; bytes intent_sha256 = 3; }
+message MutationResult { string request_id = 1; uint64 revision = 2; }
+message CommitResult {
+  OperationRef operation = 1; OperationState state = 2; SnapshotRef snapshot = 3;
+  uint64 accepted_bytes = 4; bool degraded = 5; uint32 target_replicas = 6; uint32 minimum_durable = 7;
+}

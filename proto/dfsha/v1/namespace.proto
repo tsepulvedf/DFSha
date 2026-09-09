@@ -1,0 +1,18 @@
+syntax = "proto3";
+package dfsha.v1;
+import "dfsha/v1/common.proto";
+
+service NamespaceService {
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Stat(PathRequest) returns (Entry);
+  rpc Mkdir(PathRequest) returns (Entry);
+  rpc Rmdir(PathRequest) returns (MutationResult);
+  rpc Remove(PathRequest) returns (MutationResult);
+}
+message PathRequest { RequestContext context = 1; PathRef path = 2; }
+message ListRequest { RequestContext context = 1; PathRef path = 2; PageRequest page = 3; }
+message Entry {
+  string object_id = 1; string name = 2; ObjectKind kind = 3;
+  uint64 size_bytes = 4; uint64 revision = 5; SnapshotRef snapshot = 6;
+}
+message ListResponse { repeated Entry entries = 1; string next_cursor = 2; uint64 directory_revision = 3; }

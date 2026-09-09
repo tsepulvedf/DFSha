@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="6" time="7.693" timestamp="2026-09-08T14:45:37.250735-05:00" hostname="DESKTOP-S2N4JO9"><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[public_target-None-rogue-ca]" file="tests\test_transport.py" line="42" time="0.693" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-None-ca]" file="tests\test_transport.py" line="42" time="0.005" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-rogue-client-ca]" file="tests\test_transport.py" line="42" time="0.015" /><testcase classname="tests.test_transport" name="test_tls_rejects_wrong_server_san" file="tests\test_transport.py" line="55" time="0.017" /><testcase classname="tests.test_etcd" name="test_mtls_identity_and_rbac_are_enforced" file="tests\test_etcd.py" line="147" time="1.671" /><testcase classname="tests.test_etcd" name="test_unavailable_service_has_controlled_error" file="tests\test_etcd.py" line="165" time="5.036"><failure message="AssertionError: assert 'DEADLINE_EXCEEDED' == 'UNAVAILABLE'&#10;  &#10;  - UNAVAILABLE&#10;  + DEADLINE_EXCEEDED">certs = WindowsPath('F:/DFSha/.runtime/tests/3aa4eee0-c7db-43fb-89d6-eb069656a63a/certs')
+run_dir = WindowsPath('F:/DFSha/.runtime/tests/3aa4eee0-c7db-43fb-89d6-eb069656a63a')
+
+    def test_unavailable_service_has_controlled_error(certs, run_dir):
+        with etcd_process(run_dir / "etcd-unavailable", certs) as (process, target, _):
+            with EtcdProbeClient(target.replace("localhost", "127.0.0.1"), certs, "etcd-root") as client:
+                grpc.channel_ready_future(client.channel).result(timeout=20)
+                # Parada de NUESTRA instancia; no confundir puerto abierto de otro proceso.
+                process.terminate()
+                process.wait(timeout=10)
+                with pytest.raises(grpc.RpcError) as caught:
+                    client.kv.Range(pb.RangeRequest(key=b"/dfsha-stage2/unavailable"), timeout=2)
+&gt;               assert controlled_error(caught.value)["code"] == "UNAVAILABLE"
+E               AssertionError: assert 'DEADLINE_EXCEEDED' == 'UNAVAILABLE'
+E                 
+E                 - UNAVAILABLE
+E                 + DEADLINE_EXCEEDED
+
+tests\test_etcd.py:175: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,25 @@
+{
+  "status": "EJECUTADO",
+  "archived_stage1_documents": [
+    {
+      "file": "docs/especificacion.md",
+      "match": true
+    },
+    {
+      "file": "docs/arquitectura.md",
+      "match": true
+    },
+    {
+      "file": "docs/decisiones.md",
+      "match": true
+    },
+    {
+      "file": "docs/matriz-requisitos.md",
+      "match": true
+    },
+    {
+      "file": "docs/estado.md",
+      "match": true
+    }
+  ]
+}

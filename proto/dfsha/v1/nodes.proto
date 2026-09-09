@@ -1,0 +1,42 @@
+syntax = "proto3";
+package dfsha.v1;
+import "dfsha/v1/common.proto";
+
+service NodeRegistryService {
+  rpc RegisterNode(RegisterNodeRequest) returns (NodeLease);
+  rpc Heartbeat(HeartbeatRequest) returns (NodeLease);
+  rpc BlockReport(BlockReportRequest) returns (MutationResult);
+  rpc ReportDurable(ReportDurableRequest) returns (MutationResult);
+  rpc ReportTask(ReportTaskRequest) returns (MutationResult);
+}
+service InternalAuthorizationService {
+  rpc AuthorizeBlock(AuthorizeBlockRequest) returns (AuthorizationDecision);
+  rpc AuthorizeInternal(AuthorizeInternalRequest) returns (AuthorizationDecision);
+}
+service StorageAdministrationService {
+  rpc VerifyReceipt(VerifyReceiptRequest) returns (DurableReceipt);
+  rpc ReplicateBlock(ReplicateBlockRequest) returns (TaskStatus);
+  rpc GetTask(GetTaskRequest) returns (TaskStatus);
+  rpc DeleteRetiredBlock(DeleteRetiredBlockRequest) returns (TaskStatus);
+}
+message RegisterNodeRequest { RequestContext context = 1; BlockLocation node = 2; uint64 capacity_bytes = 3; uint64 free_bytes = 4; string inventory_id = 5; }
+message NodeLease { string node_id = 1; uint64 boot_generation = 2; uint64 expires_at_unix_ms = 3; uint64 revision = 4; }
+message HeartbeatRequest { RequestContext context = 1; string node_id = 2; uint64 boot_generation = 3; uint64 sequence = 4; uint64 free_bytes = 5; uint32 active_streams = 6; }
+message BlockReportRequest { RequestContext context = 1; string node_id = 2; uint64 boot_generation = 3; string report_id = 4; uint64 page_index = 5; repeated DurableReceipt receipts = 6; bool last_page = 7; } // <=64, no inventarios ilimitados.
+message ReportDurableRequest { RequestContext context = 1; DurableReceipt receipt = 2; }
+message AuthorizeBlockRequest {
+  RequestContext context = 1; bytes capability = 2; bytes session_token = 3;
+  AccessAction action = 4; string node_id = 5; BlockRef block = 6;
+  uint64 offset = 7; uint64 length = 8; string handle_id = 9; string operation_id = 10;
+  string replacement_block_version_id = 11; bytes delta_sha256 = 12; Fence fence = 13;
+}
+message AuthorizeInternalRequest { RequestContext context = 1; string task_id = 2; bytes task_capability = 3; AccessAction action = 4; string source_node_id = 5; string destination_node_id = 6; BlockRef block = 7; Fence fence = 8; }
+// Una denegación usa PERMISSION_DENIED, nunca un éxito con allowed=false.
+message AuthorizationDecision { string subject_id = 1; uint64 authz_revision = 2; uint64 valid_until_unix_ms = 3; }
+message VerifyReceiptRequest { RequestContext context = 1; string operation_id = 2; string receipt_id = 3; BlockRef block = 4; uint64 expected_boot_generation = 5; }
+message ReplicateBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; BlockLocation source = 4; BlockLocation destination = 5; bytes task_capability = 6; Fence fence = 7; }
+message GetTaskRequest { RequestContext context = 1; string task_id = 2; }
+enum TaskState { TASK_STATE_UNSPECIFIED = 0; ACCEPTED = 1; RUNNING = 2; FINISHED = 3; FAILED = 4; }
+message TaskStatus { string task_id = 1; TaskState state = 2; DurableReceipt receipt = 3; ErrorReason error_reason = 4; }
+message ReportTaskRequest { RequestContext context = 1; string node_id = 2; uint64 boot_generation = 3; TaskStatus task = 4; Fence fence = 5; }
+message DeleteRetiredBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; uint64 retirement_revision = 4; bytes task_capability = 5; Fence fence = 6; }

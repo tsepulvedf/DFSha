@@ -1,0 +1,60 @@
+syntax = "proto3";
+package dfsha.v1;
+import "dfsha/v1/common.proto";
+
+// Solo metadatos. Los bytes de send/receive/read/write pertenecen a BlockService.
+service UploadService {
+  rpc BeginUpload(BeginUploadRequest) returns (UploadPlan);
+  rpc AllocateBlocks(AllocateBlocksRequest) returns (BlockPlan);
+  rpc StageManifestPage(StageManifestPageRequest) returns (PageReceipt);
+  rpc SealManifest(SealManifestRequest) returns (PageReceipt);
+  rpc CommitUpload(CommitUploadRequest) returns (CommitResult);
+  rpc AbortUpload(OperationRequest) returns (MutationResult);
+  rpc GetOperation(GetOperationRequest) returns (OperationStatus);
+}
+service FileAccessService {
+  rpc Open(OpenRequest) returns (Handle);
+  rpc Close(HandleRequest) returns (MutationResult);
+  rpc RenewHandle(HandleRequest) returns (Handle);
+  rpc BeginWrite(BeginWriteRequest) returns (WritePlan);
+  rpc CommitWrite(CommitWriteRequest) returns (CommitResult);
+  rpc AbortWrite(OperationRequest) returns (MutationResult);
+  rpc Lock(LockRequest) returns (Fence);
+  rpc Unlock(FenceRequest) returns (MutationResult);
+  rpc RenewLock(FenceRequest) returns (Fence);
+  rpc ResolveBlocks(ResolveBlocksRequest) returns (BlockPlan);
+}
+message BeginUploadRequest {
+  RequestContext context = 1; PathRef path = 2; bool overwrite = 3;
+  uint64 total_bytes = 4; bytes file_sha256 = 5; SnapshotRef expected_snapshot = 6;
+}
+message UploadPlan { OperationRef operation = 1; string file_id = 2; uint64 content_epoch = 3; Fence fence = 4; uint32 block_bytes = 5; uint64 expires_at_unix_ms = 6; }
+message AllocateBlocksRequest { RequestContext context = 1; OperationRef operation = 2; repeated BlockRef blocks = 3; Fence fence = 4; } // <=64.
+message BlockPlan { repeated PlannedBlock blocks = 1; string next_cursor = 2; SnapshotRef snapshot = 3; }
+message StageManifestPageRequest {
+  RequestContext context = 1; OperationRef operation = 2; uint64 page_index = 3;
+  repeated BlockRef blocks = 4; bytes page_sha256 = 5; Fence fence = 6;
+} // <=64 entradas; mensaje de página <=64 KiB. Hash canónico: protocolos.md.
+message PageReceipt { string page_id = 1; bytes sha256 = 2; uint64 revision = 3; }
+message SealManifestRequest { RequestContext context = 1; OperationRef operation = 2; uint64 page_count = 3; uint64 block_count = 4; uint64 total_bytes = 5; bytes manifest_sha256 = 6; Fence fence = 7; }
+message CommitUploadRequest { RequestContext context = 1; OperationRef operation = 2; PageReceipt seal = 3; Fence fence = 4; }
+message OperationRequest { RequestContext context = 1; OperationRef operation = 2; }
+message GetOperationRequest { RequestContext context = 1; string original_request_id = 2; string operation_id = 3; }
+message OperationStatus { OperationRef operation = 1; OperationState state = 2; CommitResult result = 3; uint64 expires_at_unix_ms = 4; }
+enum OpenMode { OPEN_MODE_UNSPECIFIED = 0; R = 1; R_PLUS = 2; W = 3; W_PLUS = 4; X = 5; X_PLUS = 6; }
+message OpenRequest { RequestContext context = 1; PathRef path = 2; OpenMode mode = 3; }
+message Handle { string handle_id = 1; SnapshotRef snapshot = 2; OpenMode mode = 3; uint64 expires_at_unix_ms = 4; uint64 revision = 5; }
+message HandleRequest { RequestContext context = 1; string handle_id = 2; uint64 expected_handle_revision = 3; }
+message BeginWriteRequest {
+  RequestContext context = 1; string handle_id = 2; SnapshotRef base = 3;
+  optional uint64 offset = 4; optional uint64 length = 5; bytes delta_sha256 = 6;
+  repeated Fence fences = 7; // <=5 o un lock completo; <=16 MiB de delta.
+  repeated WritePart parts = 8; // 1..5, partición contigua del delta, hashes por DN.
+}
+message WritePart { uint64 block_index = 1; uint64 block_offset = 2; uint64 delta_offset = 3; uint64 length = 4; bytes delta_sha256 = 5; }
+message WritePlan { OperationRef operation = 1; repeated PlannedBlock blocks = 2; repeated Fence fences = 3; SnapshotRef base = 4; }
+message BlockChange { BlockRef base = 1; BlockRef replacement = 2; repeated DurableReceipt receipts = 3; }
+message CommitWriteRequest { RequestContext context = 1; OperationRef operation = 2; string handle_id = 3; repeated BlockChange changes = 4; repeated Fence fences = 5; uint64 expected_handle_revision = 6; } // <=5 bloques.
+message LockRequest { RequestContext context = 1; string handle_id = 2; bool whole_file = 3; optional uint64 offset = 4; optional uint64 length = 5; uint32 wait_timeout_ms = 6; }
+message FenceRequest { RequestContext context = 1; Fence fence = 2; }
+message ResolveBlocksRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; optional uint64 offset = 4; optional uint64 length = 5; PageRequest page = 6; }

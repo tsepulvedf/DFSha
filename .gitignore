@@ -1,0 +1,33 @@
+# Entornos separados por plataforma; no compartir binarios entre Windows/Linux.
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+.tools/
+.runtime/
+.cache/
+.coverage
+htmlcov/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+*.db
+*.db-*
+*.sqlite*
+*.log
+*.pid
+*.tmp
+.DS_Store
+Thumbs.db
+# Evidencias publicables: JSON/XML/Markdown curados, nunca logs crudos ni secretos.

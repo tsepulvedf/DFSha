@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools==84.0.0", "wheel==0.48.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dfsha"
+version = "0.2.0"
+description = "DFSha académico: contratos y diagnóstico de comunicaciones de etapa 2"
+readme = "README.md"
+requires-python = "==3.12.*"
+license-files = ["third_party/licenses/*-LICENSE"]
+dependencies = [
+  "grpcio==1.83.1",
+  "protobuf==7.36.1",
+  "cryptography==50.0.1",
+  "argon2-cffi==25.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "grpcio-tools==1.83.1",
+  "pytest==9.1.1",
+  "pip-tools==7.6.1",
+  "setuptools==84.0.0",
+  "wheel==0.48.0",
+]
+
+[project.scripts]
+dfsha-server = "dfsha.control.server:main"
+dfsha-diagnose = "dfsha.client.diagnostic:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["dfsha*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+junit_family = "xunit1"
+markers = ["integration: procesos y conexiones reales", "etcd: instancia aislada de etcd"]

@@ -1,0 +1,8 @@
+{
+  "status": "EJECUTADO",
+  "candidate_files": 131,
+  "excluded_secrets_and_runtime": true,
+  "private_key_material_found": 0,
+  "utf8_documents": 9,
+  "table_rows": 581
+}

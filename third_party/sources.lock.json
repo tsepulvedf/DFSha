@@ -1,0 +1,93 @@
+{
+  "etcd_version": "3.6.14",
+  "upstream": {
+    "etcd": [
+      "etcd-io/etcd",
+      "v3.6.14"
+    ],
+    "gogo": [
+      "gogo/protobuf",
+      "v1.3.2"
+    ],
+    "gateway": [
+      "grpc-ecosystem/grpc-gateway",
+      "v2.26.3"
+    ],
+    "googleapis": [
+      "googleapis/googleapis",
+      "a68d4433fa8f0cf72710a60cc09dec096db0fcee"
+    ]
+  },
+  "files": {
+    "proto/etcd/server/etcdserver/api/v3lock/v3lockpb/v3lock.proto": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/server/etcdserver/api/v3lock/v3lockpb/v3lock.proto",
+      "sha256": "fc940cd17460b84a052cca6ce528eafd6ad5d92d66b1b0a559fd252075f2bff0"
+    },
+    "proto/google/api/annotations.proto": {
+      "project": "googleapis",
+      "url": "https://raw.githubusercontent.com/googleapis/googleapis/a68d4433fa8f0cf72710a60cc09dec096db0fcee/google/api/annotations.proto",
+      "sha256": "e79ea741cb605a65e78ca322174764a4af9fde1962c1631e12b84c4934ba9a6c"
+    },
+    "proto/google/api/http.proto": {
+      "project": "googleapis",
+      "url": "https://raw.githubusercontent.com/googleapis/googleapis/a68d4433fa8f0cf72710a60cc09dec096db0fcee/google/api/http.proto",
+      "sha256": "ead99129aa15dd5f6233942030c72eec33bc0d7b1c7c260dc143293ef66c5b78"
+    },
+    "proto/etcd/api/etcdserverpb/rpc.proto": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/api/etcdserverpb/rpc.proto",
+      "sha256": "c57117e8f4764667be927d862f4fb01fbf1faaf0f725bf2eecc3a523e12aacc6"
+    },
+    "proto/protoc-gen-openapiv2/options/annotations.proto": {
+      "project": "gateway",
+      "url": "https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/v2.26.3/protoc-gen-openapiv2/options/annotations.proto",
+      "sha256": "1f8e23ce506c358349d5ce0e54c336e3b2f3bf17c5d9e7d965e24a6e3429c2c9"
+    },
+    "proto/protoc-gen-openapiv2/options/openapiv2.proto": {
+      "project": "gateway",
+      "url": "https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/v2.26.3/protoc-gen-openapiv2/options/openapiv2.proto",
+      "sha256": "ca1833903416822ad9540529f727b0010d77ecaf6987ae8b15f3b6acb005b6e8"
+    },
+    "proto/etcd/api/versionpb/version.proto": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/api/versionpb/version.proto",
+      "sha256": "8e948ec573b1c7803d72ee54763d80ead0287e0fc6987c37293b20d3a23d0dbd"
+    },
+    "proto/gogoproto/gogo.proto": {
+      "project": "gogo",
+      "url": "https://raw.githubusercontent.com/gogo/protobuf/v1.3.2/gogoproto/gogo.proto",
+      "sha256": "f2f77edf7de807ded7884813d851656f4ccb18262db717a8f31061995f3e7324"
+    },
+    "proto/etcd/api/authpb/auth.proto": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/api/authpb/auth.proto",
+      "sha256": "e2b6936f3aee307f0f183c99613983e7d5d66e5daaf6da3cd2f4b6976db0a0a1"
+    },
+    "proto/etcd/api/mvccpb/kv.proto": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/api/mvccpb/kv.proto",
+      "sha256": "7416acaac7c76524c717df9107a8020d3c4eda92a490a35f1f211592ce8cfa1d"
+    },
+    "licenses/etcd-LICENSE": {
+      "project": "etcd",
+      "url": "https://raw.githubusercontent.com/etcd-io/etcd/v3.6.14/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "licenses/gogo-LICENSE": {
+      "project": "gogo",
+      "url": "https://raw.githubusercontent.com/gogo/protobuf/v1.3.2/LICENSE",
+      "sha256": "3f571768c0ba2f330e5fee90de89bfe5141f48c1939be8008fa61461c30ca07f"
+    },
+    "licenses/gateway-LICENSE": {
+      "project": "gateway",
+      "url": "https://raw.githubusercontent.com/grpc-ecosystem/grpc-gateway/v2.26.3/LICENSE",
+      "sha256": "a15b1d1b168954c92ff7fb1620382418f7c72f4f4d251ee791d1098ad68ab0c4"
+    },
+    "licenses/googleapis-LICENSE": {
+      "project": "googleapis",
+      "url": "https://raw.githubusercontent.com/googleapis/googleapis/a68d4433fa8f0cf72710a60cc09dec096db0fcee/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  }
+}

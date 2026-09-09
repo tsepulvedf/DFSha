@@ -1,0 +1,29 @@
+syntax = "proto3";
+package dfsha.v1;
+import "dfsha/v1/common.proto";
+
+service AuthenticationService {
+  rpc Login(LoginRequest) returns (Session);
+  rpc Logout(SessionRequest) returns (MutationResult);
+  rpc RefreshSession(SessionRequest) returns (Session);
+}
+service IdentityService {
+  rpc CreateUser(CreateUserRequest) returns (User);
+  rpc SetUser(SetUserRequest) returns (User);
+  rpc CreateGroup(CreateGroupRequest) returns (Group);
+  rpc SetGroupMembers(SetGroupMembersRequest) returns (Group);
+  rpc GetAcl(GetAclRequest) returns (Acl);
+  rpc SetAcl(SetAclRequest) returns (MutationResult);
+}
+message LoginRequest { string request_id = 1; string username = 2; string password = 3; }
+message Session { string session_id = 1; string user_id = 2; bytes token = 3; uint64 expires_at_unix_ms = 4; string service_epoch = 5; }
+message SessionRequest { RequestContext context = 1; string session_id = 2; }
+message User { string user_id = 1; string username = 2; bool disabled = 3; uint64 revision = 4; }
+message Group { string group_id = 1; string name = 2; repeated string user_ids = 3; uint64 revision = 4; }
+message CreateUserRequest { RequestContext context = 1; string username = 2; string password = 3; }
+// Cambios de contraseña requieren operación explícita fuera de SetUser; no se envían hashes almacenados.
+message SetUserRequest { RequestContext context = 1; string user_id = 2; bool disabled = 3; uint64 expected_revision = 4; }
+message CreateGroupRequest { RequestContext context = 1; string name = 2; }
+message SetGroupMembersRequest { RequestContext context = 1; string group_id = 2; repeated string user_ids = 3; uint64 expected_revision = 4; }
+message GetAclRequest { RequestContext context = 1; PathRef path = 2; }
+message SetAclRequest { RequestContext context = 1; PathRef path = 2; Acl acl = 3; uint64 expected_revision = 4; }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="13.571" timestamp="2026-09-08T14:44:32.670302-05:00" hostname="DESKTOP-S2N4JO9"><testcase classname="tests.test_etcd" name="test_put_get_and_conditional_transactions" time="2.685"><properties><property name="transaction" value="put/get; CAS accepted; stale CAS rejected; value unchanged" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lease_creation_and_real_expiry" time="2.556"><properties><property name="observed_expiry_seconds" value="2.5" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lock_unlock_and_obsolete_ownership_rejected" time="0.358"><properties><property name="fencing" value="create_revision compared inside Txn; obsolete owner rejected" /></properties></testcase><testcase classname="tests.test_etcd" name="test_watch_receives_real_event" time="0.021"><properties><property name="watch_revision" value="11" /></properties></testcase><testcase classname="tests.test_etcd" name="test_mtls_identity_and_rbac_are_enforced" time="4.314"><failure message="assert &lt;StatusCode.DEADLINE_EXCEEDED: (4, 'deadline exceeded')&gt; == &lt;StatusCode.UNAVAILABLE: (14, 'unavailable')&gt;&#10; +  where &lt;StatusCode.DEADLINE_EXCEEDED: (4, 'deadline exceeded')&gt; = code()&#10; +    where code = &lt;_InactiveRpcError of RPC that terminated with:\n&#09;status = StatusCode.DEADLINE_EXCEEDED\n&#09;details = &quot;Deadline Exceeded&quot;\n&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Deadline Exceeded&quot;\n&gt;.code&#10; +      where &lt;_InactiveRpcError of RPC that terminated with:\n&#09;status = StatusCode.DEADLINE_EXCEEDED\n&#09;details = &quot;Deadline Exceeded&quot;\n&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Deadline Exceeded&quot;\n&gt; = &lt;ExceptionInfo &lt;_InactiveRpcError of RPC that terminated with:\n&#09;status = StatusCode.DEADLINE_EXCEEDED\n&#09;details = &quot;Deadline Exceeded&quot;\n&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Deadline Exceeded&quot;\n&gt; tblen=3&gt;.value&#10; +  and   &lt;StatusCode.UNAVAILABLE: (14, 'unavailable')&gt; = &lt;enum 'StatusCode'&gt;.UNAVAILABLE&#10; +    where &lt;enum 'StatusCode'&gt; = grpc.StatusCode">etcd = {'client': &lt;dfsha.common.etcd_probe_client.EtcdProbeClient object at 0x000001B86FD53B30&gt;, 'admin': &lt;dfsha.common.etcd_...x000001B86FD0EDB0&gt;, 'prefix': b'/dfsha-stage2/997bafb5-65a7-448b-8e81-a9a61692df34/', 'target': 'localhost:60623', ...}
+certs = WindowsPath('F:/DFSha/.runtime/tests/bf447dd8-1296-4f48-88ac-127a32e283f9/certs')
+
+    def test_mtls_identity_and_rbac_are_enforced(etcd, certs):
+        # Auth activada comprobada a través del administrador por certificado CN=root.
+        assert etcd["admin"].auth.AuthStatus(pb.AuthStatusRequest(), timeout=3).enabled
+        with EtcdProbeClient(etcd["target"], certs, "etcd-denied") as denied:
+            with pytest.raises(grpc.RpcError) as caught:
+                denied.kv.Range(pb.RangeRequest(key=etcd["prefix"]), timeout=3)
+            assert caught.value.code() == grpc.StatusCode.PERMISSION_DENIED
+        # La única consulta fuera del prefijo es negativa y no escribe datos.
+        with pytest.raises(grpc.RpcError) as caught:
+            etcd["client"].kv.Range(pb.RangeRequest(key=b"/dfsha-stage2/forbidden"), timeout=3)
+        assert caught.value.code() == grpc.StatusCode.PERMISSION_DENIED
+        for identity, ca in ((None, "ca"), ("rogue-client", "ca"), ("etcd-probe", "rogue-ca")):
+            with channel(etcd["target"], certs, identity, ca) as connection:
+                with pytest.raises(grpc.RpcError) as caught:
+                    rpc_pb2_grpc.KVStub(connection).Range(pb.RangeRequest(key=etcd["prefix"]), timeout=2)
+&gt;               assert caught.value.code() == grpc.StatusCode.UNAVAILABLE
+E               assert &lt;StatusCode.DEADLINE_EXCEEDED: (4, 'deadline exceeded')&gt; == &lt;StatusCode.UNAVAILABLE: (14, 'unavailable')&gt;
+E                +  where &lt;StatusCode.DEADLINE_EXCEEDED: (4, 'deadline exceeded')&gt; = code()
+E                +    where code = &lt;_InactiveRpcError of RPC that terminated with:\n	status = StatusCode.DEADLINE_EXCEEDED\n	details = "Deadline Exceeded"\n	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"\n&gt;.code
+E                +      where &lt;_InactiveRpcError of RPC that terminated with:\n	status = StatusCode.DEADLINE_EXCEEDED\n	details = "Deadline Exceeded"\n	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"\n&gt; = &lt;ExceptionInfo &lt;_InactiveRpcError of RPC that terminated with:\n	status = StatusCode.DEADLINE_EXCEEDED\n	details = "Deadline Exceeded"\n	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"\n&gt; tblen=3&gt;.value
+E                +  and   &lt;StatusCode.UNAVAILABLE: (14, 'unavailable')&gt; = &lt;enum 'StatusCode'&gt;.UNAVAILABLE
+E                +    where &lt;enum 'StatusCode'&gt; = grpc.StatusCode
+
+tests\test_etcd.py:163: AssertionError</failure></testcase><testcase classname="tests.test_etcd" name="test_unavailable_service_has_controlled_error" time="3.412"><failure message="AssertionError: assert 'DEADLINE_EXCEEDED' == 'UNAVAILABLE'&#10;  &#10;  - UNAVAILABLE&#10;  + DEADLINE_EXCEEDED">certs = WindowsPath('F:/DFSha/.runtime/tests/bf447dd8-1296-4f48-88ac-127a32e283f9/certs')
+run_dir = WindowsPath('F:/DFSha/.runtime/tests/bf447dd8-1296-4f48-88ac-127a32e283f9')
+
+    def test_unavailable_service_has_controlled_error(certs, run_dir):
+        with etcd_process(run_dir / "etcd-unavailable", certs) as (process, target, _):
+            with EtcdProbeClient(target, certs, "etcd-root") as client:
+                grpc.channel_ready_future(client.channel).result(timeout=20)
+                # Parada de NUESTRA instancia; no confundir puerto abierto de otro proceso.
+                process.terminate()
+                process.wait(timeout=10)
+                with pytest.raises(grpc.RpcError) as caught:
+                    client.kv.Range(pb.RangeRequest(key=b"/dfsha-stage2/unavailable"), timeout=2)
+&gt;               assert controlled_error(caught.value)["code"] == "UNAVAILABLE"
+E               AssertionError: assert 'DEADLINE_EXCEEDED' == 'UNAVAILABLE'
+E                 
+E                 - UNAVAILABLE
+E                 + DEADLINE_EXCEEDED
+
+tests\test_etcd.py:175: AssertionError</failure></testcase></testsuite></testsuites>

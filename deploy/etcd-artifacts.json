@@ -1,0 +1,12 @@
+{
+  "version": "3.6.14",
+  "source": "https://github.com/etcd-io/etcd/releases/tag/v3.6.14",
+  "linux-amd64": {
+    "url": "https://github.com/etcd-io/etcd/releases/download/v3.6.14/etcd-v3.6.14-linux-amd64.tar.gz",
+    "sha256": "ffe840ff9295808e88cce2794a18a5ac87f12a5203c8314d0bf6aa119b41bac5"
+  },
+  "windows-amd64": {
+    "url": "https://github.com/etcd-io/etcd/releases/download/v3.6.14/etcd-v3.6.14-windows-amd64.zip",
+    "sha256": "117a5c7cc0315984388ccffe1f3bd0e95fc2d5663440dea61c27d3fdc0e879b2"
+  }
+}

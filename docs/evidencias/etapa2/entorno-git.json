@@ -1,0 +1,177 @@
+{
+    "timestamp":  "2026-09-08T21:08:23.0766518Z",
+    "cwd":  "F:\\DFSha",
+    "commands":  [
+                     {
+                         "output":  "git version 2.51.2.windows.1",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "--version"
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "?? .gitattributes\r\n?? .gitignore\r\n?? MANIFEST.in\r\n?? README.md\r\n?? deploy/\r\n?? docs/\r\n?? proto/\r\n?? pyproject.toml\r\n?? requirements.lock\r\n?? scripts/\r\n?? src/\r\n?? tests/\r\n?? third_party/",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "status",
+                                           "--short"
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "origin\thttps://github.com/tsepulvedf/DFSha.git (fetch)\r\norigin\thttps://github.com/tsepulvedf/DFSha.git (push)",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "remote",
+                                           "-v"
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "main",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "symbolic-ref",
+                                           "--short",
+                                           "HEAD"
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "git.exe : fatal: your current branch \u0027main\u0027 does not have any commits yet\r\nEn F:\\DFSha\\scripts\\inspect_environment.ps1: 6 Carácter: 15\r\n+     $output = \u0026 $Tool @Arguments 2\u003e\u00261 | Out-String\r\n+               ~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (fatal: your cur...any commits yet:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError",
+                         "exit_code":  128,
+                         "arguments":  [
+                                           "log",
+                                           "-1",
+                                           "--oneline"
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "branch.main.remote origin\r\nbranch.main.merge refs/heads/main",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "config",
+                                           "--get-regexp",
+                                           "^branch\\.main\\."
+                                       ],
+                         "executable":  "git"
+                     },
+                     {
+                         "output":  "-V:3.12 *        C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\r\n -V:3.11          C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "-0p"
+                                       ],
+                         "executable":  "py"
+                     },
+                     {
+                         "output":  "wsl.exe : El Subsistema de Windows para Linux no est� instalado. \r\nPara instalar, ejecute \"wsl.exe --install\".\r\nEn F:\\DFSha\\scripts\\inspect_environment.ps1: 6 Carácter: 15\r\n+     $output = \u0026 $Tool @Arguments 2\u003e\u00261 | Out-String\r\n+               ~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (El Subsi...stall\".:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\n\r\n\r\nPara obtener m�s informaci�n, visite \r\nhttps://aka.ms/wslinstall",
+                         "exit_code":  50,
+                         "arguments":  [
+                                           "--status"
+                                       ],
+                         "executable":  "wsl"
+                     },
+                     {
+                         "output":  "wsl.exe : El Subsistema de Windows para Linux no est� instalado. \r\nPara instalar, ejecute \"wsl.exe --install\".\r\nEn F:\\DFSha\\scripts\\inspect_environment.ps1: 6 Carácter: 15\r\n+     $output = \u0026 $Tool @Arguments 2\u003e\u00261 | Out-String\r\n+               ~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : NotSpecified: (El Subsi...stall\".:String) [], RemoteException\r\n    + FullyQualifiedErrorId : NativeCommandError\r\n \r\n\r\n\r\nPara obtener m�s informaci�n, visite \r\nhttps://aka.ms/wslinstall",
+                         "exit_code":  1,
+                         "arguments":  [
+                                           "--list",
+                                           "--verbose"
+                                       ],
+                         "executable":  "wsl"
+                     },
+                     {
+                         "output":  "Python 3.12.10",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "--version"
+                                       ],
+                         "executable":  ".\\.venv-win\\Scripts\\python.exe"
+                     },
+                     {
+                         "output":  "etcd Version: 3.6.14\r\nGit SHA: fc04cf7\r\nGo Version: go1.25.12\r\nGo OS/Arch: windows/amd64",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "--version"
+                                       ],
+                         "executable":  ".\\.tools\\etcd-3.6.14\\windows-amd64\\etcd.exe"
+                     },
+                     {
+                         "output":  "",
+                         "exit_code":  0,
+                         "arguments":  [
+                                           "ls-remote",
+                                           "--symref",
+                                           "https://github.com/tsepulvedf/DFSha"
+                                       ],
+                         "executable":  "git"
+                     }
+                 ],
+    "tools_on_path":  [
+                          {
+                              "name":  "git",
+                              "path":  "C:\\Program Files\\Git\\cmd\\git.exe"
+                          },
+                          {
+                              "name":  "python",
+                              "path":  "C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+                          },
+                          {
+                              "name":  "python3",
+                              "path":  "C:\\Users\\Tommysepf\\AppData\\Local\\Microsoft\\WindowsApps\\python3.exe"
+                          },
+                          {
+                              "name":  "py",
+                              "path":  "c:\\windows\\py.exe"
+                          },
+                          {
+                              "name":  "docker",
+                              "path":  null
+                          },
+                          {
+                              "name":  "docker-compose",
+                              "path":  null
+                          },
+                          {
+                              "name":  "wsl",
+                              "path":  "c:\\windows\\system32\\wsl.exe"
+                          },
+                          {
+                              "name":  "node",
+                              "path":  "C:\\Program Files\\nodejs\\node.exe"
+                          }
+                      ],
+    "candidates":  [
+                       {
+                           "exists":  true,
+                           "path":  "C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+                       },
+                       {
+                           "exists":  false,
+                           "path":  "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"
+                       },
+                       {
+                           "exists":  false,
+                           "path":  "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe"
+                       },
+                       {
+                           "exists":  false,
+                           "path":  "C:\\Users\\Tommysepf\\AppData\\Local\\Docker\\resources\\bin\\docker.exe"
+                       }
+                   ],
+    "services":  [
+
+                 ],
+    "github":  {
+                   "full_name":  "tsepulvedf/DFSha",
+                   "html_url":  "https://github.com/tsepulvedf/DFSha",
+                   "default_branch":  "main",
+                   "size":  0,
+                   "private":  false,
+                   "created_at":  "2026-09-08T18:47:49Z",
+                   "updated_at":  "2026-09-08T18:47:50Z"
+               }
+}

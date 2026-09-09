@@ -1,0 +1,34 @@
+syntax = "proto3";
+package dfsha.v1;
+import "dfsha/v1/common.proto";
+
+service BlockService {
+  rpc PutBlock(stream PutBlockFrame) returns (DurableReceipt);
+  rpc PatchBlock(stream PatchBlockFrame) returns (DurableReceipt);
+  rpc GetBlock(GetBlockRequest) returns (stream ReadBlockFrame);
+}
+message DataChunk { uint64 offset = 1; bytes data = 2; } // Offset dentro del stream; data<=256 KiB.
+message PutBlockHeader { RequestContext context = 1; OperationRef operation = 2; BlockRef block = 3; Fence fence = 4; bytes capability = 5; }
+message PutBlockFrame { oneof frame { PutBlockHeader header = 1; DataChunk chunk = 2; } }
+message PatchBlockHeader {
+  RequestContext context = 1; OperationRef operation = 2; BlockRef base = 3;
+  string new_block_version_id = 4; uint64 block_offset = 5; uint64 delta_length = 6;
+  bytes delta_sha256 = 7; Fence fence = 8; bytes capability = 9;
+}
+message PatchBlockFrame { oneof frame { PatchBlockHeader header = 1; DataChunk chunk = 2; } }
+message GetBlockRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; BlockRef block = 4; optional uint64 offset = 5; optional uint64 length = 6; bytes capability = 7; }
+message ReadBlockHeader { BlockRef block = 1; uint64 offset = 2; uint64 length = 3; bytes range_sha256 = 4; }
+message ReadBlockFrame { oneof frame { ReadBlockHeader header = 1; DataChunk chunk = 2; } }
+
+// Réplicas transportan el contenedor cifrado completo, no plaintext de usuario.
+service ReplicaService {
+  rpc StoreReplica(stream ReplicaFrame) returns (DurableReceipt);
+  rpc GetReplica(GetReplicaRequest) returns (stream ReplicaFrame);
+}
+message ReplicaHeader {
+  RequestContext context = 1; string task_id = 2; BlockRef block = 3;
+  uint64 ciphertext_length = 4; bytes ciphertext_sha256 = 5; string key_id = 6;
+  bytes task_capability = 7; Fence task_fence = 8; string destination_node_id = 9;
+}
+message ReplicaFrame { oneof frame { ReplicaHeader header = 1; DataChunk chunk = 2; } }
+message GetReplicaRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; bytes task_capability = 4; Fence task_fence = 5; string destination_node_id = 6; }

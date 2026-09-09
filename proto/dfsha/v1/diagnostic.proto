@@ -1,0 +1,20 @@
+syntax = "proto3";
+package dfsha.v1;
+
+// Datos sintéticos: estas RPC no son RF1/RF2/RF3 ni almacenan archivos.
+service DiagnosticService {
+  rpc Health(HealthRequest) returns (HealthResponse);
+  rpc StreamDigest(stream DiagnosticFrame) returns (DigestResult);
+  rpc GenerateStream(GenerateRequest) returns (stream DiagnosticChunk);
+}
+message HealthRequest { string request_id = 1; }
+message HealthResponse {
+  string request_id = 1; string version = 2; string listener = 3;
+  bool diagnostic_ready = 4; bool filesystem_implemented = 5;
+  string metadata_backend = 6;
+}
+message DiagnosticHeader { string request_id = 1; uint64 total_bytes = 2; bytes sha256 = 3; }
+message DiagnosticChunk { uint64 offset = 1; bytes data = 2; } // data 1..256 KiB.
+message DiagnosticFrame { oneof frame { DiagnosticHeader header = 1; DiagnosticChunk chunk = 2; } }
+message DigestResult { uint64 received_bytes = 1; bytes sha256 = 2; uint32 chunks = 3; uint32 max_chunk_bytes = 4; }
+message GenerateRequest { string request_id = 1; uint64 total_bytes = 2; uint32 chunk_bytes = 3; } // total<=64 MiB.
