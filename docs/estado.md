@@ -18,10 +18,12 @@ ejecución. [Resultado final](evidencias/etapa3/20260909T195446Z/resultado.json)
 Fallos iniciales conservados: ACL Windows, reconexión, margen del deadline y
 conexiones frías de login; corregidos y reejecutados sin ocultar resultados.
 
-Git vigente: main vinculada a https://github.com/tsepulvedf/DFSha.git; remoto leído
-y vacío al comenzar E3 y al reconsultar el 9 de septiembre. Referencia E2
-`df1fd331229c28739024c68950b8ea84cfb9446c`, con identidad ya configurada.
-Commit/sincronización E3 pendientes de terminar verificación; no force push.
+Git vigente: **main publicada y siguiendo origin/main** en
+https://github.com/tsepulvedf/DFSha.git. Referencia E2 `df1fd33`; implementación E3
+`7bd83277dd592124d10f2ced996940e27a9107c8`. Push ejecutado sin force; `git ls-remote`
+confirmó ese mismo hash remoto. Identidad Git existente, sin inventar autor.
+[Evidencia de publicación](evidencias/etapa3/git-publicacion.json). El cierre
+documental se registra en un commit posterior, conservando el commit funcional.
 
 Bloqueo temporal del revisor automático por cuota resuelto al reanudar.
 Linux/WSL/Docker/cloud no ejecutados; H1 Windows no depende de ellos ni de etcd.

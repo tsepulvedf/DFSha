@@ -1,5 +1,8 @@
 # Evidencias de etapa 3
 
+Git: [publicación verificada](git-publicacion.json), commits E2 `df1fd33` y H1
+`7bd8327`, origin/main sin reescritura de historial. Runtime/secretos fuera de Git.
+
 **Cierre vigente: [20260909T195446Z](20260909T195446Z/resultado.json), EJECUTADO.**
 [87 pruebas](20260909T195446Z/pytest.xml), cero fallos/errores/omitidos/advertencias,
 142,86 s; [medición](20260909T195446Z/medicion.json) 1 GiB + dos clientes 64 MiB+1,
