@@ -18,6 +18,8 @@ def main():
     parser.add_argument("--evidence", type=Path)
     args = parser.parse_args()
     records = []
+    from dfsha.control.queries import Queries
+    from dfsha.control.commands import Commands
     for module in ("diagnostic", "identity", "namespace", "control", "data", "nodes"):
         descriptor = importlib.import_module(f"dfsha.v1.{module}_pb2").DESCRIPTOR
         for service in descriptor.services_by_name.values():
@@ -26,7 +28,9 @@ def main():
                     "path": f"/{service.full_name}/{method.name}",
                     "request": method.input_type.full_name, "response": method.output_type.full_name,
                     "client_streaming": method.client_streaming, "server_streaming": method.server_streaming,
-                    "implementation": "DIAGNOSTIC" if module == "diagnostic" else "UNIMPLEMENTED",
+                    "implementation": "DIAGNOSTIC" if module == "diagnostic" else
+                        "HITO1" if method.name in ('Login', 'PutBlock', 'GetBlock') or
+                        hasattr(Queries, method.name) or hasattr(Commands, method.name) else "UNIMPLEMENTED",
                     "source": f"proto/dfsha/v1/{module}.proto"})
     catalog = {"version": "dfsha.v1", "semantic_contract": "docs/protocolos.md", "rpcs": records}
     catalog_file = ROOT / "docs/rpc-catalog.json"
@@ -40,11 +44,13 @@ def main():
         short = record["rpc"].removeprefix("dfsha.v1.")
         if f"| {short} " not in protocols:
             raise RuntimeError(f"RPC sin fila semántica: {short}")
-    if len(records) != 50 or sum(r["implementation"] == "UNIMPLEMENTED" for r in records) != 47:
+    future = sum(r["implementation"] == "UNIMPLEMENTED" for r in records)
+    if len(records) != 51 or future != 21:
         raise RuntimeError("Revisar número de RPC y evidencia")
     documents = [ROOT / "README.md"] + [ROOT / "docs" / name for name in (
         "estado.md", "especificacion.md", "arquitectura.md", "decisiones.md", "matriz-requisitos.md",
-        "protocolos.md", "entorno.md")] + [ROOT / "docs/evidencias/etapa2/README.md"]
+        "protocolos.md", "entorno.md", "hito1.md", "protocolos-hito1.md", "etapa3-diseno.md")]
+    documents += [ROOT / "docs/evidencias/etapa2/README.md", ROOT / "docs/evidencias/etapa3/README.md"]
     links = 0
     for document in documents:
         content = document.read_text(encoding="utf-8")
@@ -62,8 +68,8 @@ def main():
     for path, expected in originals.items():
         if hashlib.sha256((ROOT / path).read_bytes()).hexdigest() != expected:
             raise RuntimeError(f"Fuente original modificada: {path}")
-    report = {"status": "EJECUTADO", "rpcs": len(records), "future_unimplemented": 47,
-              "semantic_rows": 50, "existing_local_links": links, "original_sha256": originals,
+    report = {"status": "EJECUTADO", "rpcs": len(records), "future_unimplemented": future,
+              "semantic_rows": len(records), "existing_local_links": links, "original_sha256": originals,
               "document_sha256": {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                                     for p in documents}, "scope": "auditoría documental, no prueba RF/RNF"}
     if args.evidence:

@@ -1,4 +1,8 @@
-# DFSha — Entorno reproducible de etapa 2
+# DFSha — Entorno reproducible de etapas 2–3
+
+Para el monolito funcional y comandos actuales: [hito1.md](hito1.md). Stack fijado
+sin cambios; la sección final registra la actualización E3. Lo siguiente conserva
+la comprobación de herramientas/dependencias E2, con Linux aún pendiente.
 
 2026-09-08. Ruta ejecutada: **Python 3.12 nativo de Windows, `.venv-win`, gRPC y binario oficial etcd aislado**. Carpeta canónica `F:\DFSha`. Se aprovecha Python existente; no se instalaron Python del sistema, WSL ni Docker. Los scripts Python/TOML/Protobuf y bootstrap Bash preparan Linux; **Linux no fue ejecutado**. La prueba local no acredita Internet, VMs ni HA.
 
@@ -134,3 +138,19 @@ git ls-remote --symref origin
 ```
 
 Antes de commit/push volver a consultar remoto por si otra sesión añadió historial y usar identidad real del equipo. «Creado»/«vinculado» no significan código publicado. Q01–Q07 siguen pendientes; la URL GitHub ya está definida y no debe volver a figurar como pendiente de creación.
+# Etapa 3: ruta comprobada
+
+Windows/Python 3.12.10 y lock E2 conservados; paquete propio 0.3.0, SQLite 3.49.1.
+No se instala otra ruta ni Docker/WSL. Monolito no conecta etcd al arrancar.
+[Hito 1](hito1.md) contiene PowerShell, perfiles, inicio/parada y pruebas.
+Linux pendiente; no compartir venv Windows/Linux ni crear otro checkout.
+
+```powershell
+.\.venv-win\Scripts\python.exe scripts/verify_stage3.py
+.\.venv-win\Scripts\python.exe scripts/measure_hito1.py
+```
+
+Medición: PeakWorkingSetSize del PID real del servidor. Clave/staging/bloques/sesión
+en runtime ignorado; ACL privadas del usuario actual/SYSTEM/Administradores.
+SQLite/WAL/volumen y backups no tienen cifrado integral acreditado. Clave ausente
+o incorrecta impide arranque; restaurar la original, no generar otra.

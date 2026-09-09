@@ -1,0 +1,21 @@
+# Hito 1 local. Nunca se requiere etcd. Inicializar explícitamente con dfsha.admin.
+[server]
+public_bind = "127.0.0.1:17443"
+internal_bind = "127.0.0.1:17445"
+certificate_dir = ".runtime/certs"
+max_workers = 12
+max_concurrent_rpcs = 24
+grace_seconds = 3
+metadata_backend = "sqlite"
+sqlite_path = ".runtime/hito1/metadata.sqlite3"
+block_path = ".runtime/hito1/blocks"
+
+[monolith]
+enabled = true
+key_path = ".runtime/hito1/secrets/master.key"
+block_size_bytes = 4194304
+capacity_bytes = 17179869184
+max_file_bytes = 17179869184
+
+[client]
+public_target = "localhost:17443"

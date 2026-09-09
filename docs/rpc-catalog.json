@@ -39,7 +39,7 @@
       "response": "dfsha.v1.Session",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -49,7 +49,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -69,7 +69,7 @@
       "response": "dfsha.v1.User",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -79,7 +79,7 @@
       "response": "dfsha.v1.User",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -89,7 +89,7 @@
       "response": "dfsha.v1.Group",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -99,7 +99,7 @@
       "response": "dfsha.v1.Group",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -109,7 +109,7 @@
       "response": "dfsha.v1.Acl",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -119,7 +119,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -129,7 +129,7 @@
       "response": "dfsha.v1.ListResponse",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -139,7 +139,7 @@
       "response": "dfsha.v1.Entry",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -149,7 +149,7 @@
       "response": "dfsha.v1.Entry",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -159,7 +159,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -169,7 +169,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -179,7 +179,7 @@
       "response": "dfsha.v1.UploadPlan",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -189,7 +189,7 @@
       "response": "dfsha.v1.BlockPlan",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -199,7 +199,7 @@
       "response": "dfsha.v1.PageReceipt",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -209,7 +209,7 @@
       "response": "dfsha.v1.PageReceipt",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -219,7 +219,7 @@
       "response": "dfsha.v1.CommitResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -229,7 +229,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -239,7 +239,17 @@
       "response": "dfsha.v1.OperationStatus",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.UploadService.RenewUpload",
+      "path": "/dfsha.v1.UploadService/RenewUpload",
+      "request": "dfsha.v1.OperationRequest",
+      "response": "dfsha.v1.UploadPlan",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -249,7 +259,7 @@
       "response": "dfsha.v1.Handle",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -259,7 +269,7 @@
       "response": "dfsha.v1.MutationResult",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -269,7 +279,7 @@
       "response": "dfsha.v1.Handle",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -339,7 +349,7 @@
       "response": "dfsha.v1.BlockPlan",
       "client_streaming": false,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -349,7 +359,7 @@
       "response": "dfsha.v1.DurableReceipt",
       "client_streaming": true,
       "server_streaming": false,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -369,7 +379,7 @@
       "response": "dfsha.v1.ReadBlockFrame",
       "client_streaming": false,
       "server_streaming": true,
-      "implementation": "UNIMPLEMENTED",
+      "implementation": "HITO1",
       "source": "proto/dfsha/v1/data.proto"
     },
     {

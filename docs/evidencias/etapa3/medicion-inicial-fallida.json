@@ -1,0 +1,22 @@
+{
+  "status": "FALLIDO",
+  "timestamp": "2026-09-09T05:28:02.675903+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-h1\\0c6830b7-3544-4f16-996d-47e9b092fead",
+  "initial_free_bytes": 754538262528,
+  "block_size_bytes": 67108864,
+  "clients": 3,
+  "transport_chunk_bytes": 262144,
+  "admission_units": 4,
+  "weight_per_64mib_stream": 2,
+  "budgets": {
+    "client_resident_bytes": 268435456,
+    "server_resident_bytes": 536870912
+  },
+  "metric": "Windows PeakWorkingSetSize / PeakPagefileUsage; Linux VmHWM",
+  "scope": "monolito TLS loopback, no distribuci\u00f3n ni benchmark comparativo",
+  "server_memory": {
+    "peak_resident_bytes": 4235264,
+    "peak_commit_bytes": 843776
+  },
+  "error": "Roundtrip fallido; consultar logs runtime"
+}

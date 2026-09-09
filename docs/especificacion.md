@@ -1,5 +1,14 @@
 # DFSha — Especificación formal del servicio
 
+**Actualización H1/E3 del usuario:** CRUD lógico (incluido overwrite explícito),
+perfiles persistidos 4/64/128 MiB por archivo/snapshot, bloques inmutables cifrados,
+CQRS sobre SQLite y coordinación local. [D25–D30](etapa3-diseno.md) y
+[contrato operativo](protocolos-hito1.md) prevalecen sobre propuestas incompatibles
+de E1 que siguen abajo como diseño final. RF1/RF2 implementados; RF3 completo E5.
+No es WORM ni retención permanente; snapshots/pins retienen solo referencias válidas.
+cd valida identidad y permiso x del directorio; no modifica cwd real del servidor.
+No se implementa ni se deja pendiente «modelo 2 de acceso».
+
 Versión de diseño 1.0 · 2026-09-07 · SI3007/ST0263, 2026-2 · Etapa 1.
 
 Este documento define el servicio que se implementará. No acredita implementación, pruebas funcionales ni despliegue. El estado verificable está en [estado.md](estado.md); la cobertura del enunciado, en [matriz-requisitos.md](matriz-requisitos.md).
@@ -229,3 +238,8 @@ Las cuestiones no resueltas no autorizan rebajar requisitos. Cualquier aclaraci�
 El cronograma oficial es: semana 6 enunciado; 7 especificación definitiva; 8 hito 1 monolítico C/S con RF1/RF2 completos; 10 hito 2 distribuido y comunicaciones; 12 hito 3 HA/replicación/consistencia/seguridad; 13 entrega final. Semanas 9 y 11 están vacías en la tabla oficial. El [plan por etapas](estado.md#plan) asigna trabajo interno sin convertirlo en fechas docentes adicionales.
 
 Entrega final obligatoria: informe PDF o Word con los siete contenidos de p. 5; fuente documentada y reproducible en GitHub; video de 10–15 min que explique el sistema y muestre procesamiento distribuido, en vivo o simulado identificado como tal. La posibilidad de simulación en el video no sustituye ejecutar el sistema sobre Internet en VMs de AWS Academy/GCP académico.
+# Actualización de alcance del hito 1
+
+Aplican [D25–D29](etapa3-diseno.md): CRUD lógico, snapshots inmutables, perfiles
+4/64/128 MiB persistidos por archivo, RF1/RF2 en monolito SQLite y coordinación local.
+Son decisiones explícitas del usuario; no requisitos nuevos del PDF. RF3 completo sigue en etapa 5.

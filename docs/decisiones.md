@@ -1,6 +1,9 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
-Actualizado 2026-09-08 · Etapas 1–2. Diseño del equipo y base de comunicaciones; las decisiones de negocio/distribución siguen pendientes de implementación. Compatibilidad E2 e inventario en [entorno.md](entorno.md) y [estado.md](estado.md). Se conserva la [versión documental original de E1](evidencias/etapa1/documentos-originales.zip).
+Actualizado 2026-09-09 · Etapas 1–3. D25–D30 implementan RF1/RF2 H1 y sustituyen
+propuestas anteriores incompatibles: [diseño](etapa3-diseno.md) y [contrato](protocolos-hito1.md).
+Distribución sigue pendiente. Compatibilidad/estado en [entorno.md](entorno.md) y
+[estado.md](estado.md). [Original E1](evidencias/etapa1/documentos-originales.zip) preservado.
 
 <a id="base"></a>
 ## Base documental y decisiones previas
@@ -107,3 +110,15 @@ Estas fuentes sustentan capacidades, no requisitos docentes. Páginas stable/lat
 | 2026-09-08 | Usuario, solicitud E2 y verificación técnica | Remoto existente definido; D03/D05/D19 concretadas, D21–D24 y contratos v1. | Base ejecutable local y pruebas de compatibilidad; no RF completos, HA ni cloud. Q01–Q07 sin respuesta docente. |
 
 No hay respuestas docentes registradas ni aprobación docente supuesta. Las consultas Q01–Q07 están en [especificación §10](especificacion.md#s10). Cuando llegue una aclaración, se añadirá una fila con fuente accesible y se actualizará primero la matriz, luego diseño, implementación y pruebas afectadas.
+# Decisiones de etapa 3
+
+[D25–D29](etapa3-diseno.md) actualizan el diseño por instrucción del usuario:
+CQRS local, CRUD y perfiles, contenedor cifrado con memoria acotada, publicación/recuperación
+y colocación preparada para etapa 4. Se conservan dependencias y Q01–Q07 sin información nueva.
+# D30 — Concreción del contrato H1
+
+[D30](protocolos-hito1.md#d30-representación-efectivamente-implementada) define
+digest/manifiesto JSON protobuf, sesiones base64 estándar y reintentos. Sustituye
+propuestas E2 sin implementación; método/actor/época ligados al ledger. Stack
+conservado. Margen de redondeo del deadline recibido 2 s, sin ampliar el plazo
+solicitado por SDK ni aceptar llamadas ilimitadas.

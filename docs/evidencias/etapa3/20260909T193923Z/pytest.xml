@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="87" time="132.694" timestamp="2026-09-09T14:39:26.993742-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\bde583d7-3630-4a85-88eb-764862b741b8" /></properties><testcase classname="tests.test_contract_limits" name="test_manifest_page_and_maximum_write_fit_transport_budget" file="tests\test_contract_limits.py" line="7" time="0.001"><properties><property name="manifest_page_bytes" value="8399" /><property name="commit_write_bytes" value="7701" /></properties></testcase><testcase classname="tests.test_etcd" name="test_put_get_and_conditional_transactions" file="tests\test_etcd.py" line="68" time="3.345"><properties><property name="transaction" value="put/get; CAS accepted; stale CAS rejected; value unchanged" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lease_creation_and_real_expiry" file="tests\test_etcd.py" line="90" time="2.209"><properties><property name="observed_expiry_seconds" value="2.078" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lock_unlock_and_obsolete_ownership_rejected" file="tests\test_etcd.py" line="101" time="0.407"><properties><property name="fencing" value="create_revision compared inside Txn; obsolete owner rejected" /></properties></testcase><testcase classname="tests.test_etcd" name="test_watch_receives_real_event" file="tests\test_etcd.py" line="125" time="0.124"><properties><property name="watch_revision" value="11" /></properties></testcase><testcase classname="tests.test_etcd" name="test_mtls_identity_and_rbac_are_enforced" file="tests\test_etcd.py" line="147" time="0.340" /><testcase classname="tests.test_etcd" name="test_unavailable_service_has_controlled_error" file="tests\test_etcd.py" line="165" time="3.901"><properties><property name="controlled_unavailability" value="{&quot;status&quot;: &quot;FALLIDO&quot;, &quot;code&quot;: &quot;DEADLINE_EXCEEDED&quot;, &quot;reason&quot;: &quot;DEADLINE_EXCEEDED&quot;}" /></properties></testcase><testcase classname="tests.test_hito1" name="test_rf1_paths_permissions_pagination_cwd" file="tests\test_hito1.py" line="52" time="2.812" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[0]" file="tests\test_hito1.py" line="84" time="2.465" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[17]" file="tests\test_hito1.py" line="84" time="4.125" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194303]" file="tests\test_hito1.py" line="84" time="4.348" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194304]" file="tests\test_hito1.py" line="84" time="3.958" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194305]" file="tests\test_hito1.py" line="84" time="4.439" /><testcase classname="tests.test_hito1" name="test_overwrite_snapshot_delete_idempotency" file="tests\test_hito1.py" line="97" time="2.410"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.INVALID_ARGUMENT&#10;&#09;details = &quot;INVALID_ARGUMENT&quot;&#10;&#09;debug_error_string = &quot;INVALID_ARGUMENT:INVALID_ARGUMENT&quot;&#10;&gt;">admin = &lt;dfsha.client.sdk.Client object at 0x0000029DC26F92B0&gt;
+h1 = &lt;hito1_runtime.Hito1Process object at 0x0000029DC26F9850&gt;
+
+    def test_overwrite_snapshot_delete_idempotency(admin, h1):
+        source = h1.directory / 'source'
+        source.write_bytes(b'original\x00binary')
+&gt;       first = admin.send(source, '/file')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_hito1.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:228: in send
+    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+src\dfsha\client\sdk.py:54: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x0000029DC206DA90&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x0000029DC276E640&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.INVALID_ARGUMENT
+E       	details = "INVALID_ARGUMENT"
+E       	debug_error_string = "INVALID_ARGUMENT:INVALID_ARGUMENT"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase><testcase classname="tests.test_hito1" name="test_corruption_block_auth_and_credentials" file="tests\test_hito1.py" line="122" time="3.791" /><testcase classname="tests.test_hito1" name="test_restart_profile_preservation_and_missing_key" file="tests\test_hito1.py" line="150" time="10.128" /><testcase classname="tests.test_hito1" name="test_fault_recovery_and_lost_commit_response" file="tests\test_hito1.py" line="182" time="25.696" /><testcase classname="tests.test_hito1" name="test_interrupted_upload_space_and_future" file="tests\test_hito1.py" line="204" time="2.869" /><testcase classname="tests.test_hito1" name="test_large_profiles_boundaries[67108864]" file="tests\test_hito1.py" line="226" time="3.491"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.INVALID_ARGUMENT&#10;&#09;details = &quot;INVALID_ARGUMENT&quot;&#10;&#09;debug_error_string = &quot;INVALID_ARGUMENT:INVALID_ARGUMENT&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/bde583d7-3630-4a85-88eb-764862b741b8')
+certs = WindowsPath('F:/DFSha/.runtime/tests/bde583d7-3630-4a85-88eb-764862b741b8/certs')
+block_size = 67108864
+
+    @pytest.mark.parametrize('block_size', [67108864, 134217728])
+    def test_large_profiles_boundaries(run_dir, certs, block_size):
+        with Hito1Process(run_dir / ('profile-' + str(block_size)), certs, block_size) as h1:
+            client = Client(h1.target, certs)
+            client.login('admin', 'development-password')
+            for size in (block_size - 1, block_size, block_size + 1):
+                source, target = h1.directory / 'source', h1.directory / 'target'
+                expected = make_file(source, size)
+&gt;               result = client.send(source, '/file', overwrite=True)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_hito1.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:228: in send
+    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+src\dfsha\client\sdk.py:54: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x0000029DC2728B90&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x0000029DC255B6C0&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.INVALID_ARGUMENT
+E       	details = "INVALID_ARGUMENT"
+E       	debug_error_string = "INVALID_ARGUMENT:INVALID_ARGUMENT"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase><testcase classname="tests.test_hito1" name="test_large_profiles_boundaries[134217728]" file="tests\test_hito1.py" line="226" time="18.599" /><testcase classname="tests.test_hito1" name="test_reservations_remove_no_resurrection_and_revocation" file="tests\test_hito1.py" line="240" time="2.472"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.INVALID_ARGUMENT&#10;&#09;details = &quot;INVALID_ARGUMENT&quot;&#10;&#09;debug_error_string = &quot;INVALID_ARGUMENT:INVALID_ARGUMENT&quot;&#10;&gt;">admin = &lt;dfsha.client.sdk.Client object at 0x0000029DC2729A90&gt;
+h1 = &lt;hito1_runtime.Hito1Process object at 0x0000029DC272A060&gt;
+
+    def test_reservations_remove_no_resurrection_and_revocation(admin, h1):
+        from dfsha.v1 import identity_pb2 as ident
+        source = h1.directory / 'source'
+        source.write_bytes(b'old')
+&gt;       admin.send(source, '/file')
+
+tests\test_hito1.py:245: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:228: in send
+    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+src\dfsha\client\sdk.py:54: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x0000029DC2808830&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x0000029DC28A5340&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.INVALID_ARGUMENT
+E       	details = "INVALID_ARGUMENT"
+E       	debug_error_string = "INVALID_ARGUMENT:INVALID_ARGUMENT"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase><testcase classname="tests.test_hito1" name="test_cli_process_and_interactive_shell" file="tests\test_hito1.py" line="268" time="7.322" /><testcase classname="tests.test_hito1" name="test_renewals_long_name_and_parallel_snapshot_readers" file="tests\test_hito1.py" line="290" time="7.039" /><testcase classname="tests.test_local_storage" name="test_sqlite_persistence_and_rollback_without_etcd" file="tests\test_local_storage.py" line="6" time="0.023" /><testcase classname="tests.test_security" name="test_authenticated_encryption_and_tamper_rejection" file="tests\test_security.py" line="9" time="0.016" /><testcase classname="tests.test_security" name="test_argon2id_password_verification" file="tests\test_security.py" line="21" time="0.062" /><testcase classname="tests.test_transport" name="test_separate_client_process_tls_and_bounded_stream[False]" file="tests\test_transport.py" line="23" time="0.826"><properties><property name="diagnostic" value="{&quot;status&quot;: &quot;EJECUTADO&quot;, &quot;version&quot;: &quot;0.2.0&quot;, &quot;listener&quot;: &quot;public&quot;, &quot;diagnostic_ready&quot;: true, &quot;filesystem_implemented&quot;: false, &quot;uploaded_bytes&quot;: 8388625, &quot;downloaded_bytes&quot;: 8388625, &quot;sha256&quot;: &quot;e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc&quot;, &quot;chunks&quot;: 33, &quot;max_chunk_bytes&quot;: 262144}" /></properties></testcase><testcase classname="tests.test_transport" name="test_separate_client_process_tls_and_bounded_stream[True]" file="tests\test_transport.py" line="23" time="0.564"><properties><property name="diagnostic" value="{&quot;status&quot;: &quot;EJECUTADO&quot;, &quot;version&quot;: &quot;0.2.0&quot;, &quot;listener&quot;: &quot;internal&quot;, &quot;diagnostic_ready&quot;: true, &quot;filesystem_implemented&quot;: false, &quot;uploaded_bytes&quot;: 8388625, &quot;downloaded_bytes&quot;: 8388625, &quot;sha256&quot;: &quot;e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc&quot;, &quot;chunks&quot;: 33, &quot;max_chunk_bytes&quot;: 262144}" /></properties></testcase><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[public_target-None-rogue-ca]" file="tests\test_transport.py" line="42" time="0.004" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-None-ca]" file="tests\test_transport.py" line="42" time="0.004" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-rogue-client-ca]" file="tests\test_transport.py" line="42" time="0.006" /><testcase classname="tests.test_transport" name="test_tls_rejects_wrong_server_san" file="tests\test_transport.py" line="55" time="0.022" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[missing_header-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.258" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[offset-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.258" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[oversized-StatusCode.RESOURCE_EXHAUSTED-LIMIT_EXCEEDED]" file="tests\test_transport.py" line="72" time="0.259" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[checksum-StatusCode.DATA_LOSS-CHECKSUM_MISMATCH]" file="tests\test_transport.py" line="72" time="0.257" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[short-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.258" /><testcase classname="tests.test_transport" name="test_transport_message_limit" file="tests\test_transport.py" line="92" time="0.277" /><testcase classname="tests.test_transport" name="test_client_deadline_interrupts_stream" file="tests\test_transport.py" line="99" time="0.102" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.Login]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.Logout]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.RefreshSession]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.CreateUser]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetUser]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.CreateGroup]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetGroupMembers]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.GetAcl]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetAcl]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.List]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Stat]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Mkdir]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Rmdir]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Remove]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.BeginUpload]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.AllocateBlocks]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.StageManifestPage]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.SealManifest]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.CommitUpload]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.AbortUpload]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.GetOperation]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.RenewUpload]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Open]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Close]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.RenewHandle]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.BeginWrite]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.CommitWrite]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.AbortWrite]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Lock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Unlock]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.RenewLock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.ResolveBlocks]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.PutBlock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.PatchBlock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.GetBlock]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.RegisterNode]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.Heartbeat]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.BlockReport]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportDurable]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportTask]" file="tests\test_transport.py" line="115" time="0.261" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeBlock]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeInternal]" file="tests\test_transport.py" line="115" time="0.261" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.VerifyReceipt]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.ReplicateBlock]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.GetTask]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.DeleteRetiredBlock]" file="tests\test_transport.py" line="115" time="0.262" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ReplicaService.StoreReplica]" file="tests\test_transport.py" line="115" time="0.261" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ReplicaService.GetReplica]" file="tests\test_transport.py" line="115" time="0.361" /></testsuite></testsuites>

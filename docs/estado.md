@@ -1,11 +1,40 @@
 # DFSha — Estado del proyecto y continuidad
 
-Actualizado: 2026-09-08 · Etapa activa: **2, estructura, entorno reproducible y contratos**. Etapa 1 completa documentalmente; revisión docente no presupuesta.
+Actualizado: 2026-09-09 · Etapa activa: **3, RF1/RF2 monolítico**. E1/E2 preservadas; revisión docente no presupuesta.
 
-**ETAPA 2 COMPLETA en la ruta local elegida:** 70 pruebas reales aprobadas, generación/importación de 34 módulos, paquete verificado en entorno limpio y auditoría documental aprobada. RF1/RF2/RF3 de negocio, distribución, replicación, HA y cloud continúan PENDIENTES. Health/streaming sintéticos no acreditan esos requisitos.
+**ETAPA 3 COMPLETA en Windows, alcance H1 local.** RF1/RF2,
+CLI/shell/SDK TLS, usuarios/grupos/ACL, SQLite/CQRS, bloques AES-GCM, snapshots,
+overwrite, pins, idempotencia y recuperación. RF3 completo, distribución,
+replicación, HA, RNF6 integral y cloud siguen pendientes. [Demo](hito1.md),
+[contrato efectivo](protocolos-hito1.md), [D25–D30](etapa3-diseno.md).
+
+EJECUTADO: **87 pruebas, cero fallos/errores/omitidos/advertencias**, 142,86 s;
+34 módulos de contratos, catálogo 51 RPC (27 H1, tres diagnósticas, 21 futuras),
+wheel instalado/importado fuera del editable. Medición 1 GiB/3 clientes: máximo
+cliente **51,6 MiB**, servidor **81,5 MiB**, metas 256/512 MiB satisfechas en esa
+ejecución. [Resultado final](evidencias/etapa3/20260909T195446Z/resultado.json),
+[XML](evidencias/etapa3/20260909T195446Z/pytest.xml),
+[medición](evidencias/etapa3/20260909T195446Z/medicion.json), [paquete](evidencias/etapa3/paquete.json).
+Fallos iniciales conservados: ACL Windows, reconexión, margen del deadline y
+conexiones frías de login; corregidos y reejecutados sin ocultar resultados.
+
+Git vigente: main vinculada a https://github.com/tsepulvedf/DFSha.git; remoto leído
+y vacío al comenzar E3 y al reconsultar el 9 de septiembre. Referencia E2
+`df1fd331229c28739024c68950b8ea84cfb9446c`, con identidad ya configurada.
+Commit/sincronización E3 pendientes de terminar verificación; no force push.
+
+Bloqueo temporal del revisor automático por cuota resuelto al reanudar.
+Linux/WSL/Docker/cloud no ejecutados; H1 Windows no depende de ellos ni de etcd.
+Q01–Q07 sin nuevas aclaraciones. Próxima etapa E4 (no ejecutada): procesos separados,
+registro/heartbeats, métricas/reservas/colocación y bytes directos cliente–DN;
+pruebas 512 MiB/1 GiB. RF3 E5, réplica E6, control/etcd HA E7. W=2 de datos final
+no es mayoría de metadatos.
 
 <a id="etapa2"></a>
-## Etapa 2: resultado vigente y continuidad
+## Etapa 2: resultado histórico conservado
+
+Esta sección registra el cierre E2 anterior a `df1fd33`; números y estados Git
+son históricos. Para estado actual rige E3 arriba.
 
 Ruta ejecutada: **Windows, Python 3.12.10 en .venv-win**, grpcio/grpcio-tools 1.83.1, Protobuf 7.36.1, cryptography 50.0.1, argon2-cffi 25.1.0, pytest 9.1.1 y etcd 3.6.14 oficial. Dependencias transitivas con hashes; [entorno.md](entorno.md) contiene comandos PowerShell/Linux y versiones. Python existente finalmente se reconoce en PATH/launcher; las observaciones de E1 fueron revisadas. Docker/Compose no encontrados en PATH/rutas habituales/servicios; WSL indica subsistema no instalado. Windows etcd valida compatibilidad, Linux sigue pendiente de ejecución.
 
@@ -191,6 +220,16 @@ Los contenidos obligatorios del informe y la rúbrica completa están en [matriz
 
 Leer primero este estado, [matriz-requisitos.md](matriz-requisitos.md), [decisiones.md](decisiones.md) y cualquier AGENTS.md nuevo; inventariar cambios antes de editar. Preservar PDF/guía y la evidencia del monolito cuando exista. Ejecutar solo la etapa autorizada y sus dependencias imprescindibles. Actualizar matriz al recibir aclaraciones docentes; no copiar propuestas técnicas como requisitos del PDF.
 
-El siguiente trabajo es **etapa 3: RF1/RF2 completos del monolito**. Leer estado/entorno/protocolos/decisiones y matriz antes de editar; respetar cambios locales y consultar remoto antes de cualquier sincronización. Mantener contratos RF3/distribuidos UNIMPLEMENTED hasta su etapa, servidor único modular con SQLite/bloques locales y sin depender del probe etcd. Añadir pruebas/evidencias funcionales de H1 y actualizar este estado sin confundirlas con diagnóstico E2.
+El siguiente trabajo es **etapa 4: separar procesos y distribuir bloques**. Leer
+estado/entorno/protocolos/decisiones y matriz; preservar H1 comprobado. Añadir
+registro/heartbeats reales, métricas, reservas/colocación y transferencia directa
+cliente–DN. RF3 avanzado E5, réplica E6, control HA E7. No ejecutar E4 automáticamente.
 
 Reglas que deben persistir: RF3 final obligatorio; bytes finales cliente–DataNode; lectura/escritura mediante varios nodos; ubicación dinámica; W de datos separado de quórum; publicación atómica; fencing en commit; deltas compatibles sin sobrescribir cambios ajenos; tombstones/GC seguros; HA también de control/metadatos/entrada/claves; autorización DN; criptografía/consenso de bibliotecas; evidencia local y cloud diferenciada. Nada no ejecutado cuenta como aprobado.
+# Actualización activa: etapa 3
+
+El prompt de etapa 3 del usuario sustituye las propuestas anteriores que contradiga.
+[Decisiones D25–D29 y diseño previo a implementación](etapa3-diseno.md).
+Referencia revisada de etapa 2: commit `df1fd33`; regresión ejecutada: 70 pruebas aprobadas.
+La implementación y verificación E3 están COMPLETAS en alcance H1 local;
+la ejecución final y los límites se registran al comienzo de este documento.

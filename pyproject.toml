@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dfsha"
-version = "0.2.0"
-description = "DFSha académico: contratos y diagnóstico de comunicaciones de etapa 2"
+version = "0.3.0"
+description = "DFSha académico: RF1/RF2 C/S con SQLite, TLS y bloques cifrados"
 readme = "README.md"
 requires-python = "==3.12.*"
 license-files = ["third_party/licenses/*-LICENSE"]
@@ -28,6 +28,8 @@ dev = [
 [project.scripts]
 dfsha-server = "dfsha.control.server:main"
 dfsha-diagnose = "dfsha.client.diagnostic:main"
+dfsha = "dfsha.client.cli:main"
+dfsha-admin = "dfsha.admin:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

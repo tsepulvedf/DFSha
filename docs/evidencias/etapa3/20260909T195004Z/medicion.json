@@ -1,0 +1,55 @@
+{
+  "status": "EJECUTADO",
+  "timestamp": "2026-09-09T19:52:30.635282+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-h1\\4ed171e9-099f-488c-9c2f-e0f2eb95a15e",
+  "initial_free_bytes": 743797886976,
+  "block_size_bytes": 67108864,
+  "clients": 3,
+  "transport_chunk_bytes": 262144,
+  "admission_units": 4,
+  "weight_per_64mib_stream": 2,
+  "budgets": {
+    "client_resident_bytes": 268435456,
+    "server_resident_bytes": 536870912
+  },
+  "metric": "Windows PeakWorkingSetSize / PeakPagefileUsage; Linux VmHWM",
+  "scope": "monolito TLS loopback, no distribuci\u00f3n ni benchmark comparativo",
+  "server_memory": {
+    "peak_resident_bytes": 85073920,
+    "peak_commit_bytes": 67661824
+  },
+  "server_pid": 40828,
+  "workers": [
+    {
+      "status": "EJECUTADO",
+      "pid": 5072,
+      "bytes": 1073741824,
+      "sha256": "5666f47057b805b6311b516f5e772f937d54933faf116f4b380212e7471026e6",
+      "block_size": 67108864,
+      "seconds": 46.75,
+      "peak_resident_bytes": 56410112,
+      "peak_commit_bytes": 42266624
+    },
+    {
+      "status": "EJECUTADO",
+      "pid": 38232,
+      "bytes": 67108865,
+      "sha256": "4ac817c848976914824a1a96107f434c48efa1feb591200a351599ba759330d5",
+      "block_size": 67108864,
+      "seconds": 8.219,
+      "peak_resident_bytes": 49065984,
+      "peak_commit_bytes": 34537472
+    },
+    {
+      "status": "EJECUTADO",
+      "pid": 28600,
+      "bytes": 67108865,
+      "sha256": "d47e60d72290652da084a2fb20681e55b527b203d9dfe20b1d7abbf5ffc8a061",
+      "block_size": 67108864,
+      "seconds": 8.86,
+      "peak_resident_bytes": 48295936,
+      "peak_commit_bytes": 33865728
+    }
+  ],
+  "memory_goals_met": true
+}

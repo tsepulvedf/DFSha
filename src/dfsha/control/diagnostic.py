@@ -13,8 +13,9 @@ from dfsha.v1 import diagnostic_pb2_grpc as rpc
 
 
 class Diagnostic(rpc.DiagnosticServiceServicer):
-    def __init__(self, listener: str):
+    def __init__(self, listener: str, filesystem_implemented=False):
         self.listener = listener
+        self.filesystem_implemented = filesystem_implemented
 
     def Health(self, request, context):
         self.require_deadline(context)
@@ -22,7 +23,8 @@ class Diagnostic(rpc.DiagnosticServiceServicer):
         event("health", listener=self.listener, request_id=request.request_id)
         return pb.HealthResponse(request_id=request.request_id, version=__version__,
                                  listener=self.listener, diagnostic_ready=True,
-                                 filesystem_implemented=False, metadata_backend="sqlite-planned")
+                                 filesystem_implemented=self.filesystem_implemented,
+                                 metadata_backend="sqlite" if self.filesystem_implemented else "sqlite-planned")
 
     def StreamDigest(self, request_iterator, context):
         self.require_deadline(context)

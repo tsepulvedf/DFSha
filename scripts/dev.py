@@ -14,8 +14,9 @@ from runtime import PROCESS_FLAGS, ROOT, wait_until
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["start", "stop"])
+    parser.add_argument('--profile', choices=['diagnostic', 'hito1'], default='diagnostic')
     args = parser.parse_args()
-    runtime = ROOT / ".runtime/dev"
+    runtime = ROOT / ('.runtime/dev-hito1' if args.profile == 'hito1' else '.runtime/dev')
     runtime.mkdir(parents=True, exist_ok=True)
     state_file = runtime / "active.json"
     if args.action == "stop":
@@ -39,7 +40,8 @@ def main():
     ready, stop, log_file = run / "ready.json", run / "stop", run / "server.log"
     with log_file.open("wb") as log:
         process = subprocess.Popen([sys.executable, "-m", "dfsha.control.server", "--config",
-            str(ROOT / "deploy/local.example.toml"), "--ready-file", str(ready), "--stop-file", str(stop)],
+            str(ROOT / ('deploy/monolith.example.toml' if args.profile == 'hito1' else 'deploy/local.example.toml')),
+            "--ready-file", str(ready), "--stop-file", str(stop)],
             cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, creationflags=PROCESS_FLAGS)
     def available():
         if process.poll() is not None:

@@ -71,6 +71,11 @@ class UploadServiceStub:
                 request_serializer=dfsha_dot_v1_dot_control__pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_control__pb2.OperationStatus.FromString,
                 _registered_method=True)
+        self.RenewUpload = channel.unary_unary(
+                '/dfsha.v1.UploadService/RenewUpload',
+                request_serializer=dfsha_dot_v1_dot_control__pb2.OperationRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_control__pb2.UploadPlan.FromString,
+                _registered_method=True)
 
 
 class UploadServiceServicer:
@@ -119,6 +124,12 @@ class UploadServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RenewUpload(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UploadServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -156,6 +167,11 @@ def add_UploadServiceServicer_to_server(servicer, server):
                     servicer.GetOperation,
                     request_deserializer=dfsha_dot_v1_dot_control__pb2.GetOperationRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_control__pb2.OperationStatus.SerializeToString,
+            ),
+            'RenewUpload': grpc.unary_unary_rpc_method_handler(
+                    servicer.RenewUpload,
+                    request_deserializer=dfsha_dot_v1_dot_control__pb2.OperationRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_control__pb2.UploadPlan.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -348,6 +364,33 @@ class UploadService:
             '/dfsha.v1.UploadService/GetOperation',
             dfsha_dot_v1_dot_control__pb2.GetOperationRequest.SerializeToString,
             dfsha_dot_v1_dot_control__pb2.OperationStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RenewUpload(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.UploadService/RenewUpload',
+            dfsha_dot_v1_dot_control__pb2.OperationRequest.SerializeToString,
+            dfsha_dot_v1_dot_control__pb2.UploadPlan.FromString,
             options,
             channel_credentials,
             insecure,

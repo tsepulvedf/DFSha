@@ -2,7 +2,11 @@
 
 Actualizado 2026-09-08 · Etapas 1–2 · Fuente principal: [PDF local de siete páginas](enunciado/SI3007-262-proyecto1-dfs.docx.pdf). Las páginas indicadas son las impresas, coincidentes con las páginas físicas. Extracción/rúbrica originales conservadas.
 
-**Estado global:** extracción/diseño E1 y base de comunicaciones E2 EJECUTADOS. RF1/RF2/RF3, distribución, HA y seguridad integral PENDIENTES. Las tablas iniciales conservan diseño y pruebas finales previstas; la [correspondencia E2](#etapa2) distingue contratos, implementación y pruebas reales con enlaces. Un criterio escrito o una RPC UNIMPLEMENTED no acredita cumplimiento funcional.
+**Estado global E3:** RF1/RF2 implementados y comprobados; 87 pruebas aprobadas y
+roundtrip 1 GiB con tres clientes en la [ejecución final](evidencias/etapa3/20260909T195446Z/resultado.json).
+RF3 completo, distribución, HA y seguridad integral siguen PENDIENTES.
+Tablas iniciales conservan fuentes y criterios finales; [evidencias H1](evidencias/etapa3/README.md)
+distingue pruebas reales y límites. La [correspondencia E2](#etapa2) es histórica.
 
 RF/RNF conservan los identificadores del PDF. OBJ, DEF, OP, COM, API, INF, ENT, H y EV son identificadores locales para obligaciones sin código. USR registra reglas explícitas del usuario. DIS registra metas del equipo. Los criterios observables son formalización operativa del equipo; no se presentan como nuevos subcriterios de calificación del docente.
 
@@ -155,3 +159,21 @@ Estos identificadores E2 son tareas explícitas del usuario, no nuevos RF/RNF de
 | E2-DOC · RNF8, ENT-01/02 preparación | Estado, decisiones, matriz y protocolos coherentes; fuentes originales conservadas. | Documentos vivos + ZIP E1 con originales. | [auditoría documental](evidencias/etapa2/auditoria-documental.json), enlaces, filas RPC, hashes de PDF/guía. | Informe final PDF/Word y video 10–15 min siguen E11. |
 
 La aprobación local de E2 habilita preparar **E3/H1 monolítico**, sin saltar RF1/RF2 ni presentar controles/datos distribuidos ya ejecutados. Las relaciones COM-01–05 están definidas; su prueba funcional completa permanece en las etapas indicadas originalmente.
+## Correspondencia añadida E3 (sin cambiar requisitos del PDF)
+
+| ID / decisión | Implementación | Comprobación | Pendiente |
+| --- | --- | --- | --- |
+| RF1, H1 | SDK/CLI, Queries/Commands, SQLite | test_rf1_paths_permissions_pagination_cwd; test_cli_process_and_interactive_shell | Regresión distribuida E4 |
+| RF2, H1 | UploadService, BlockService, snapshots/pins | test_binary_boundaries; test_overwrite_snapshot_delete_idempotency | Distribución E4, réplica E6 |
+| RF3 | Open(R)/RenewHandle/Close/Resolve como apoyo RF2 | Snapshots/renovación; futuros UNIMPLEMENTED | Parcial/PatchBlock/locks E5 |
+| RNF1/RNF4/RNF5, D26/D27 | Perfiles 4/64/128 MiB, fragmentos 256 KiB, admisión 4/2/1 | test_large_profiles_boundaries; medición 1 GiB/3 clientes | Escala de archivos y multinodo E4/E10 |
+| RNF2/RNF3, D25/D28 | WAL/FULL, commit atómico, ledger, tombstones, GC | test_fault_recovery_and_lost_commit_response; persistencia/reinicio | R1/W1 no es HA; réplica E6, control/quórum E7 |
+| RNF6 | TLS/mTLS, Argon2id/sesiones/ACL, AES-GCM, clave persistente | Negativas E2, revocación, corrupción, clave inválida | Volumen/SQLite/backups/custodia externa E8 |
+| RNF7, COM-01/02 | Endpoint resuelto en plan, mismo servidor H1 | SDK/conexiones/hash reales, sin rutas físicas en cliente | Transparencia multinodo E4 |
+| COM-03/04/05, D29 | Puertos/contratos, colocación local | Catálogo 51 RPC/stubs | Heartbeats E4, DN–DN E6, CN–etcd–CN E7 |
+| RNF8, USR, D30 | Decisiones propias, fuentes preservadas | Contrato H1, PDF leído otra vez | Q01–Q07; RNF8 sin adiciones concretas |
+| INF/ENT/H/EV | Windows/docs/código y cronograma | estado.md, hito1.md, Git | Linux/cloud; informe/video 10–15 min, semana 13 |
+
+Evidencias: [índice E3](evidencias/etapa3/README.md). Pruebas E4 usarán varios
+bloques por perfil (512 MiB/1 GiB), bytes útiles de lectura y escritura por DN.
+64 MiB ya no garantiza cruzar bloques; se sustituye ese ejemplo anterior.

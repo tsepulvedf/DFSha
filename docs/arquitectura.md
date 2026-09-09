@@ -1,5 +1,43 @@
 # DFSha — Arquitectura y evolución
 
+**Implementación vigente H1:** [D25–D30](etapa3-diseno.md) y
+[contrato operativo](protocolos-hito1.md) sustituyen las propuestas anteriores
+incompatibles. Un proceso compone Queries, Commands, SQLiteMetadataStore,
+Authorizer, LocalCoordinator, LocalPlacement y EncryptedBlockStore. Consultas y
+comandos usan transacciones sobre la misma autoridad; Open(R) es comando/pin.
+Puertos ejercidos por H1 en common/ports.py, propuestas futuras bajo Distributed*.
+
+```mermaid
+flowchart LR
+  CLI[CLI / SDK] -->|TLS: namespace, sesiones y planes| RPC[gRPC público del monolito]
+  CLI -->|TLS: PutBlock / GetBlock, fragmentos 256 KiB| RPC
+  subgraph H1[Un proceso servidor, R1/W1]
+    RPC --> Q[Queries autorizadas]
+    RPC --> C[Commands y validaciones]
+    Q --> SQL[(SQLite autoritativa WAL/FULL)]
+    C --> SQL
+    RPC --> BS[EncryptedBlockStore]
+    C --> P[LocalPlacement y reservas]
+    P --> SQL
+    BS --> D[(blocks/file_id/block_version_id.blk)]
+    A[Authorizer: sesiones y ACL] --> SQL
+    RPC --> A
+    K[KEK persistente fuera de Git] --> BS
+  end
+```
+
+En H1 los bytes pasan por el servidor compartido. Control corresponde al papel de
+NameNode de HDFS; bloques al de DataNodes, con lógica propia DFSha. E4 separará
+control/almacenamiento y cliente transferirá directamente a DN. Objetivo final
+R3/W2 y tres CN/tres etcd permanece. Tres DN con R3 pueden poseer todos los bloques;
+distribución se demostrará por colocación y tráfico útil, no por prohibirlo.
+Selección futura considera salud/frescura/ocupación/reservas/trabajo/domino de fallo,
+round robin entre candidatos comparables y primarios rotados; nunca hash módulo
+número de nodos para reconstruir ubicaciones. Q02 continúa pendiente.
+
+El resto documenta arquitectura final y propuestas E1/E2; no acredita relaciones
+distribuidas implementadas por este monolito.
+
 Diseño 1.1 · actualizado 2026-09-08 · Opción 1 C/S con composición S/S. **E2 aporta contratos y diagnóstico ejecutable; negocio/distribución/despliegue pendientes.** Reglas en [especificacion.md](especificacion.md), decisiones en [decisiones.md](decisiones.md), contratos concretos en [protocolos.md](protocolos.md). Diagramas finales siguen siendo diseño, no procesos desplegados.
 
 <a id="a1"></a>
@@ -398,3 +436,8 @@ Dimensionamiento DIS de partida: tres VMs Linux de 2 vCPU y 4 GiB RAM cada una, 
 Una [VPC AWS](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) o [VPC GCP](https://docs.cloud.google.com/vpc/docs/vpc) da la red de servicio; permisos/beneficios de una cuenta académica concreta no se deducen de esas capacidades generales. Docker Compose se ejecutará por host con inventario explícito; un Compose local no distribuye automáticamente contenedores en VMs. Los [volúmenes Docker](https://docs.docker.com/engine/storage/volumes/) deben sobrevivir al contenedor, y su política de borrado/backup se documentará.
 
 En etapa 9 se producirán inventario real, reglas de firewall, configuración por VM, scripts de inicio/parada y recuperación, y pruebas desde un cliente externo. Se documentarán IPs reales solo cuando existan, sin secretos. Una prueba local o un diagrama no acredita Internet. El estado actual de cuentas, herramientas y verificaciones está en [estado.md](estado.md).
+# Evolución aprobada para etapa 3
+
+El diseño actualizado previo a implementar está en [D25–D29](etapa3-diseno.md).
+Prevalece sobre tamaños, plazos y propuestas anteriores incompatibles de este documento.
+CQRS comparte SQLite autoritativa; control y bloques comparten proceso en hito 1.

@@ -1,5 +1,11 @@
 # DFSha — Contratos de comunicación v1
 
+**Estado vigente E3:** aplicar [contrato operativo H1](protocolos-hito1.md), que
+define los métodos implementados, perfiles, cifrado, digest y plazos actuales.
+Las tablas siguientes conservan el diseño y registro de E2; sus propuestas
+incompatibles quedan sustituidas explícitamente por H1. El catálogo JSON ya
+describe H1: 51 RPC, 27 funcionales locales, tres diagnósticas y 21 futuras.
+
 2026-09-08 · Etapa 2. Este documento formaliza decisiones del equipo, no añade requisitos al PDF. Fuentes: [arquitectura](arquitectura.md), [semántica del servicio](especificacion.md), [contratos fuente](../proto/dfsha/v1/) y [fuentes oficiales de etcd](../third_party/README.md). Los contratos futuros compilan; su implementación sigue **PENDIENTE**. Solo las tres RPC de DiagnosticService están implementadas. Todos los métodos futuros registrados devuelven `UNIMPLEMENTED / NOT_IMPLEMENTED_STAGE2`, incluso con solicitudes vacías: no aparentan autenticación, listados ni persistencia funcionales.
 
 ## 1. Relaciones, servicios y estado
@@ -116,6 +122,7 @@ Tipos exactos en los `.proto`; tipos abreviados debajo siempre pertenecen a `dfs
 | Servicio.RPC · cliente→CN | Solicitud → respuesta; campos/límites adicionales | Autorización | Tipo/plazo/retry | Confirmación futura y motivos adicionales |
 | --- | --- | --- | --- | --- |
 | UploadService.BeginUpload | BeginUploadRequest(C,path,overwrite,total_bytes,file_sha256,expected_snapshot si reemplazo) → UploadPlan(operation,file_id,content_epoch,fence,block_bytes=4 MiB,expiry). | U w archivo / w+x padre nuevo | Unary / 5 s / M | Reserva invisible, lock completo/época de contenido; no archivo completo. ALREADY_EXISTS, VERSION_CONFLICT, LOCK_BUSY. |
+| UploadService.RenewUpload | OperationRequest(C,operation) → UploadPlan con vencimiento renovado. | U dueño de operación/sesión, permisos vigentes | Unary / 5 s / M | Renueva TTL 300 s, máximo vida 1 h; no revive abortados/vencidos. OPERATION_EXPIRED, PERMISSION_DENIED. Implementada H1. |
 | UploadService.AllocateBlocks | AllocateBlocksRequest(C,operation,blocks≤64,fence) → BlockPlan. Bloques con ID/índice/tamaño/hash conocidos. | U dueño operación | Unary / 5 s / M | Reserva destino/capacidad y permisos; no ACK de datos. NO_SPACE, INSUFFICIENT_REPLICAS, LOCK_EXPIRED. |
 | UploadService.StageManifestPage | StageManifestPageRequest(C,operation,page_index,blocks,page_sha256,fence) → PageReceipt. Índices únicos ordenados. | U dueño operación | Unary / 5 s / M | Página inmutable validada, invisible; CHECKSUM_MISMATCH, LOCK_EXPIRED. Recibos durables consultados por operation/bloque, no confiados del cliente. |
 | UploadService.SealManifest | SealManifestRequest(C,operation,page_count,block_count,total_bytes,manifest_sha256,fence) → PageReceipt raíz. | U dueño operación | Unary / 15 s / M | Sellado de páginas fijadas; valida cobertura/tamaño y recibos W por bloque, sin publicación. CHECKSUM_MISMATCH, INSUFFICIENT_REPLICAS. Manifiestos grandes se sellan incrementalmente con trabajo acotado. |
@@ -196,3 +203,10 @@ Cada write confirmado actualiza el snapshot del handle escritor de forma seriali
 ## 5. Reproducción y evidencia
 
 Generar/verificar con `python scripts/generate_proto.py` y `--check`; [entorno.md](entorno.md) identifica qué ejecutable usar en cada shell. El [catálogo generado](rpc-catalog.json) inventaría servicios, tipos y direcciones de stream; las tablas de este documento son la autoridad semántica. Pruebas y límites reales están en [evidencias de E2](evidencias/etapa2/README.md). El servidor escucha solo en loopback; TLS público/internal mTLS separados, sin servicios cloud ni publicación a Internet. No se eliminan validaciones de versión de código generado, verificación CA ni SAN.
+# Actualización compatible de etapa 3
+
+Aplican [D25–D29](etapa3-diseno.md). SnapshotRef añade block_size_bytes (8),
+PlannedBlock añade reserva (9), Heartbeat añade métricas (7–9) y UploadService añade RenewUpload.
+No se reutilizan números. Hay ahora 51 RPC propias. Los streams de bloques tienen plazos
+30/120/240 s según perfil 4/64/128 MiB; el diagnóstico conserva sus límites anteriores.
+La apertura R y su renovación/cierre son comandos porque persisten pins.

@@ -20,13 +20,15 @@ def pending_services(internal: bool):
             yield service
 
 
-def register(server: grpc.Server, internal: bool) -> None:
+def register(server: grpc.Server, internal: bool, implemented=frozenset()) -> None:
     def unimplemented(request, context):
         abort(context, grpc.StatusCode.UNIMPLEMENTED, common.NOT_IMPLEMENTED_STAGE2)
 
     for service in pending_services(internal):
         methods = {}
         for method in service.methods:
+            if (service.full_name, method.name) in implemented:
+                continue
             request_type = message_factory.GetMessageClass(method.input_type)
             shape = ("stream" if method.client_streaming else "unary") + "_" + (
                 "stream" if method.server_streaming else "unary")

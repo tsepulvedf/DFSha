@@ -11,6 +11,7 @@ service UploadService {
   rpc CommitUpload(CommitUploadRequest) returns (CommitResult);
   rpc AbortUpload(OperationRequest) returns (MutationResult);
   rpc GetOperation(GetOperationRequest) returns (OperationStatus);
+  rpc RenewUpload(OperationRequest) returns (UploadPlan);
 }
 service FileAccessService {
   rpc Open(OpenRequest) returns (Handle);

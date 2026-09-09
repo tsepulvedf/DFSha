@@ -2,11 +2,23 @@
 
 Proyecto 1 de SI3007/ST0263, período 2026-2. Opción 1: cliente/servidor de una organización, con composición S/S mediante red privada.
 
-**Etapa 2: base de diagnóstico ejecutable y contratos v1.** Hay 50 RPC definidas: tres de diagnóstico implementadas y 47 futuras que devuelven UNIMPLEMENTED. RF1/RF2/RF3, distribución, replicación y HA siguen pendientes. Se conserva el diseño de etapa 1.
+**Etapa 3 completa: RF1/RF2 en un monolito modular C/S con SQLite y bloques cifrados.**
+CLI/shell/SDK, usuarios/permisos, snapshots, overwrite explícito, recuperación y
+transferencias TLS. 51 RPC: 27 funcionales locales, tres diagnósticas y 21 futuras.
+RF3 completo, distribución, replicación y HA permanecen pendientes.
 
-Repositorio único: [tsepulvedf/DFSha](https://github.com/tsepulvedf/DFSha). Lectura remota verificada; `F:\DFSha` vinculada a origin, rama main sin primer commit. **Los cambios todavía no están sincronizados con GitHub.** La API confirmó main y ausencia de historial antes de inicializar. No se creó otro remoto ni una identidad de autor.
+Validación final Windows: **87 pruebas aprobadas**, roundtrip 1 GiB y tres clientes;
+picos residentes cliente 51,6 MiB y servidor 81,5 MiB. [Resultados](docs/evidencias/etapa3/20260909T195446Z/resultado.json).
 
-## Verificación reproducible
+Arranque, demo y comandos: **[Hito 1](docs/hito1.md)**. Validación conjunta:
+`.\.venv-win\Scripts\python.exe scripts/verify_stage3.py`; medición independiente:
+`.\.venv-win\Scripts\python.exe scripts/measure_hito1.py`.
+
+Repositorio único: [tsepulvedf/DFSha](https://github.com/tsepulvedf/DFSha), origin de
+`F:\DFSha`, rama main. Referencia revisada E2: `df1fd33`, con identidad Git ya
+configurada. Estado de commit/sincronización E3 en [estado](docs/estado.md).
+
+## Base de etapa 2 preservada
 
 Ruta comprobada: Windows, Python **3.12.10**, gRPC/grpcio-tools **1.83.1**, Protobuf **7.36.1**, etcd **3.6.14** aislado. Dependencias/hashes en requirements.lock; diagnóstico no requiere Docker/WSL ni etcd externo. [Entorno y versiones completas](docs/entorno.md).
 
@@ -48,4 +60,4 @@ Linux preparado mediante `bash scripts/bootstrap.sh` y `.venv-linux/bin/python s
 | [Protocolos](docs/protocolos.md) | RPC, idempotencia, seguridad, errores, deadlines y confirmaciones. |
 | [Evidencias E2](docs/evidencias/etapa2/README.md) | Resultados ejecutados y fallos iniciales conservados. |
 
-Diseño: [especificación](docs/especificacion.md), [arquitectura](docs/arquitectura.md), [decisiones](docs/decisiones.md), [matriz](docs/matriz-requisitos.md). H1 usará SQLite/bloques locales; el probe etcd no es dependencia del servidor. Siguiente etapa: **E3, RF1/RF2 completos del monolito**, tras verificar E2. H1 semana 8; H2 semana 10; H3 semana 12; final semana 13. No se avanzó automáticamente a E3.
+Diseño: [especificación](docs/especificacion.md), [arquitectura](docs/arquitectura.md), [decisiones](docs/decisiones.md), [matriz](docs/matriz-requisitos.md). H1 usa SQLite/bloques locales; etcd no es dependencia del monolito. Siguiente etapa: **E4, separar control y DataNodes con transferencia directa y colocación real**. H1 semana 8; H2 semana 10; H3 semana 12; final semana 13. E4 no se ejecuta en esta entrega.
