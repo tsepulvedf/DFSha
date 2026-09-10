@@ -157,8 +157,8 @@ claves. Los bloques/staging sí están cifrados y autenticados. Snapshot R/pins 
 primitivas RF2, **no RF3 completo**. 128 MiB es funcional, no optimizado. Prueba
 loopback no demuestra Internet ni distribución. Q01–Q07 siguen pendientes.
 
-Etapa 4: separar procesos ControlNode/DataNode, registro/heartbeats reales, métricas
-frescas, reservas y selección entre nodos, mapa autoritativo, bytes cliente–DN.
-Pruebas con archivos 512 MiB/1 GiB y tráfico útil en varios nodos. RF3 E5, réplica
+La evolución E4 ya está implementada y verificada en [Hito 2](hito2.md): procesos
+ControlNode/DataNode, registro/heartbeats, reservas, mapa autoritativo y bytes
+directos cliente–DN, con 512 MiB y varios nodos. H1 permanece reproducible. RF3 E5, réplica
 E6, control/quórum E7. Hitos: semana 8 RF1/RF2; semana 10 distribución; semana 12
 HA/consistencia/seguridad; final semana 13 informe, GitHub y video 10–15 minutos.

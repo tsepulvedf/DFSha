@@ -162,6 +162,10 @@ Estos identificadores E2 son tareas explícitas del usuario, no nuevos RF/RNF de
 La aprobación local de E2 habilita preparar **E3/H1 monolítico**, sin saltar RF1/RF2 ni presentar controles/datos distribuidos ya ejecutados. Las relaciones COM-01–05 están definidas; su prueba funcional completa permanece en las etapas indicadas originalmente.
 ## Correspondencia añadida E3 (sin cambiar requisitos del PDF)
 
+Tabla histórica del cierre E3: la columna Pendiente refleja aquel momento.
+E4 ya ejecutada se registra en la siguiente tabla; DN–DN tiene una primitiva
+de copia comprobada en E4 y su política automática continúa para E6.
+
 | ID / decisión | Implementación | Comprobación | Pendiente |
 | --- | --- | --- | --- |
 | RF1, H1 | SDK/CLI, Queries/Commands, SQLite | test_rf1_paths_permissions_pagination_cwd; test_cli_process_and_interactive_shell | Regresión distribuida E4 |

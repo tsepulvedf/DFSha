@@ -23,11 +23,15 @@ control **82,1 MiB**, DataNode **56,5 MiB**; límites 256/512 MiB satisfechos en
 esa ejecución. [Medición y tabla por nodo](evidencias/etapa4/20260910T225730Z/measurement.json).
 La copia S/S y lectura sin origen se comprueban en otro laboratorio, con
 recibo recuperado tras reiniciar destino. Los resultados iniciales de 99 pruebas
-y su medición se conservan como historial. Cierre Git en curso.
+y su medición se conservan como historial.
 
 Git al comenzar E4: main limpia y origin/main en `d91e2ba5a2dd7addbacbc7e94a0fe3deeae1a9e1`,
 historial E2 `df1fd33`, E3 `7bd8327` y cierre E3 `d91e2ba` conservados.
-No se ha publicado todavía el cambio E4 durante esta verificación.
+E4 publicada: **`48509a69f1d459b3902119ea13f85daed71ab0a6`**, push normal a
+origin/main, hash remoto idéntico verificado. [Evidencia Git](evidencias/etapa4/git-publicacion.json).
+Este registro de publicación se incorpora en un commit documental posterior;
+la referencia funcional anterior permanece estable. No hay bloqueo de identidad
+ni autenticación. Ningún recurso cloud fue aprovisionado.
 
 Límites E4: R=1/W=1, un control/SQLite, un solo host; no etcd requerido, HA ni
 replicación automática. Q01–Q07 siguen sin nuevas respuestas. Linux/Docker,
@@ -256,13 +260,14 @@ Los contenidos obligatorios del informe y la rúbrica completa están en [matriz
 
 Leer primero este estado, [matriz-requisitos.md](matriz-requisitos.md), [decisiones.md](decisiones.md) y cualquier AGENTS.md nuevo; inventariar cambios antes de editar. Preservar PDF/guía y la evidencia del monolito cuando exista. Ejecutar solo la etapa autorizada y sus dependencias imprescindibles. Actualizar matriz al recibir aclaraciones docentes; no copiar propuestas técnicas como requisitos del PDF.
 
-El siguiente trabajo es **etapa 4: separar procesos y distribuir bloques**. Leer
-estado/entorno/protocolos/decisiones y matriz; preservar H1 comprobado. Añadir
-registro/heartbeats reales, métricas, reservas/colocación y transferencia directa
-cliente–DN. RF3 avanzado E5, réplica E6, control HA E7. No ejecutar E4 automáticamente.
+El siguiente trabajo es **etapa 5: RF3 y concurrencia parcial**, solo cuando se
+autorice. Preservar H1 y H2 comprobados, contratos y perfiles por archivo. Diseñar
+e implementar read/write por offset, PatchBlock, modos de apertura y locks con
+fencing, sin perder cambios compatibles. Réplica automática E6, control HA E7.
+No volver a ejecutar E4 como una etapa pendiente ni avanzar automáticamente a E5.
 
 Reglas que deben persistir: RF3 final obligatorio; bytes finales cliente–DataNode; lectura/escritura mediante varios nodos; ubicación dinámica; W de datos separado de quórum; publicación atómica; fencing en commit; deltas compatibles sin sobrescribir cambios ajenos; tombstones/GC seguros; HA también de control/metadatos/entrada/claves; autorización DN; criptografía/consenso de bibliotecas; evidencia local y cloud diferenciada. Nada no ejecutado cuenta como aprobado.
-# Actualización activa: etapa 3
+# Actualización histórica: etapa 3
 
 El prompt de etapa 3 del usuario sustituye las propuestas anteriores que contradiga.
 [Decisiones D25–D29 y diseño previo a implementación](etapa3-diseno.md).

@@ -26,9 +26,10 @@ Arranque, demo y comandos: **[Hito 1](docs/hito1.md)**. Validación conjunta:
 `.\.venv-win\Scripts\python.exe scripts/measure_hito1.py`.
 
 Repositorio único: [tsepulvedf/DFSha](https://github.com/tsepulvedf/DFSha), origin de
-`F:\DFSha`, rama main publicada y siguiendo origin/main. Referencia E2 `df1fd33`,
-implementación E3 `7bd8327`: **push y hash remoto verificados**, sin force push.
-[Estado y evidencia](docs/estado.md); cierre documental en commit posterior.
+`F:\DFSha`, rama main publicada y siguiendo origin/main. Referencias E2 `df1fd33`,
+E3 `7bd8327`/`d91e2ba`, implementación E4 **`48509a6`**: push y hash remoto
+verificados sin force. [Estado](docs/estado.md) y [evidencia Git E4](docs/evidencias/etapa4/git-publicacion.json).
+El registro de publicación se conserva en un commit documental posterior.
 
 ## Base de etapa 2 preservada
 

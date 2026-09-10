@@ -1,5 +1,11 @@
 # Contrato operativo H1 (etapa 3)
 
+Este es el perfil monolítico preservado. Los 51 métodos mencionados abajo son
+el catálogo histórico de E3. Con las extensiones aditivas de E4 hay 54: H1
+mantiene 30 implementados (incluido diagnóstico) y 24 futuros. La administración
+de clúster no se implementa en H1. Para comunicaciones distribuidas vigentes,
+reglas E4 y evidencia usar [protocolos-hito2.md](protocolos-hito2.md).
+
 Este documento y [D25–D30](etapa3-diseno.md) actualizan las propuestas E2 de
 [protocolos.md](protocolos.md). No son nuevos requisitos del PDF. Wire `dfsha.v1`,
 51 métodos: **27 de negocio H1, tres de diagnóstico y 21 futuros UNIMPLEMENTED**.

@@ -6,6 +6,7 @@ Estado del cierre: **ETAPA 4 COMPLETA en Windows local**, 2026-09-10. No contabi
 - [Medición final](20260910T225730Z/measurement.json): 512 MiB + dos clientes de 128 MiB+1; perfil 64 MiB, chunks 256 KiB; máximo cliente 56,2 MiB, control 82,1 MiB, DN 56,5 MiB. Metas cumplidas en esa ejecución, no extrapoladas.
 - [Wheel/imports](package.json) y [smoke desde paquete instalado](installed-smoke.json): 8 MiB distribuidos en dos DN, SHA idéntico; arranque, status, cuarto nodo y parada reales.
 - [Regresión anterior](20260910T011917Z/result.json): 99 aprobadas. [Casos adicionales previos al cierre](supplemental.xml): dos aprobados, luego incluidos en la regresión final.
+- [Publicación Git](git-publicacion.json): implementación E4 `48509a6` publicada y hash remoto comprobado; el registro se incorpora en el cierre documental posterior.
 
 ## Archivo principal de la medición final
 
