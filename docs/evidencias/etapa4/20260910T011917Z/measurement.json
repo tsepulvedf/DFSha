@@ -1,0 +1,203 @@
+{
+  "status": "EJECUTADO",
+  "timestamp": "2026-09-10T01:25:07.958754+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-h2\\addcdaa0-c455-494e-a444-337f6686fb14",
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "clients": 3,
+  "replicas": 1,
+  "durable_acks": 1,
+  "metric": "Windows PeakWorkingSetSize/PeakPagefileUsage; Linux VmHWM",
+  "scope": "TLS/mTLS loopback; un solo host",
+  "workers": [
+    {
+      "status": "EJECUTADO",
+      "pid": 4548,
+      "bytes": 536870912,
+      "sha256": "29bb41422c53af76ec07dbe925a187ec67da0ef6c033bbed9fb0af60f74297ac",
+      "downloaded_sha256": "29bb41422c53af76ec07dbe925a187ec67da0ef6c033bbed9fb0af60f74297ac",
+      "seconds": 49.719,
+      "block_size_bytes": 67108864,
+      "traffic": {
+        "c4d12c8c-e29c-4311-96e5-1edd3afdbd64": {
+          "client_write_bytes": 201326592,
+          "client_read_bytes": 201326592
+        },
+        "d3135c39-c69a-4e33-9e88-632e5d15a2ff": {
+          "client_write_bytes": 134217728,
+          "client_read_bytes": 134217728
+        },
+        "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e": {
+          "client_write_bytes": 201326592,
+          "client_read_bytes": 201326592
+        }
+      },
+      "peak_resident_bytes": 59162624,
+      "peak_commit_bytes": 42102784
+    },
+    {
+      "status": "EJECUTADO",
+      "pid": 33484,
+      "bytes": 134217729,
+      "sha256": "c444ed92a3958bb022c7529a56d971aa07f3796843953c6080379cf315dd54cf",
+      "downloaded_sha256": "c444ed92a3958bb022c7529a56d971aa07f3796843953c6080379cf315dd54cf",
+      "seconds": 26.968,
+      "block_size_bytes": 67108864,
+      "traffic": {
+        "d3135c39-c69a-4e33-9e88-632e5d15a2ff": {
+          "client_write_bytes": 134217728,
+          "client_read_bytes": 134217728
+        },
+        "c4d12c8c-e29c-4311-96e5-1edd3afdbd64": {
+          "client_write_bytes": 1,
+          "client_read_bytes": 1
+        }
+      },
+      "peak_resident_bytes": 56930304,
+      "peak_commit_bytes": 39890944
+    },
+    {
+      "status": "EJECUTADO",
+      "pid": 5328,
+      "bytes": 134217729,
+      "sha256": "28ae3eead7beef9c7419805b5f636d32fe49c3c538080df35a6c9fa47869eeed",
+      "downloaded_sha256": "28ae3eead7beef9c7419805b5f636d32fe49c3c538080df35a6c9fa47869eeed",
+      "seconds": 23.906,
+      "block_size_bytes": 67108864,
+      "traffic": {
+        "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e": {
+          "client_write_bytes": 134217728,
+          "client_read_bytes": 134217728
+        },
+        "c4d12c8c-e29c-4311-96e5-1edd3afdbd64": {
+          "client_write_bytes": 1,
+          "client_read_bytes": 1
+        }
+      },
+      "peak_resident_bytes": 57487360,
+      "peak_commit_bytes": 40431616
+    }
+  ],
+  "nodes": [
+    {
+      "node": {
+        "node_id": "c4d12c8c-e29c-4311-96e5-1edd3afdbd64",
+        "boot_generation": "1",
+        "client_endpoint": "localhost:51894",
+        "private_endpoint": "localhost:51895",
+        "failure_domain": "local-host"
+      },
+      "state": "READY",
+      "capacity_bytes": "17179869184",
+      "used_bytes": "201344035",
+      "free_bytes": "722471079936",
+      "last_heartbeat_unix_ms": "1789003563634",
+      "client_write_bytes": "201326594",
+      "client_read_bytes": "201326594",
+      "confirmed_blocks": "5"
+    },
+    {
+      "node": {
+        "node_id": "d3135c39-c69a-4e33-9e88-632e5d15a2ff",
+        "boot_generation": "1",
+        "client_endpoint": "localhost:51892",
+        "private_endpoint": "localhost:51893",
+        "failure_domain": "local-host"
+      },
+      "state": "READY",
+      "capacity_bytes": "17179869184",
+      "used_bytes": "268457580",
+      "free_bytes": "722471018496",
+      "last_heartbeat_unix_ms": "1789003563401",
+      "client_write_bytes": "268435456",
+      "client_read_bytes": "268435456",
+      "confirmed_blocks": "4"
+    },
+    {
+      "node": {
+        "node_id": "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e",
+        "boot_generation": "1",
+        "client_endpoint": "localhost:51896",
+        "private_endpoint": "localhost:51897",
+        "failure_domain": "local-host"
+      },
+      "state": "READY",
+      "capacity_bytes": "17179869184",
+      "used_bytes": "335571975",
+      "free_bytes": "722467938304",
+      "last_heartbeat_unix_ms": "1789003563225",
+      "client_write_bytes": "335544320",
+      "client_read_bytes": "335544320",
+      "confirmed_blocks": "5"
+    }
+  ],
+  "control_content_bytes": 0,
+  "primary_file_blocks": [
+    {
+      "index": 0,
+      "bytes": 67108864,
+      "node_id": "c4d12c8c-e29c-4311-96e5-1edd3afdbd64"
+    },
+    {
+      "index": 1,
+      "bytes": 67108864,
+      "node_id": "d3135c39-c69a-4e33-9e88-632e5d15a2ff"
+    },
+    {
+      "index": 2,
+      "bytes": 67108864,
+      "node_id": "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e"
+    },
+    {
+      "index": 3,
+      "bytes": 67108864,
+      "node_id": "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e"
+    },
+    {
+      "index": 4,
+      "bytes": 67108864,
+      "node_id": "c4d12c8c-e29c-4311-96e5-1edd3afdbd64"
+    },
+    {
+      "index": 5,
+      "bytes": 67108864,
+      "node_id": "d3135c39-c69a-4e33-9e88-632e5d15a2ff"
+    },
+    {
+      "index": 6,
+      "bytes": 67108864,
+      "node_id": "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e"
+    },
+    {
+      "index": 7,
+      "bytes": 67108864,
+      "node_id": "c4d12c8c-e29c-4311-96e5-1edd3afdbd64"
+    }
+  ],
+  "control_memory": {
+    "pid": 13548,
+    "peak_resident_bytes": 86478848,
+    "peak_commit_bytes": 68857856
+  },
+  "datanode_memory": [
+    {
+      "node_id": "d3135c39-c69a-4e33-9e88-632e5d15a2ff",
+      "pid": 21948,
+      "peak_resident_bytes": 56815616,
+      "peak_commit_bytes": 38363136
+    },
+    {
+      "node_id": "c4d12c8c-e29c-4311-96e5-1edd3afdbd64",
+      "pid": 21072,
+      "peak_resident_bytes": 57577472,
+      "peak_commit_bytes": 39477248
+    },
+    {
+      "node_id": "d37f2b2e-12b4-4ce8-9d9f-21606c40b83e",
+      "pid": 19948,
+      "peak_resident_bytes": 59027456,
+      "peak_commit_bytes": 40869888
+    }
+  ],
+  "memory_goals_met": true
+}

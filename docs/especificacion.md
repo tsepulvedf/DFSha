@@ -1,5 +1,12 @@
 # DFSha — Especificación formal del servicio
 
+**Actualización E4 del usuario:** distribución real de RF1/RF2 preservando las
+semánticas de H1; control sin contenido, bytes directos cliente–DN y copia S/S
+autorizada, R=1/W=1 temporal, ubicaciones separadas de manifiestos. No etcd ni HA
+en este perfil. [Diseño](etapa4-diseno.md), [contrato E4](protocolos-hito2.md).
+Los requisitos/cronograma/rúbrica del PDF se conservan. Q01–Q07 sin respuesta
+docente nueva; Q02 para archivos pequeños/vacíos y Q05 siguen pendientes.
+
 **Actualización H1/E3 del usuario:** CRUD lógico (incluido overwrite explícito),
 perfiles persistidos 4/64/128 MiB por archivo/snapshot, bloques inmutables cifrados,
 CQRS sobre SQLite y coordinación local. [D25–D30](etapa3-diseno.md) y

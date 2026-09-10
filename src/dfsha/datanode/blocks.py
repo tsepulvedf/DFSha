@@ -55,7 +55,7 @@ class EncryptedBlockStore:
         temporary = target.parent / (uid() + '.staging')
         dek, prefix = os.urandom(32), os.urandom(8)
         header = canonical(dict(version=1, file_id=block.file_id, block_id=block.block_version_id,
-            size=block.size_bytes, sha256=block.plaintext_sha256.hex(), key_id=self.key_id,
+            size=block.size_bytes, block_index=block.block_index, sha256=block.plaintext_sha256.hex(), key_id=self.key_id,
             wrapped_dek=base64.b64encode(aes_key_wrap(self.key, dek)).decode(),
             nonce_prefix=base64.b64encode(prefix).decode()))
         digest, total = hashlib.sha256(), 0
@@ -96,10 +96,12 @@ class EncryptedBlockStore:
         finally:
             temporary.unlink(missing_ok=True)
 
-    def read_verified(self, block):
+    def read_verified(self, block, *, staged_path=None):
         """Verify the ENTIRE object before releasing any plaintext; then verify each record again."""
         try:
-            with self.path(block.file_id, block.block_version_id).open('rb') as stream:
+            path = staged_path or self.path(block.file_id, block.block_version_id)
+            need(path.resolve().is_relative_to(self.root), 'PERMISSION_DENIED')
+            with path.open('rb') as stream:
                 need(stream.read(8) == MAGIC, 'DATA_LOSS')
                 size_raw = stream.read(4)
                 need(len(size_raw) == 4, 'DATA_LOSS')
@@ -109,6 +111,7 @@ class EncryptedBlockStore:
                 obj = json.loads(header)
                 need(obj['version'] == 1 and obj['file_id'] == block.file_id and
                      obj['block_id'] == block.block_version_id and obj['size'] == block.size_bytes and
+                     obj.get('block_index', block.block_index) == block.block_index and
                      obj['sha256'] == block.plaintext_sha256.hex() and obj['key_id'] == self.key_id, 'DATA_LOSS')
                 dek = aes_key_unwrap(self.key, base64.b64decode(obj['wrapped_dek']))
                 prefix = base64.b64decode(obj['nonce_prefix'])
@@ -137,6 +140,34 @@ class EncryptedBlockStore:
             raise
         except (OSError, ValueError, KeyError, struct.error, InvalidTag, InvalidUnwrap) as exc:
             raise Fault('DATA_LOSS') from exc
+
+    def import_ciphertext(self, block, chunks, length, digest):
+        target = self.path(block.file_id, block.block_version_id)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        temporary = target.parent / (uid() + '.staging')
+        total, actual = 0, hashlib.sha256()
+        try:
+            with temporary.open('xb') as stream:
+                for chunk in chunks:
+                    need(0 < len(chunk) <= CHUNK and total + len(chunk) <= length)
+                    stream.write(chunk)
+                    actual.update(chunk)
+                    total += len(chunk)
+                need(total == length and actual.digest() == digest, 'CHECKSUM_MISMATCH')
+                stream.flush()
+                os.fsync(stream.fileno())
+            for _ in self.read_verified(block, staged_path=temporary):
+                pass  # Authenticate the full imported object with this node's authorized KEK.
+            need(not target.exists(), 'ALREADY_EXISTS')
+            os.replace(temporary, target)
+            if os.name != 'nt':
+                fd = os.open(target.parent, os.O_RDONLY)
+                try:
+                    os.fsync(fd)
+                finally:
+                    os.close(fd)
+        finally:
+            temporary.unlink(missing_ok=True)
 
     def collect(self, retained):
         with self.guard:

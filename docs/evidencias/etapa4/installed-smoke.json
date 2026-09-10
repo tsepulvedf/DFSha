@@ -1,0 +1,29 @@
+{
+  "status": "EJECUTADO",
+  "python": "F:\\DFSha\\.venv-verify-20260908T212227145653Z\\Scripts\\python.exe",
+  "package": "F:\\DFSha\\.venv-verify-20260908T212227145653Z\\Lib\\site-packages\\dfsha\\__init__.py",
+  "bytes": 8388608,
+  "sha256": "ad97f87076920684e2ca66fc44e5d322797dc9d64706b174e51b5d0828937043",
+  "traffic": {
+    "42c07940-9117-479a-a240-02f761a593c1": {
+      "client_write_bytes": 4194304,
+      "client_read_bytes": 4194304
+    },
+    "96c9e143-d357-4349-b910-1bd6e6d4dea8": {
+      "client_write_bytes": 4194304,
+      "client_read_bytes": 4194304
+    }
+  },
+  "control_pid": 14112,
+  "datanode_pids": [
+    532,
+    14232,
+    27752
+  ],
+  "launcher_commands": [
+    "start",
+    "status",
+    "add-fourth",
+    "stop"
+  ]
+}

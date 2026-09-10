@@ -17,6 +17,7 @@ from dfsha.v1 import (common_pb2 as c, identity_pb2 as ident, identity_pb2_grpc 
                      namespace_pb2 as ns, namespace_pb2_grpc as ng,
                      control_pb2 as ctl, control_pb2_grpc as cg, data_pb2 as data, data_pb2_grpc as dg)
 from dfsha.v1 import diagnostic_pb2 as diagnostic, diagnostic_pb2_grpc as diagnostic_rpc
+from dfsha.v1 import nodes_pb2 as nodes, nodes_pb2_grpc as nodes_rpc
 
 
 class Client:
@@ -28,12 +29,38 @@ class Client:
         self.namespace = ng.NamespaceServiceStub(self.channel)
         self.uploads = cg.UploadServiceStub(self.channel)
         self.files = cg.FileAccessServiceStub(self.channel)
+        self.cluster = nodes_rpc.ClusterAdministrationServiceStub(self.channel)
         self.session = session
         self.cwd, self.cwd_id = '/', ''
         self.last_commit_request = None
+        self.traffic = {}  # Useful bytes confirmed per dynamically resolved node, no tokens or paths.
+
+    def record_traffic(self, node_id, field, amount):
+        record = self.traffic.setdefault(node_id, dict(client_write_bytes=0, client_read_bytes=0))
+        record[field] += amount
 
     def shutdown(self):
         self.channel.close()
+
+    def nodes(self):
+        return self.call(self.cluster.ListNodes, nodes.ClusterQuery())
+
+    def copy_status(self, task_id):
+        return self.call(self.cluster.CopyStatus, nodes.GetTaskRequest(task_id=task_id))
+
+    def copy_block(self, remote, index, destination):
+        handle = self.open_read(remote)
+        try:
+            plan = self.call(self.files.ResolveBlocks, ctl.ResolveBlocksRequest(handle_id=handle.handle_id,
+                snapshot=handle.snapshot, offset=index * handle.snapshot.block_size_bytes,
+                length=min(handle.snapshot.block_size_bytes, handle.snapshot.size_bytes - index * handle.snapshot.block_size_bytes),
+                page=c.PageRequest(limit=1)))
+            need(len(plan.blocks) == 1)
+            block = plan.blocks[0]
+            return self.call(self.cluster.CopyBlock, nodes.CopyBlockRequest(block=block.block,
+                source_node_id=block.locations[0].node_id, destination_node_id=destination))
+        finally:
+            self.close(handle)
 
     @property
     def metadata(self):
@@ -221,6 +248,7 @@ class Client:
                                     time.sleep(.1)
                         need(receipt.block == allocation.block and receipt.operation_id == plan.operation.operation_id,
                              'CHECKSUM_MISMATCH')
+                        self.record_traffic(receipt.node_id, 'client_write_bytes', length)
                         source.seek(start + length)
                         blocks.append(allocation.block)
                         page.append(allocation.block)
@@ -245,6 +273,52 @@ class Client:
 
     put = send
 
+    def download_block(self, handle, allocation, out, digest):
+        """Retry the same immutable block via fresh locations; roll back only its local partial bytes."""
+        block, failed = allocation.block, set()
+        start = out.tell()
+        baseline = digest.copy()
+        for attempt in range(3):
+            candidates = [(loc, grant) for loc, grant in zip(allocation.locations, allocation.grants)
+                          if loc.node_id not in failed]
+            if not candidates:
+                need(False, 'DATA_UNAVAILABLE')
+            location, grant = candidates[0]
+            request = self.prepare(data.GetBlockRequest(handle_id=handle.handle_id, snapshot=handle.snapshot,
+                block=block, offset=0, length=block.size_bytes, capability=grant.capability))
+            try:
+                with channel(location.client_endpoint, self.cert_dir) as connection:
+                    frames = dg.BlockServiceStub(connection).GetBlock(request, metadata=self.metadata,
+                        timeout=DEADLINES[handle.snapshot.block_size_bytes])
+                    first = next(frames)
+                    need(first.WhichOneof('frame') == 'header' and first.header.block == block and
+                         first.header.range_sha256 == block.plaintext_sha256 and first.header.length == block.size_bytes,
+                         'CHECKSUM_MISMATCH')
+                    block_hash, offset, current = hashlib.sha256(), 0, baseline.copy()
+                    for frame in frames:
+                        need(frame.WhichOneof('frame') == 'chunk' and frame.chunk.offset == offset and
+                             0 < len(frame.chunk.data) <= CHUNK and offset + len(frame.chunk.data) <= block.size_bytes,
+                             'CHECKSUM_MISMATCH')
+                        out.write(frame.chunk.data)
+                        current.update(frame.chunk.data)
+                        block_hash.update(frame.chunk.data)
+                        offset += len(frame.chunk.data)
+                    need(offset == block.size_bytes and block_hash.digest() == block.plaintext_sha256, 'CHECKSUM_MISMATCH')
+                    self.record_traffic(location.node_id, 'client_read_bytes', offset)
+                    return current, offset
+            except grpc.RpcError as exc:
+                if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED) or attempt == 2:
+                    raise
+                failed.add(location.node_id)
+                out.seek(start)
+                out.truncate()
+                fresh = self.call(self.files.ResolveBlocks, ctl.ResolveBlocksRequest(handle_id=handle.handle_id,
+                    snapshot=handle.snapshot, offset=block.block_index * handle.snapshot.block_size_bytes,
+                    length=block.size_bytes, page=c.PageRequest(limit=1)))
+                need(fresh.snapshot == handle.snapshot and len(fresh.blocks) == 1 and fresh.blocks[0].block == block,
+                     'CHECKSUM_MISMATCH')
+                allocation = fresh.blocks[0]
+
     def receive_handle(self, handle, local, overwrite=False):
         target = Path(local)
         need(not target.exists() or overwrite, 'ALREADY_EXISTS')
@@ -261,26 +335,8 @@ class Client:
                     for allocation in plan.blocks:
                         block = allocation.block
                         need(block.block_index == len(blocks), 'CHECKSUM_MISMATCH')
-                        request = self.prepare(data.GetBlockRequest(handle_id=handle.handle_id, snapshot=handle.snapshot,
-                            block=block, offset=0, length=block.size_bytes, capability=allocation.grants[0].capability))
-                        with channel(allocation.locations[0].client_endpoint, self.cert_dir) as connection:
-                            frames = dg.BlockServiceStub(connection).GetBlock(request, metadata=self.metadata,
-                                timeout=DEADLINES[handle.snapshot.block_size_bytes])
-                            first = next(frames)
-                            need(first.WhichOneof('frame') == 'header' and first.header.block == block and
-                                 first.header.range_sha256 == block.plaintext_sha256 and first.header.length == block.size_bytes,
-                                 'CHECKSUM_MISMATCH')
-                            block_hash, offset = hashlib.sha256(), 0
-                            for frame in frames:
-                                need(frame.WhichOneof('frame') == 'chunk' and frame.chunk.offset == offset and
-                                     0 < len(frame.chunk.data) <= CHUNK and offset + len(frame.chunk.data) <= block.size_bytes,
-                                     'CHECKSUM_MISMATCH')
-                                out.write(frame.chunk.data)
-                                digest.update(frame.chunk.data)
-                                block_hash.update(frame.chunk.data)
-                                offset += len(frame.chunk.data)
-                            need(offset == block.size_bytes and block_hash.digest() == block.plaintext_sha256, 'CHECKSUM_MISMATCH')
-                            total += offset
+                        digest, received = self.download_block(handle, allocation, out, digest)
+                        total += received
                         blocks.append(block)
                     cursor = plan.next_cursor
                     if not cursor:

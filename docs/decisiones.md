@@ -2,7 +2,11 @@
 
 Actualizado 2026-09-09 · Etapas 1–3. D25–D30 implementan RF1/RF2 H1 y sustituyen
 propuestas anteriores incompatibles: [diseño](etapa3-diseno.md) y [contrato](protocolos-hito1.md).
-Distribución sigue pendiente. Compatibilidad/estado en [entorno.md](entorno.md) y
+E4 adopta [D31–D35](etapa4-diseno.md): adaptación de CQRS H1 sin contenido en
+control; identidades/encarnaciones e inventarios; colocación por ocupación y
+reservas; autorizaciones/recibos durables; copia y GC por tareas persistidas.
+Son decisiones del equipo, no nuevas exigencias atribuidas al PDF. El algoritmo
+de colocación no se atribuye a HDFS. Compatibilidad/estado en [entorno.md](entorno.md) y
 [estado.md](estado.md). [Original E1](evidencias/etapa1/documentos-originales.zip) preservado.
 
 <a id="base"></a>

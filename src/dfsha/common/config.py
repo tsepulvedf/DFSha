@@ -16,6 +16,12 @@ def loopback_address(address: str) -> str:
 def read_config(path: Path) -> dict:
     with path.open("rb") as stream:
         cfg = tomllib.load(stream)
+    if 'server' not in cfg and 'client' in cfg:
+        client = cfg['client']
+        host, port = client['public_target'].rsplit(':', 1)
+        if not host or not 1 <= int(port) <= 65535 or not client.get('certificate_dir'):
+            raise ValueError('Cliente requiere punto de entrada y CA explícitos')
+        return cfg
     server = cfg["server"]
     loopback_address(server["public_bind"])
     loopback_address(server["internal_bind"])

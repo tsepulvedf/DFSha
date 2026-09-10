@@ -1,6 +1,13 @@
 # DFSha — Arquitectura y evolución
 
-**Implementación vigente H1:** [D25–D30](etapa3-diseno.md) y
+**E4:** [diseño adoptado](etapa4-diseno.md), [hito ejecutable](hito2.md) y
+[protocolo](protocolos-hito2.md) extienden H1. ControlNode/NameNode: namespace,
+permisos, manifiestos, ubicaciones y coordinación; DataNodes: almacenamiento de
+bloques. Correspondencia conceptual con HDFS, implementación propia DFSha.
+R=1/W=1 y una SQLite en el control, sin etcd requerido. Ver estado de pruebas en
+[evidencias E4](evidencias/etapa4/README.md).
+
+**Implementación H1 preservada:** [D25–D30](etapa3-diseno.md) y
 [contrato operativo](protocolos-hito1.md) sustituyen las propuestas anteriores
 incompatibles. Un proceso compone Queries, Commands, SQLiteMetadataStore,
 Authorizer, LocalCoordinator, LocalPlacement y EncryptedBlockStore. Consultas y
@@ -441,3 +448,88 @@ En etapa 9 se producirán inventario real, reglas de firewall, configuración po
 El diseño actualizado previo a implementar está en [D25–D29](etapa3-diseno.md).
 Prevalece sobre tamaños, plazos y propuestas anteriores incompatibles de este documento.
 CQRS comparte SQLite autoritativa; control y bloques comparten proceso en hito 1.
+## Despliegue y secuencias E4
+
+H1 mantiene el proceso modular único. E4 reutiliza `Queries`/`Commands` y
+`SQLiteMetadataStore`, añadiendo `DistributedControl` para planificación,
+autorización interna y recibos; `NoContentStore` impide leer contenido desde
+control. `DataNode` tiene inventario propio, coordinador acotado y el cifrador
+H1. El SDK sigue usando los contratos RF1/RF2, con endpoints de cada plan.
+
+```mermaid
+flowchart LR
+  subgraph Host[Windows local: un único dominio físico de fallo]
+    CLI[CLI / SDK: solo entrada control y CA pública]
+    CN[ControlNode: consultas y comandos]
+    DB[(SQLite autoritativa: namespace, snapshots, ubicaciones, tareas)]
+    DN1[Proceso DataNode 1]
+    DN2[Proceso DataNode 2]
+    DN3[Proceso DataNode 3]
+    V1[(Inventario 1 / bloques 1)]
+    V2[(Inventario 2 / bloques 2)]
+    V3[(Inventario 3 / bloques 3)]
+    CLI -->|TLS metadatos| CN
+    CN --- DB
+    CLI <-->|TLS contenido| DN1
+    CLI <-->|TLS contenido| DN2
+    CLI <-->|TLS contenido| DN3
+    CN <-->|mTLS registro, autorización, recibos| DN1
+    CN <-->|mTLS registro, autorización, recibos| DN2
+    CN <-->|mTLS registro, autorización, recibos| DN3
+    DN1 -->|mTLS copia cifrada por tarea| DN2
+    DN1 --- V1
+    DN2 --- V2
+    DN3 --- V3
+  end
+```
+
+```mermaid
+sequenceDiagram
+  participant C as Cliente
+  participant N as ControlNode / SQLite
+  participant A as DataNode A
+  participant B as DataNode B
+  C->>N: BeginUpload / AllocateBlocks (metadatos)
+  N->>N: Reserva atómica por bloque, plan provisional
+  N-->>C: BlockRef, destinos y permisos
+  C->>A: PutBlock header + fragmentos
+  A->>N: AuthorizeBlock (mTLS, sesión y binding)
+  N-->>A: Permiso acotado
+  A->>A: AES-GCM, fsync objeto, commit inventario/recibo
+  A->>N: ReportDurable autenticado
+  N->>N: Ubicación confirmada + ledger PutBlock
+  A-->>C: Recibo durable
+  C->>B: PutBlock del siguiente bloque (flujo equivalente)
+  C->>N: StageManifestPage / SealManifest
+  N->>N: Verificar manifiesto y recibos, sin bytes
+  C->>N: CommitUpload
+  N->>N: Publicar snapshot/namespace/resultado atómicamente
+  N-->>C: Resultado idempotente
+```
+
+```mermaid
+sequenceDiagram
+  participant C as Cliente
+  participant N as ControlNode
+  participant A as DataNode A
+  participant B as DataNode B
+  C->>N: Open R (comando: pin persistido)
+  N-->>C: Handle y snapshot fijado
+  C->>N: ResolveBlocks paginado
+  N-->>C: Bloques y ubicaciones confirmadas vigentes
+  C->>A: GetBlock versión exacta
+  A->>N: AuthorizeBlock sesión/handle/bloque
+  A->>A: Verificar contenedor completo y tags
+  A-->>C: Fragmentos con backpressure
+  C->>B: GetBlock siguiente versión lógica
+  B->>N: AuthorizeBlock
+  B-->>C: Fragmentos verificados
+  C->>C: Comprobar SHA de bloques/archivo, publicar temporal
+  C->>N: Close libera pin
+```
+
+La relación ControlNode–ControlNode **no se implementa aquí**. El diseño final
+conserva tres ControlNodes y tres miembros etcd como mediación de coordinación
+y metadatos por mayoría. R=3/W=2 final es una política de datos independiente;
+con tres DataNodes y R=3 cada nodo puede contener todos los bloques. E4 demuestra
+distribución por tráfico útil de varios nodos, sin imponer esa política aún.

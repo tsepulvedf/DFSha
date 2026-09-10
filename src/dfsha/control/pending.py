@@ -7,7 +7,7 @@ from google.protobuf import message_factory
 from dfsha.common.rpc import abort
 from dfsha.v1 import common_pb2 as common
 
-PUBLIC_MODULES = ("identity", "namespace", "control", "data")
+PUBLIC_MODULES = ("identity", "namespace", "control", "data", "nodes")
 INTERNAL_MODULES = ("nodes", "data")
 
 
@@ -15,6 +15,8 @@ def pending_services(internal: bool):
     for module in INTERNAL_MODULES if internal else PUBLIC_MODULES:
         descriptor = importlib.import_module(f"dfsha.v1.{module}_pb2").DESCRIPTOR
         for service in descriptor.services_by_name.values():
+            if module == 'nodes' and (service.name == 'ClusterAdministrationService') == internal:
+                continue
             if module == "data" and (service.name == "ReplicaService") != internal:
                 continue
             yield service

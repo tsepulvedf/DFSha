@@ -1,5 +1,22 @@
 # DFSha — Entorno reproducible de etapas 2–3
 
+**E4 usa el mismo entorno Windows y dependencias fijadas.** No se requieren
+servicios etcd ni cambios de toolchain. Configuración y comandos completos en
+[hito2.md](hito2.md); verificación `.\.venv-win\Scripts\python.exe scripts/verify_stage4.py --measure`
+desde el proyecto.
+Un proceso control y tres/cuatro procesos DataNode, con claves/volúmenes
+independientes y CA pública del cliente separada. TLS público y mTLS privado
+loopback: no demuestra Internet ni aislamiento por VM. Linux/Docker no
+verificados en E4. H1 conserva su raíz y arranque; no hay migración destructiva.
+
+Recomprobación 2026-09-10: `.venv-win` ejecuta Python 3.12.10. En el PATH de
+esta sesión no aparecen `python` ni `docker`; Git está en `C:\Program Files\Git\cmd`.
+No existe Docker en `C:\Program Files\Docker\Docker\resources\bin\docker.exe`.
+`wsl.exe --status` devuelve código 1 e informa que el subsistema no está instalado:
+tener ese launcher de Windows no significa tener Linux disponible. Se mantiene
+la ejecución con ruta explícita del venv y la validación Linux BLOQUEADA POR
+ENTORNO; no se instalaron componentes del sistema ni se exigió reinicio.
+
 Para el monolito funcional y comandos actuales: [hito1.md](hito1.md). Stack fijado
 sin cambios; la sección final registra la actualización E3. Lo siguiente conserva
 la comprobación de herramientas/dependencias E2, con Linux aún pendiente.

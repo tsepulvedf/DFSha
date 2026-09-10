@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
 
 
-def generate(directory: Path) -> dict:
+def generate(directory: Path, identities=()) -> dict:
     directory.mkdir(parents=True, exist_ok=True)
     # No sobreescribir una CA existente: rompería clientes que ya la confían.
     if any(directory.iterdir()):
@@ -72,7 +72,12 @@ def generate(directory: Path) -> dict:
     for identity, common_name in (("etcd-root", "root"), ("etcd-probe", "dfsha-probe"),
                                   ("etcd-denied", "dfsha-denied")):
         issue(identity, common_name, ca, client=True)
-    return {"status": "EJECUTADO", "certificates": 10, "valid_days": 7,
+    for identity in identities:
+        from uuid import UUID
+        if str(UUID(identity)) != identity:
+            raise ValueError('Identidad de nodo debe ser UUID')
+        issue(identity, identity, ca, server=True, client=True, san=local_san)
+    return {"status": "EJECUTADO", "certificates": 10 + len(identities), "valid_days": 7,
             "private_material": "excluded from Git; local ACL/permissions"}
 
 

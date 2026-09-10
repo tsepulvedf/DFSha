@@ -2,10 +2,21 @@
 
 Proyecto 1 de SI3007/ST0263, período 2026-2. Opción 1: cliente/servidor de una organización, con composición S/S mediante red privada.
 
-**Etapa 3 completa: RF1/RF2 en un monolito modular C/S con SQLite y bloques cifrados.**
+**Etapa 4 completa en Windows local: control y DataNodes independientes.**
+RF1/RF2 reutilizan la lógica H1; el cliente resuelve destinos y transfiere directamente
+con DataNodes. R=1/W=1, SQLite en control, registro/inventarios/heartbeats mTLS,
+reservas y copia S/S ordenada. [Arranque y demo H2](docs/hito2.md),
+[protocolos](docs/protocolos-hito2.md), [evidencias](docs/evidencias/etapa4/README.md).
+
+Validación E4: **100 pruebas aprobadas**, wheel instalado con transferencia real,
+512 MiB/3 clientes y bytes útiles repartidos entre tres DN. Picos residentes en
+esa medición: cliente 56,2 MiB, control 82,1 MiB, DN 56,5 MiB; perfil 64 MiB.
+R=1/W=1 no acredita HA. Siguiente etapa: E5, RF3 y concurrencia parcial.
+
+**Etapa 3 histórica completa: RF1/RF2 en un monolito modular C/S con SQLite y bloques cifrados.**
 CLI/shell/SDK, usuarios/permisos, snapshots, overwrite explícito, recuperación y
 transferencias TLS. 51 RPC: 27 funcionales locales, tres diagnósticas y 21 futuras.
-RF3 completo, distribución, replicación y HA permanecen pendientes.
+RF3 completo, replicación automática y HA permanecen pendientes. H1 sigue reproducible.
 
 Validación final Windows: **87 pruebas aprobadas**, roundtrip 1 GiB y tres clientes;
 picos residentes cliente 51,6 MiB y servidor 81,5 MiB. [Resultados](docs/evidencias/etapa3/20260909T195446Z/resultado.json).

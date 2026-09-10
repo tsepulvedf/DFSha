@@ -23,8 +23,14 @@ def parser():
         cmd = sub.add_parser(name)
         cmd.add_argument('username')
         cmd.add_argument('--password-stdin', action='store_true')
-    for name in ('pwd', 'logout', 'shell'):
+    for name in ('pwd', 'logout', 'shell', 'nodes'):
         sub.add_parser(name)
+    copy = sub.add_parser('copy-block')
+    copy.add_argument('path')
+    copy.add_argument('index', type=int)
+    copy.add_argument('destination_node_id')
+    status = sub.add_parser('copy-status')
+    status.add_argument('task_id')
     for name in ('ls', 'stat', 'cd', 'mkdir', 'rmdir', 'rm'):
         cmd = sub.add_parser(name)
         cmd.add_argument('path', nargs='?' if name in ('ls', 'stat') else None, default='.')
@@ -49,6 +55,10 @@ def execute(client, args):
         return getattr(client, command)(args.source, args.destination, args.overwrite)
     if command == 'chmod':
         return client.chmod(args.path, args.mode)
+    if command == 'copy-block':
+        return client.copy_block(args.path, args.index, args.destination_node_id)
+    if command == 'copy-status':
+        return client.copy_status(args.task_id)
     if command == 'ls':
         return [asdict(e) for e in client.ls(args.path)]
     return getattr(client, command)(*([args.path] if hasattr(args, 'path') else []))
@@ -59,7 +69,7 @@ def main():
     args = root.parse_args()
     cfg = read_config(args.config)
     state = json.loads(args.session_file.read_text(encoding='utf-8')) if args.session_file.exists() else {}
-    client = Client(cfg['client']['public_target'], cfg['server']['certificate_dir'],
+    client = Client(cfg['client']['public_target'], cfg['client'].get('certificate_dir') or cfg['server']['certificate_dir'],
                     proto(Session, state['session']) if state.get('session') else None)
     client.cwd, client.cwd_id = state.get('cwd', '/'), state.get('cwd_id', '')
 

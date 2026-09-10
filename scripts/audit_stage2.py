@@ -20,6 +20,8 @@ def main():
     records = []
     from dfsha.control.queries import Queries
     from dfsha.control.commands import Commands
+    from dfsha.control.distributed import DistributedControl, ClusterQueries, ClusterCommands
+    from dfsha.datanode.service import DataNode
     for module in ("diagnostic", "identity", "namespace", "control", "data", "nodes"):
         descriptor = importlib.import_module(f"dfsha.v1.{module}_pb2").DESCRIPTOR
         for service in descriptor.services_by_name.values():
@@ -31,6 +33,10 @@ def main():
                     "implementation": "DIAGNOSTIC" if module == "diagnostic" else
                         "HITO1" if method.name in ('Login', 'PutBlock', 'GetBlock') or
                         hasattr(Queries, method.name) or hasattr(Commands, method.name) else "UNIMPLEMENTED",
+                    "distributed_implementation": "IMPLEMENTED" if module == 'diagnostic' or
+                        any(hasattr(cls, method.name) for cls in (ClusterQueries, ClusterCommands, DataNode)) or
+                        (service.name in ('NodeRegistryService', 'InternalAuthorizationService') and hasattr(DistributedControl, method.name)) or
+                        method.name == 'Login' else 'UNIMPLEMENTED',
                     "source": f"proto/dfsha/v1/{module}.proto"})
     catalog = {"version": "dfsha.v1", "semantic_contract": "docs/protocolos.md", "rpcs": records}
     catalog_file = ROOT / "docs/rpc-catalog.json"
@@ -45,7 +51,7 @@ def main():
         if f"| {short} " not in protocols:
             raise RuntimeError(f"RPC sin fila semántica: {short}")
     future = sum(r["implementation"] == "UNIMPLEMENTED" for r in records)
-    if len(records) != 51 or future != 21:
+    if len(records) != 54 or future != 24:
         raise RuntimeError("Revisar número de RPC y evidencia")
     documents = [ROOT / "README.md"] + [ROOT / "docs" / name for name in (
         "estado.md", "especificacion.md", "arquitectura.md", "decisiones.md", "matriz-requisitos.md",

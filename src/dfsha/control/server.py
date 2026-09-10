@@ -26,6 +26,11 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
     if configuration.get('monolith', {}).get('enabled'):
         from dfsha.control.monolith import Monolith
         app = Monolith({**cfg, **configuration['monolith']})
+    if configuration.get('distributed', {}).get('enabled'):
+        if app is not None:
+            raise ValueError('Seleccione un solo perfil')
+        from dfsha.control.distributed import DistributedControl
+        app = DistributedControl({**cfg, **configuration['distributed']})
     certs = Path(cfg["certificate_dir"])
     stop = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):
@@ -39,7 +44,8 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             server = grpc.server(pool, options=GRPC_OPTIONS,
                                  maximum_concurrent_rpcs=cfg["max_concurrent_rpcs"])
             credentials = grpc.ssl_server_credentials(
-                [((certs / "server.key").read_bytes(), (certs / "server.crt").read_bytes())],
+                [((certs / (cfg.get('certificate_identity', 'server') + '.key')).read_bytes(),
+                  (certs / (cfg.get('certificate_identity', 'server') + '.crt')).read_bytes())],
                 root_certificates=(certs / "ca.crt").read_bytes() if internal else None,
                 require_client_auth=internal,
             )
@@ -50,6 +56,8 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             if app is not None and not internal:
                 app.placement.endpoint = f'localhost:{port}'
                 implemented = app.register(server)
+            if app is not None and internal and hasattr(app, 'register_internal'):
+                implemented = app.register_internal(server)
             register(server, internal, implemented)
             add_DiagnosticServiceServicer_to_server(Diagnostic(listener, app is not None), server)
             server.start()
@@ -64,8 +72,8 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
         while not stop.wait(0.1):
             if stop_file and stop_file.exists():
                 stop.set()
-            if app is not None and time.monotonic() - maintenance_at > 10:
-                app.collect()
+            if app is not None and time.monotonic() - maintenance_at > (1 if hasattr(app, 'tick') else 10):
+                app.tick() if hasattr(app, 'tick') else app.collect()
                 maintenance_at = time.monotonic()
     finally:
         for server in servers:
@@ -74,6 +82,8 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             pool.shutdown(wait=True, cancel_futures=True)
         if app is not None:
             app.owner_lock.close()
+        if ready_file:
+            ready_file.unlink(missing_ok=True)
         event("stopped", pid=os.getpid())
 
 

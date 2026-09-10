@@ -584,3 +584,164 @@ class StorageAdministrationService:
             timeout,
             metadata,
             _registered_method=True)
+
+
+class ClusterAdministrationServiceStub:
+    """API administrativa de control por TLS + sesión admin, nunca identidad de nodo.
+    """
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.ListNodes = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/ListNodes',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.ClusterQuery.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_nodes__pb2.NodeStatusPage.FromString,
+                _registered_method=True)
+        self.CopyBlock = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/CopyBlock',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.CopyBlockRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
+                _registered_method=True)
+        self.CopyStatus = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/CopyStatus',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
+                _registered_method=True)
+
+
+class ClusterAdministrationServiceServicer:
+    """API administrativa de control por TLS + sesión admin, nunca identidad de nodo.
+    """
+
+    def ListNodes(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CopyBlock(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CopyStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ClusterAdministrationServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'ListNodes': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListNodes,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.ClusterQuery.FromString,
+                    response_serializer=dfsha_dot_v1_dot_nodes__pb2.NodeStatusPage.SerializeToString,
+            ),
+            'CopyBlock': grpc.unary_unary_rpc_method_handler(
+                    servicer.CopyBlock,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.CopyBlockRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.SerializeToString,
+            ),
+            'CopyStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.CopyStatus,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'dfsha.v1.ClusterAdministrationService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('dfsha.v1.ClusterAdministrationService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class ClusterAdministrationService:
+    """API administrativa de control por TLS + sesión admin, nunca identidad de nodo.
+    """
+
+    @staticmethod
+    def ListNodes(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/ListNodes',
+            dfsha_dot_v1_dot_nodes__pb2.ClusterQuery.SerializeToString,
+            dfsha_dot_v1_dot_nodes__pb2.NodeStatusPage.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CopyBlock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/CopyBlock',
+            dfsha_dot_v1_dot_nodes__pb2.CopyBlockRequest.SerializeToString,
+            dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CopyStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/CopyStatus',
+            dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.SerializeToString,
+            dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)

@@ -210,3 +210,12 @@ PlannedBlock añade reserva (9), Heartbeat añade métricas (7–9) y UploadServ
 No se reutilizan números. Hay ahora 51 RPC propias. Los streams de bloques tienen plazos
 30/120/240 s según perfil 4/64/128 MiB; el diagnóstico conserva sus límites anteriores.
 La apertura R y su renovación/cierre son comandos porque persisten pins.
+# Actualización E4: distribución con R=1/W=1
+
+El contrato aditivo actual contiene 54 RPC. El catálogo distingue implementación H1 y distribuida; los resultados históricos de E2/E3 conservan sus números originales. Las reglas ejecutables E4 y los nuevos campos se detallan en [protocolos-hito2.md](protocolos-hito2.md). La implementación por sí sola no acredita una prueba.
+
+| RPC | Solicitud → respuesta | Acceso / efectos | Límite y confirmación |
+|---|---|---|---|
+| ClusterAdministrationService.ListNodes | ClusterQuery → NodeStatusPage | Consulta TLS, sesión admin; estado, métricas y contadores del control | Unary 5 s, ≤64 nodos/página; cero contenido de archivos |
+| ClusterAdministrationService.CopyBlock | CopyBlockRequest → TaskStatus | Comando TLS, admin; persiste una tarea S/S autorizada y reserva | Unary 5 s; ACCEPTED confirma tarea, FINISHED confirma copia durable; request_id idempotente |
+| ClusterAdministrationService.CopyStatus | GetTaskRequest → TaskStatus | Consulta TLS, admin; resultado persistido | Unary 5 s; reintento de lectura, sin comenzar otra copia |

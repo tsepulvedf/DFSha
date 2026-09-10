@@ -39,7 +39,7 @@ class Monolith:
         if not self.system or hashlib.sha256(key).hexdigest() != self.system['key_sha256']:
             raise RuntimeError('MASTER_KEY_MISMATCH: no se puede abrir el almacenamiento existente')
         self.auth = Authorizer(key, self.system)
-        self.blocks = EncryptedBlockStore(cfg['block_path'], key)
+        self.blocks = self.make_blocks(cfg['block_path'], key)
         self.coordinator = LocalCoordinator()
         self.placement = LocalPlacement(self.system['node'])
         self.queries = Queries(self)
@@ -159,14 +159,7 @@ class Monolith:
             with self.store.transaction() as tx:
                 op = self.commands.operation(tx, user, session, request.operation, request.fence)
                 blocks = self.manifest(op)
-            digest = hashlib.sha256()
-            with self.coordinator.admit(op['block_size']):
-                for block in blocks:
-                    with self.blocks.pin(block.block_version_id):
-                        for chunk in self.blocks.read_verified(block):
-                            need(context.is_active(), 'DEADLINE_EXCEEDED')
-                            digest.update(chunk)
-            need(digest.hexdigest() == op['sha'], 'CHECKSUM_MISMATCH')
+            self.verify_seal(op, blocks, context)
             self.verified_seals[op['id']] = manifest_hash(blocks)
         if method == 'CommitUpload':
             self.fault('before_publish')
@@ -191,7 +184,32 @@ class Monolith:
         return ctl.Handle(handle_id=handle['id'], snapshot=proto(c.SnapshotRef, tx.get('snapshot', handle['snapshot'])['ref']),
                           mode=ctl.R, expires_at_unix_ms=handle['expires'], revision=handle['revision'])
 
-    def plan(self, block, user, binding, read=False):
+    def make_blocks(self, root, key):
+        return EncryptedBlockStore(root, key)
+
+    def reserve_upload(self, tx, total, block_size):
+        import shutil
+        reserved = total + ((total + block_size - 1) // block_size) * 4096 + ((total + CHUNK - 1) // CHUNK) * 20
+        pending = sum(o['reserved'] for o in tx.all('upload') if o['state'] == c.PREPARING)
+        used = sum(b['stored_size'] for b in tx.all('block'))
+        need(reserved + pending + used <= self.cfg['capacity_bytes'] and
+             reserved + pending + 1048576 <= shutil.disk_usage(self.blocks.root).free, 'NO_SPACE')
+        return reserved
+
+    def verify_seal(self, op, blocks, context):
+        digest = hashlib.sha256()
+        with self.coordinator.admit(op['block_size']):
+            for block in blocks:
+                with self.blocks.pin(block.block_version_id):
+                    for chunk in self.blocks.read_verified(block):
+                        need(context.is_active(), 'DEADLINE_EXCEEDED')
+                        digest.update(chunk)
+        need(digest.hexdigest() == op['sha'], 'CHECKSUM_MISMATCH')
+
+    def retire_block(self, tx, block):
+        tx.delete('block', block['id'])
+
+    def plan(self, block, user, binding, read=False, tx=None):
         action = 'read' if read else 'write'
         return c.PlannedBlock(block=block, locations=[self.placement.location()], grants=[c.BlockGrant(
             capability=self.auth.capability(user['id'], binding['id'], block.block_version_id, action),
@@ -300,17 +318,19 @@ class Monolith:
                         retained.update(b['block_version_id'] for b in op['allocations'].values())
                 for block in tx.all('block'):
                     if block['id'] not in retained:
-                        tx.delete('block', block['id'])
+                        self.retire_block(tx, block)
             self.blocks.collect(retained)
 
     def register(self, server):
         """Register only implemented methods; remaining methods retain explicit UNIMPLEMENTED."""
         implemented = set()
-        for module in ('identity', 'namespace', 'control', 'data'):
+        for module in ('identity', 'namespace', 'control', 'data', 'nodes'):
             descriptor = importlib.import_module(f'dfsha.v1.{module}_pb2').DESCRIPTOR
             for service in descriptor.services_by_name.values():
                 methods = {}
                 for method in service.methods:
+                    if method.name in ('PutBlock', 'GetBlock') and not getattr(self, 'serves_content', True):
+                        continue
                     if method.name not in ('Login', 'PutBlock', 'GetBlock') and not (
                         hasattr(self.queries, method.name) or hasattr(self.commands, method.name)):
                         continue

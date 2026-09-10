@@ -10,6 +10,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "DIAGNOSTIC",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -20,6 +21,7 @@
       "client_streaming": true,
       "server_streaming": false,
       "implementation": "DIAGNOSTIC",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -30,6 +32,7 @@
       "client_streaming": false,
       "server_streaming": true,
       "implementation": "DIAGNOSTIC",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -40,6 +43,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -50,6 +54,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -60,6 +65,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -70,6 +76,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -80,6 +87,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -90,6 +98,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -100,6 +109,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -110,6 +120,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -120,6 +131,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -130,6 +142,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -140,6 +153,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -150,6 +164,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -160,6 +175,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -170,6 +186,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -180,6 +197,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -190,6 +208,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -200,6 +219,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -210,6 +230,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -220,6 +241,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -230,6 +252,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -240,6 +263,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -250,6 +274,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -260,6 +285,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -270,6 +296,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -280,6 +307,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -290,6 +318,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -300,6 +329,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -310,6 +340,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -320,6 +351,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -330,6 +362,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -340,6 +373,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -350,6 +384,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -360,6 +395,7 @@
       "client_streaming": true,
       "server_streaming": false,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -370,6 +406,7 @@
       "client_streaming": true,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -380,6 +417,7 @@
       "client_streaming": false,
       "server_streaming": true,
       "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -390,6 +428,7 @@
       "client_streaming": true,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -400,6 +439,7 @@
       "client_streaming": false,
       "server_streaming": true,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -410,6 +450,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -420,6 +461,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -430,6 +472,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -440,6 +483,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -450,6 +494,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -460,6 +505,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -470,6 +516,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -480,6 +527,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -490,6 +538,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -500,6 +549,7 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -510,6 +560,40 @@
       "client_streaming": false,
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ClusterAdministrationService.ListNodes",
+      "path": "/dfsha.v1.ClusterAdministrationService/ListNodes",
+      "request": "dfsha.v1.ClusterQuery",
+      "response": "dfsha.v1.NodeStatusPage",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ClusterAdministrationService.CopyBlock",
+      "path": "/dfsha.v1.ClusterAdministrationService/CopyBlock",
+      "request": "dfsha.v1.CopyBlockRequest",
+      "response": "dfsha.v1.TaskStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ClusterAdministrationService.CopyStatus",
+      "path": "/dfsha.v1.ClusterAdministrationService/CopyStatus",
+      "request": "dfsha.v1.GetTaskRequest",
+      "response": "dfsha.v1.TaskStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     }
   ]

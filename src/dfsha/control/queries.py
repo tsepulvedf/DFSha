@@ -141,6 +141,6 @@ class Queries:
                   int(b.get('block_index', 0)) * size + int(b['size_bytes']) > offset]
         need(0 <= index <= len(blocks))
         selected = blocks[index:index + req.page.limit]
-        return ctl.BlockPlan(blocks=[self.app.plan(b, user, handle, read=True) for b in selected],
+        return ctl.BlockPlan(blocks=[self.app.plan(b, user, handle, read=True, tx=tx) for b in selected],
             next_cursor=str(index + len(selected)) if index + len(selected) < len(blocks) else '',
             snapshot=req.snapshot)

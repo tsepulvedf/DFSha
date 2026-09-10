@@ -138,13 +138,7 @@ class Commands:
         else:
             need(not req.expected_snapshot.file_id, 'VERSION_CONFLICT')
         block_size = existing['block_size'] if existing else self.app.cfg['block_size_bytes']
-        count = (req.total_bytes + block_size - 1) // block_size
-        reserved = req.total_bytes + count * 4096 + ((req.total_bytes + 262143) // 262144) * 20
-        pending = sum(o['reserved'] for o in tx.all('upload') if o['state'] == c.PREPARING)
-        used = sum(b['stored_size'] for b in tx.all('block'))
-        free = shutil.disk_usage(self.app.blocks.root).free
-        need(reserved + pending + used <= self.app.cfg['capacity_bytes'] and
-             reserved + pending + 1048576 <= free, 'NO_SPACE')
+        reserved = self.app.reserve_upload(tx, req.total_bytes, block_size)
         operation_id = uid()
         operation = c.OperationRef(operation_id=operation_id, request_id=req.context.request_id,
                                    intent_sha256=req.context.intent_sha256)
@@ -199,7 +193,7 @@ class Commands:
                 block = c.BlockRef(file_id=op['file'], block_version_id=uid(), block_index=index,
                                    size_bytes=size, plaintext_sha256=requested.plaintext_sha256)
                 op['allocations'][str(index)] = asdict(block)
-            planned.append(self.app.plan(block, user, op))
+            planned.append(self.app.plan(block, user, op, tx=tx))
         tx.put('upload', op)
         return ctl.BlockPlan(blocks=planned)
 

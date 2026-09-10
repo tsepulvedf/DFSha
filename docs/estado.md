@@ -1,6 +1,40 @@
 # DFSha — Estado del proyecto y continuidad
 
-Actualizado: 2026-09-09 · Etapa activa: **3, RF1/RF2 monolítico**. E1/E2 preservadas; revisión docente no presupuesta.
+Actualizado: 2026-09-10 · **ETAPA 4 COMPLETA en Windows local**, con R=1/W=1. E1–E3 preservadas; revisión docente no presupuesta.
+
+E4 implementa un ControlNode y tres/cuatro DataNodes independientes, RF1/RF2
+reutilizados, SQLite/CQRS en control sin contenido, inventarios persistidos y
+objetos cifrados en cada DN, registro/heartbeats/reconciliación mTLS, colocación
+por métricas y reservas, autorizaciones online y recibos durables, copia S/S y
+GC por tareas. El modo H1 sigue disponible. [Demo H2](hito2.md),
+[protocolos H2](protocolos-hito2.md), [D31–D35](etapa4-diseno.md),
+[evidencia actual](evidencias/etapa4/README.md).
+
+EJECUTADO en cierre E4: **100 pruebas, cero fallos/errores/omitidos**, 403,78 s;
+34 módulos importados, 54 RPC compilables, **45 implementadas en E4 y 9 futuras**.
+H1 conserva 30 implementadas incluyendo diagnóstico y 24 futuras. [Resultado](evidencias/etapa4/20260910T225730Z/result.json),
+[XML](evidencias/etapa4/20260910T225730Z/pytest.xml). Wheel instalado fuera del
+editable con [roundtrip real de 8 MiB](evidencias/etapa4/installed-smoke.json) y
+[verificación de paquete](evidencias/etapa4/package.json).
+
+Medición E4 final: 512 MiB/3 clientes, SHA-256 idéntico, ocho bloques de 64 MiB
+en tres DN; control con cero contenido. Máximos residentes: cliente **56,2 MiB**,
+control **82,1 MiB**, DataNode **56,5 MiB**; límites 256/512 MiB satisfechos en
+esa ejecución. [Medición y tabla por nodo](evidencias/etapa4/20260910T225730Z/measurement.json).
+La copia S/S y lectura sin origen se comprueban en otro laboratorio, con
+recibo recuperado tras reiniciar destino. Los resultados iniciales de 99 pruebas
+y su medición se conservan como historial. Cierre Git en curso.
+
+Git al comenzar E4: main limpia y origin/main en `d91e2ba5a2dd7addbacbc7e94a0fe3deeae1a9e1`,
+historial E2 `df1fd33`, E3 `7bd8327` y cierre E3 `d91e2ba` conservados.
+No se ha publicado todavía el cambio E4 durante esta verificación.
+
+Límites E4: R=1/W=1, un control/SQLite, un solo host; no etcd requerido, HA ni
+replicación automática. Q01–Q07 siguen sin nuevas respuestas. Linux/Docker,
+Internet y VMs no acreditados. E5 RF3 completo será siguiente, E6 replicación,
+E7 HA control y metadatos, E8 seguridad integral, E9 cloud, E10 benchmarks.
+
+## Etapa 3: resultado histórico conservado
 
 **ETAPA 3 COMPLETA en Windows, alcance H1 local.** RF1/RF2,
 CLI/shell/SDK TLS, usuarios/grupos/ACL, SQLite/CQRS, bloques AES-GCM, snapshots,
@@ -27,7 +61,7 @@ documental se registra en un commit posterior, conservando el commit funcional.
 
 Bloqueo temporal del revisor automático por cuota resuelto al reanudar.
 Linux/WSL/Docker/cloud no ejecutados; H1 Windows no depende de ellos ni de etcd.
-Q01–Q07 sin nuevas aclaraciones. Próxima etapa E4 (no ejecutada): procesos separados,
+Q01–Q07 sin nuevas aclaraciones. Próxima etapa prevista en ese cierre: E4, procesos separados,
 registro/heartbeats, métricas/reservas/colocación y bytes directos cliente–DN;
 pruebas 512 MiB/1 GiB. RF3 E5, réplica E6, control/etcd HA E7. W=2 de datos final
 no es mayoría de metadatos.
@@ -36,7 +70,7 @@ no es mayoría de metadatos.
 ## Etapa 2: resultado histórico conservado
 
 Esta sección registra el cierre E2 anterior a `df1fd33`; números y estados Git
-son históricos. Para estado actual rige E3 arriba.
+son históricos. Para estado actual rige E4 arriba.
 
 Ruta ejecutada: **Windows, Python 3.12.10 en .venv-win**, grpcio/grpcio-tools 1.83.1, Protobuf 7.36.1, cryptography 50.0.1, argon2-cffi 25.1.0, pytest 9.1.1 y etcd 3.6.14 oficial. Dependencias transitivas con hashes; [entorno.md](entorno.md) contiene comandos PowerShell/Linux y versiones. Python existente finalmente se reconoce en PATH/launcher; las observaciones de E1 fueron revisadas. Docker/Compose no encontrados en PATH/rutas habituales/servicios; WSL indica subsistema no instalado. Windows etcd valida compatibilidad, Linux sigue pendiente de ejecución.
 

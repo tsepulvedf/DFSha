@@ -4,7 +4,8 @@ Actualizado 2026-09-08 · Etapas 1–2 · Fuente principal: [PDF local de siete 
 
 **Estado global E3:** RF1/RF2 implementados y comprobados; 87 pruebas aprobadas y
 roundtrip 1 GiB con tres clientes en la [ejecución final](evidencias/etapa3/20260909T195446Z/resultado.json).
-RF3 completo, distribución, HA y seguridad integral siguen PENDIENTES.
+RF3 completo, HA y seguridad integral siguen PENDIENTES. La distribución E4 se
+implementa y verifica según la tabla adicional al final y [evidencias E4](evidencias/etapa4/README.md).
 Tablas iniciales conservan fuentes y criterios finales; [evidencias H1](evidencias/etapa3/README.md)
 distingue pruebas reales y límites. La [correspondencia E2](#etapa2) es histórica.
 
@@ -177,3 +178,19 @@ La aprobación local de E2 habilita preparar **E3/H1 monolítico**, sin saltar R
 Evidencias: [índice E3](evidencias/etapa3/README.md). Pruebas E4 usarán varios
 bloques por perfil (512 MiB/1 GiB), bytes útiles de lectura y escritura por DN.
 64 MiB ya no garantiza cruzar bloques; se sustituye ese ejemplo anterior.
+## Trazabilidad adicional de E4 (usuario; no nuevos criterios del PDF)
+
+Estado de ejecución de cada prueba en [evidencia E4](evidencias/etapa4/README.md).
+
+| Requisito conservado | Diseño / implementación E4 | Aceptación observable y prueba | Límite / siguiente evidencia |
+|---|---|---|---|
+| RF1, RF2 | Commands/Queries H1 + DistributedControl + SDK + DataNode | `test_namespace_snapshot_lost_commit_and_control_restart`, `test_cli_process_and_unindexed_crash_recovery`, roundtrip distribuido | Sin RF3 funcional completo |
+| RNF1, RNF4, RNF5, DIS tamaños | Planes por métricas, reservas SQLite, páginas ≤64, 4/64/128 MiB por archivo, chunks 256 KiB | `test_profiles_boundaries_and_coexistence`, `test_dynamic_fourth_node_reservations_and_unavailable`, measure_hito2 512 MiB/3 clientes; bytes útiles de un archivo en ≥2 DN | Concurrencia por clientes; benchmarks E10; Q02 pendiente |
+| RNF2, RNF3 | R=1/W=1, publicación única y recibos autenticados; snapshots, tombstones, generaciones | `test_distribution_roundtrip_copy_restart`, `test_interruption_expiry_restart_and_late_receipts`; caída con respuesta UNAVAILABLE o aborto | No HA general; R3/W2 E6 y control/etcd E7 |
+| RNF6 | TLS C/S, mTLS S/S, permisos online, AES-GCM, inventarios/recibos persistidos | `test_block_authentication_corruption_and_internal_roles`, regresión E2/H1, recuperación de objeto huérfano | SQLite/WAL/backups sin cifrado aplicativo; seguridad integral E8 |
+| RNF7 | ResolveBlocks consulta autoridad; SDK no contiene mapa estático; nueva consulta tras fallo | Cuarto nodo y lectura de archivo previo; copia resuelta con origen detenido | Acceso Internet y HA de entrada pendientes |
+| COM-01, COM-02 | Cliente–CN metadatos, cliente–DN bytes | SDK/CLI por procesos, tabla tráfico útil, raíz control sin objetos | Cero contenido no significa cero red |
+| COM-03 | Un ControlNode; arquitectura final mediada por etcd preservada | UNIMPLEMENTED/futuro honesto | E7, Q05 docente sin resolver |
+| COM-04, COM-05 | Registro/heartbeat/inventario/recibos/autorizar/tareas mTLS; GetReplica origen→destino | Copia real, lectura sin origen, VerifyReceipt tras reinicio | No reparación automática ni resistencia al host |
+| INF, ENT, H2 | Laboratorio reproducible Windows local, scripts, documentación y Git existentes | verify_stage4, wheel instalado, hito2/protocolos, commit y push al cierre si disponibles | Cloud, video e informe final pendientes en cronograma original |
+| RF3, RNF8, Q01–Q07 | Contratos futuros conservados; no se reintroduce modelo 2 de acceso | Métodos futuros UNIMPLEMENTED; aclaraciones sin inventar | RF3 E5; RNF8 PDF no agrega contenido concreto |

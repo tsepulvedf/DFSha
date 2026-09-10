@@ -16,7 +16,7 @@ def main():
     args = parser.parse_args()
     cfg = read_config(args.config)
     password = sys.stdin.readline().rstrip('\r\n') if args.password_stdin else getpass.getpass('Contraseña inicial: ')
-    initialize({**cfg['server'], **cfg['monolith']}, args.username, password)
+    initialize({**cfg['server'], **cfg.get('distributed', cfg.get('monolith', {}))}, args.username, password)
     print('EJECUTADO: almacenamiento inicializado; conserve la clave y los metadatos juntos en backups seguros.')
 
 
