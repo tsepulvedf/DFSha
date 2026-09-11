@@ -167,7 +167,13 @@ class DataNode:
                 with self.store.transaction() as tx:
                     finished = [t for t in tx.all('task') if t['status']['state'] in ('FINISHED', 'FAILED') and not t.get('reported')]
             except Exception as exc:
-                registered = False
+                # A lost heartbeat reply does not mean that this incarnation lost its
+                # registration. Keep increasing sequence numbers; a real control restart
+                # explicitly rejects the unreconciled generation with VERSION_CONFLICT.
+                import grpc
+                from dfsha.common.rpc import controlled_error
+                if isinstance(exc, grpc.RpcError) and controlled_error(exc)['reason'] in ('VERSION_CONFLICT', 'NOT_FOUND'):
+                    registered = False
                 from dfsha.common.telemetry import event
                 event('node_control_retry', code=type(exc).__name__)
                 finished = []
@@ -198,9 +204,11 @@ class DataNode:
             request.fence.CopyFrom(header.fence)
         else:
             request.handle_id = header.handle_id
+            request.read_id = header.read_id
             request.snapshot.CopyFrom(header.snapshot)
-            need((not header.HasField('offset') or header.offset == 0) and
-                 (not header.HasField('length') or header.length == header.block.size_bytes), 'UNSUPPORTED_MODE')
+            request.offset = header.offset if header.HasField('offset') else 0
+            request.length = header.length if header.HasField('length') else header.block.size_bytes - request.offset
+            need(request.offset <= header.block.size_bytes and 0 < request.length <= header.block.size_bytes - request.offset)
         decision = self.authorization.AuthorizeBlock(request, timeout=5)
         if not decision.HasField('replay_receipt'):
             need(ctx.time_remaining() <= DEADLINES[decision.block_size_bytes] + 2 and decision.valid_until_unix_ms > now())
@@ -257,23 +265,40 @@ class DataNode:
             client_context=header.context, operation=header.operation, fence=header.fence), timeout=5)
         return receipt
 
+    def PatchBlock(self, requests, ctx):
+        if not self.cfg.get('rf3_enabled', False):
+            import grpc
+            from dfsha.common.rpc import abort
+            abort(ctx, grpc.StatusCode.UNIMPLEMENTED, c.NOT_IMPLEMENTED_STAGE2)
+        from dfsha.datanode.patch import patch_block
+        return patch_block(self, requests, ctx)
+
     def GetBlock(self, req, ctx):
         decision = self.authorize(req, ctx, False)
         with self.store.transaction() as tx:
             record = tx.get('block', req.block.block_version_id)
             need(record and record['ref'] == asdict(req.block), 'DATA_UNAVAILABLE')
         total = 0
+        start = req.offset if req.HasField('offset') else 0
+        length = req.length if req.HasField('length') else req.block.size_bytes - start
         try:
             with self.coordinator.admit(decision.block_size_bytes), self.blocks.pin(req.block.block_version_id):
                 chunks = self.blocks.read_verified(req.block)
                 first = next(chunks, None)
-                yield d.ReadBlockFrame(header=d.ReadBlockHeader(block=req.block, length=req.block.size_bytes,
-                                                               range_sha256=req.block.plaintext_sha256))
+                yield d.ReadBlockFrame(header=d.ReadBlockHeader(block=req.block, offset=start, length=length,
+                    range_sha256=req.block.plaintext_sha256 if start == 0 and length == req.block.size_bytes else b''))
                 import itertools
+                position = 0
                 for chunk in itertools.chain(() if first is None else (first,), chunks):
                     need(ctx.is_active() and now() < decision.valid_until_unix_ms, 'DEADLINE_EXCEEDED')
-                    yield d.ReadBlockFrame(chunk=d.DataChunk(offset=total, data=chunk))
-                    total += len(chunk)
+                    low, high = max(start, position), min(start + length, position + len(chunk))
+                    if high > low:
+                        payload = chunk[low-position:high-position]
+                        yield d.ReadBlockFrame(chunk=d.DataChunk(offset=total, data=payload))
+                        total += len(payload)
+                    position += len(chunk)
+                    if position >= start + length:
+                        break
         finally:
             self.count('client_read_bytes', total)
 

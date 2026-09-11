@@ -1,0 +1,27 @@
+{
+  "status": "EJECUTADO",
+  "rpcs": 54,
+  "future_unimplemented": 24,
+  "semantic_rows": 54,
+  "existing_local_links": 254,
+  "original_sha256": {
+    "docs/enunciado/SI3007-262-proyecto1-dfs.docx.pdf": "0ec8cc4cf92f9cf9345d5cf147d096a9cc74f78146aabce823d3890a31b446bf",
+    "docs/propuesta/Prompts_Codex_DFSha_Opcion1_CS.md": "755d2bebc288133e54e4f3161a433c35e6d08a9f0a7c8dce9b9b031e41c902b3"
+  },
+  "document_sha256": {
+    "README.md": "cf94ce7f859e9d8b5d9ce0c2e78c4f491f73d387aa889e16769a307dcb6b2e24",
+    "docs/estado.md": "474175571214b6b8d2f94f6e9dd72f9f383d8ccca299cf55ff855e504dbe1775",
+    "docs/especificacion.md": "c303c80abdc0732330c1e7c9a9c7ea0b265ab084603ad1bea66fc48adea9938e",
+    "docs/arquitectura.md": "a71938608df1b0941a243cc736abb92f3adf8929a8f5b894243f742f479536b6",
+    "docs/decisiones.md": "ea5d858814eff3f26dfe2f455a40f21f13363c57dd6fd0f90c793552200c24f5",
+    "docs/matriz-requisitos.md": "3d47f0c73149ba80502e87cf7ba9f6c486fe4b552ae85d1edac189d2b022d609",
+    "docs/protocolos.md": "926ef96d6c227c0c1a8d244eae723c0b8d622b23bbededb0ab7ab1cac0a169f2",
+    "docs/entorno.md": "ab09b270b8bc045653620878d84d61c645e8330e5b760de7ab79a729a73dbeba",
+    "docs/hito1.md": "0f24029c5218a5084c41ac15d3cd31a24ef81699623739bb83db50387d80a60d",
+    "docs/protocolos-hito1.md": "a6c98df5430c430886aaca134c9493a54e89d704e5a4aef546e4de1ea150d1ef",
+    "docs/etapa3-diseno.md": "ebb71f54d608a62fc7b3f89511c4d72b8b4873da03c202d550023b8ced4f9230",
+    "docs/evidencias/etapa2/README.md": "f92b2226a673fd11272f22b8387fb5b63a402a1c43f7c750b3c2f930145a72da",
+    "docs/evidencias/etapa3/README.md": "dfd8bb8c8e7537b1652b171a1eb2a1a4c4964444cd771ff2fe1f63c35c6eef25"
+  },
+  "scope": "auditor\u00eda documental, no prueba RF/RNF"
+}

@@ -1,5 +1,11 @@
 # Protocolos ejecutables de H2 / etapa 4
 
+La corrección [D44 de E5](etapa5-rf3.md) conserva registro ante pérdida de respuesta
+de heartbeat. Nuevas colocaciones siguen exigiendo READY; ubicaciones ya reservadas
+o confirmadas pueden atender transferencias en SUSPECT con autorización online y
+generación válida. STARTING/UNAVAILABLE permanecen excluidos. La reinscripción se
+reserva para rechazo explícito de registro/generación o arranque del proceso.
+
 Estado: implementación E4 comprobada en Windows mediante [100 pruebas y medición real](evidencias/etapa4/README.md). Complementa [el contrato general](protocolos.md), [H1](protocolos-hito1.md) y las [decisiones E4](etapa4-diseno.md). Los requisitos provienen del PDF; el algoritmo de colocación y estas extensiones son decisiones del equipo solicitadas por el usuario. El catálogo marca implementación, no aprobación individual automática de cada RPC. Las cuatro relaciones C–CN, C–DN, CN–DN y DN–DN se ejercitaron con conexiones; CN–CN sigue pendiente.
 
 ## Relaciones y servicios

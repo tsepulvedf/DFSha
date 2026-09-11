@@ -1,5 +1,9 @@
 # Hito 2: ControlNode y DataNodes separados
 
+El perfil histórico de este documento se conserva. Para RF3 usar la extensión
+[etapa5-rf3.md](etapa5-rf3.md) y `init --rf3` en una raíz nueva; no reutilizar
+destructivamente estos volúmenes. E5 no introduce replicación automática ni HA.
+
 Implementación E4 sobre Windows nativo, con R=1/W=1. La verificación y las mediciones de cierre se registran en [evidencias E4](evidencias/etapa4/README.md). Este laboratorio no acredita acceso por Internet ni resistencia a pérdida del host. RF3 completo corresponde a E5; replicación automática a E6; HA de control/etcd a E7.
 
 ## Arranque reproducible

@@ -1,5 +1,9 @@
 # Contrato operativo H1 (etapa 3)
 
+E5 añade dos contratos de soporte de lectura: catálogo total 56. H1 mantiene
+sus 30 implementaciones y 26 métodos futuros; las nuevas reglas RF3 se activan
+en el perfil distribuido `--rf3`, documentado en [E5](etapa5-rf3.md).
+
 Este es el perfil monolítico preservado. Los 51 métodos mencionados abajo son
 el catálogo histórico de E3. Con las extensiones aditivas de E4 hay 54: H1
 mantiene 30 implementados (incluido diagnóstico) y 24 futuros. La administración

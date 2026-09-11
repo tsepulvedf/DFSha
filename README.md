@@ -1,5 +1,16 @@
 # DFSha
 
+**Etapa 5 completa en Windows local: RF3 y concurrencia parcial.** Open/close,
+lectura por rangos, parches COW y locks funcionan en el perfil `--rf3`, reutilizando el control y DataNodes
+de H2. [Semántica y reproducción](docs/etapa5-rf3.md); [estado real](docs/estado.md).
+Los resultados E4 siguientes son históricos, no mediciones de RF3.
+
+Verificación E5: **114 pruebas aprobadas, sin omisiones**, contratos regenerados y
+paquete instalado probado. Parche de 4 KiB sobre 512 MiB: 4096 bytes cliente→DN,
+cero contenido en control y hash final correcto. Dos escritores preparan bloques
+distintos antes de publicar y conservan ambos cambios. [Resultados y memoria](docs/etapa5-rf3.md#resultados-del-cierre).
+Siguiente etapa: E6, replicación y recuperación; todavía no ejecutada.
+
 Proyecto 1 de SI3007/ST0263, período 2026-2. Opción 1: cliente/servidor de una organización, con composición S/S mediante red privada.
 
 **Etapa 4 completa en Windows local: control y DataNodes independientes.**
@@ -11,12 +22,12 @@ reservas y copia S/S ordenada. [Arranque y demo H2](docs/hito2.md),
 Validación E4: **100 pruebas aprobadas**, wheel instalado con transferencia real,
 512 MiB/3 clientes y bytes útiles repartidos entre tres DN. Picos residentes en
 esa medición: cliente 56,2 MiB, control 82,1 MiB, DN 56,5 MiB; perfil 64 MiB.
-R=1/W=1 no acredita HA. Siguiente etapa: E5, RF3 y concurrencia parcial.
+R=1/W=1 no acredita HA. Estos resultados corresponden al cierre histórico E4.
 
 **Etapa 3 histórica completa: RF1/RF2 en un monolito modular C/S con SQLite y bloques cifrados.**
 CLI/shell/SDK, usuarios/permisos, snapshots, overwrite explícito, recuperación y
 transferencias TLS. 51 RPC: 27 funcionales locales, tres diagnósticas y 21 futuras.
-RF3 completo, replicación automática y HA permanecen pendientes. H1 sigue reproducible.
+En aquel cierre RF3, replicación automática y HA quedaban pendientes. H1 sigue reproducible.
 
 Validación final Windows: **87 pruebas aprobadas**, roundtrip 1 GiB y tres clientes;
 picos residentes cliente 51,6 MiB y servidor 81,5 MiB. [Resultados](docs/evidencias/etapa3/20260909T195446Z/resultado.json).

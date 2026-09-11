@@ -23,7 +23,7 @@ def main():
     report = dict(status='PENDIENTE', python=sys.version, platform=platform.platform(), sqlite=sqlite3.sqlite_version,
         packages={x.metadata['Name']: x.version for x in importlib.metadata.distributions()}, commands=[])
     commands = [[sys.executable, '-m', 'pip', 'check'], [sys.executable, 'scripts/generate_proto.py', '--check'],
-        [sys.executable, '-m', 'pytest', '-q', '--junitxml=' + str(directory / 'pytest.xml')],
+        [sys.executable, '-m', 'pytest', '-q', '--ignore=tests/test_stage5.py', '--junitxml=' + str(directory / 'pytest.xml')],
         [sys.executable, 'scripts/audit_stage2.py', '--evidence', str(directory / 'audit.json')]]
     if args.measure:
         commands.append([sys.executable, 'scripts/measure_hito2.py', '--evidence', str(directory / 'measurement.json')])

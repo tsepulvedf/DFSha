@@ -1,0 +1,65 @@
+{
+  "status": "EJECUTADO",
+  "timestamp": "2026-09-11T04:43:11.886532+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e5\\99c246f5-705d-438f-8cd8-38209b7a8456",
+  "file_bytes": 536870912,
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "replicas": 1,
+  "durable_acks": 1,
+  "scope": "Windows/Linux local; tres clientes SDK en proceso de medici\u00f3n; CN y tres DN separados",
+  "patch_seconds": 2.891,
+  "patch_traffic": {
+    "d37c41d4-2294-4654-b85b-9bf27ddfb6be": {
+      "client_write_bytes": 0
+    },
+    "8a66862e-2258-457c-b560-e0a9dffd4811": {
+      "client_write_bytes": 0
+    },
+    "3b5c0072-5656-4f7f-b526-e0fc16358bda": {
+      "patch_result_processed_bytes": 134217728,
+      "client_write_bytes": 4096,
+      "patch_ciphertext_stored_bytes": 67114395,
+      "patch_base_plaintext_processed_bytes": 268435456
+    }
+  },
+  "original_sha256": "c047731a3c134f3d34286d608e9c173027d50f43ab9d2064f3c360939977e908",
+  "expected_sha256": "33dd21353ac79226f9ea36aa5bf30804a4226533bdc6fcd626ebd0e0661abe9d",
+  "downloaded_sha256": "33dd21353ac79226f9ea36aa5bf30804a4226533bdc6fcd626ebd0e0661abe9d",
+  "control_content_bytes": 0,
+  "concurrent_commit_versions": [
+    3,
+    4
+  ],
+  "client_process_memory": {
+    "pid": 6844,
+    "peak_resident_bytes": 66502656,
+    "peak_commit_bytes": 48402432
+  },
+  "control_memory": {
+    "pid": 25656,
+    "peak_resident_bytes": 66945024,
+    "peak_commit_bytes": 48615424
+  },
+  "datanode_memory": [
+    {
+      "node_id": "d37c41d4-2294-4654-b85b-9bf27ddfb6be",
+      "pid": 10488,
+      "peak_resident_bytes": 57274368,
+      "peak_commit_bytes": 38010880
+    },
+    {
+      "node_id": "8a66862e-2258-457c-b560-e0a9dffd4811",
+      "pid": 36688,
+      "peak_resident_bytes": 57597952,
+      "peak_commit_bytes": 38559744
+    },
+    {
+      "node_id": "3b5c0072-5656-4f7f-b526-e0fc16358bda",
+      "pid": 32844,
+      "peak_resident_bytes": 58671104,
+      "peak_commit_bytes": 39821312
+    }
+  ],
+  "memory_goals_met": true
+}

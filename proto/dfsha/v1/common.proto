@@ -59,7 +59,7 @@ enum ObjectKind { OBJECT_KIND_UNSPECIFIED = 0; FILE = 1; DIRECTORY = 2; }
 enum AccessAction {
   ACCESS_ACTION_UNSPECIFIED = 0;
   READ_DATA = 1; WRITE_DATA = 2; READ_REPLICA = 3; STORE_REPLICA = 4;
-  DELETE_RETIRED = 5; READ_PATCH_BASE = 6;
+  DELETE_RETIRED = 5; READ_PATCH_BASE = 6; PATCH_DATA = 7;
 }
 message AclEntry { string principal_id = 1; bool is_group = 2; uint32 permissions = 3; }
 message Acl {

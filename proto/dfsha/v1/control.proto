@@ -24,6 +24,8 @@ service FileAccessService {
   rpc Unlock(FenceRequest) returns (MutationResult);
   rpc RenewLock(FenceRequest) returns (Fence);
   rpc ResolveBlocks(ResolveBlocksRequest) returns (BlockPlan);
+  rpc BeginRead(BeginReadRequest) returns (ReadLease);
+  rpc EndRead(EndReadRequest) returns (MutationResult);
 }
 message BeginUploadRequest {
   RequestContext context = 1; PathRef path = 2; bool overwrite = 3;
@@ -41,7 +43,7 @@ message SealManifestRequest { RequestContext context = 1; OperationRef operation
 message CommitUploadRequest { RequestContext context = 1; OperationRef operation = 2; PageReceipt seal = 3; Fence fence = 4; }
 message OperationRequest { RequestContext context = 1; OperationRef operation = 2; }
 message GetOperationRequest { RequestContext context = 1; string original_request_id = 2; string operation_id = 3; }
-message OperationStatus { OperationRef operation = 1; OperationState state = 2; CommitResult result = 3; uint64 expires_at_unix_ms = 4; }
+message OperationStatus { OperationRef operation = 1; OperationState state = 2; CommitResult result = 3; uint64 expires_at_unix_ms = 4; BeginWriteRequest write_intent = 5; }
 enum OpenMode { OPEN_MODE_UNSPECIFIED = 0; R = 1; R_PLUS = 2; W = 3; W_PLUS = 4; X = 5; X_PLUS = 6; }
 message OpenRequest { RequestContext context = 1; PathRef path = 2; OpenMode mode = 3; }
 message Handle { string handle_id = 1; SnapshotRef snapshot = 2; OpenMode mode = 3; uint64 expires_at_unix_ms = 4; uint64 revision = 5; }
@@ -58,4 +60,8 @@ message BlockChange { BlockRef base = 1; BlockRef replacement = 2; repeated Dura
 message CommitWriteRequest { RequestContext context = 1; OperationRef operation = 2; string handle_id = 3; repeated BlockChange changes = 4; repeated Fence fences = 5; uint64 expected_handle_revision = 6; } // <=5 bloques.
 message LockRequest { RequestContext context = 1; string handle_id = 2; bool whole_file = 3; optional uint64 offset = 4; optional uint64 length = 5; uint32 wait_timeout_ms = 6; }
 message FenceRequest { RequestContext context = 1; Fence fence = 2; }
-message ResolveBlocksRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; optional uint64 offset = 4; optional uint64 length = 5; PageRequest page = 6; }
+message ResolveBlocksRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; optional uint64 offset = 4; optional uint64 length = 5; PageRequest page = 6; string read_id = 7; }
+// BeginRead es un comando: serializa el handle durante una iteración de lectura.
+message BeginReadRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; uint64 offset = 4; uint64 length = 5; }
+message ReadLease { string read_id = 1; SnapshotRef snapshot = 2; uint64 expires_at_unix_ms = 3; }
+message EndReadRequest { RequestContext context = 1; string handle_id = 2; string read_id = 3; }

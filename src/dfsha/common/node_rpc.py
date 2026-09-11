@@ -43,6 +43,8 @@ def register(server, app, services):
                     need(ctx.time_remaining() is not None and ctx.time_remaining() <= maximum)
                     return fn(request, ctx)
                 except Fault as exc:
+                    from dfsha.common.telemetry import event
+                    event('node_rpc_rejected', code=fn.__name__ + ':' + exc.reason)
                     abort(ctx, exc.code, c.ErrorReason.Value(exc.reason))
                 except grpc.RpcError as exc:
                     from dfsha.common.rpc import controlled_error

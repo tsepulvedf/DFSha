@@ -1,5 +1,44 @@
 # DFSha — Estado del proyecto y continuidad
 
+Actualizado: 2026-09-11 · **ETAPA 5 COMPLETA en Windows local**, R=1/W=1.
+RF3 implementa seis modos de apertura, snapshots, lectura por rangos, write atómico
+de hasta 16 MiB, PatchBlock directo cliente–DN, locks/leases con fencing comprobado
+al publicar, renovación, resultados idempotentes y recuperación tras reinicio.
+Se activa con `lab_hito2.py init --rf3` en una raíz nueva; H1/H2 conservan sus
+perfiles. [Semántica, demo y límites](etapa5-rf3.md).
+
+EJECUTADO: **114 pruebas aprobadas, cero fallos/errores/omisiones**, 647,27 s.
+[Regresión final](evidencias/etapa5/20260911T045117Z/result.json): H1/H2, RF3,
+TLS/mTLS, contratos y seguridad de dependencias. 56 RPC compilables, 34 módulos
+importados; perfil E5: 54 implementadas y dos futuras. Wheel instalado con
+[prueba RF3 real desde site-packages](evidencias/etapa5/installed-smoke.json).
+
+[Medición final](evidencias/etapa5/20260911T045117Z/measurement.json): archivo de
+512 MiB con bloques de 64 MiB, parche de 4096 bytes en 3,734 s y SHA-256 esperado.
+El cliente transmite el delta; control transporta cero contenido. Máximos
+residentes: tres sesiones SDK en un proceso **63,6 MiB**, control **64,0 MiB**,
+DN máximo **55,8 MiB**. Dos preparaciones concurrentes publican versiones 3 y 4
+con ambos cambios verificados. Los perfiles 4/64/128 MiB tienen pruebas funcionales;
+estas mediciones no se extrapolan a todos ellos.
+
+La regresión H2 inicial aprobó 100 pruebas, pero dos mediciones fallaron por
+reinscripción tras un heartbeat sin respuesta. D44 corrige la continuidad del
+registro; la [repetición H2 corregida](evidencias/etapa5/h2-measurement-fixed.json)
+aprobó 512 MiB con tres procesos cliente. Los fallos permanecen en
+[el inventario de evidencias](evidencias/etapa5/README.md).
+
+Git inicial E5: main y origin/main en `92dd53b`; historial E2–E4 conservado.
+Implementación y verificación terminadas; commit y sincronización E5 pendientes
+del cierre Git de esta sesión. No se modificó la identidad del autor.
+
+Límites: un control/SQLite, R=1/W=1 y un host no acreditan HA. Linux está
+BLOQUEADO POR ENTORNO (WSL no instalado); Docker/Internet/cloud no ejecutados.
+RNF6 integral, cifrado de volúmenes/backups y Q01–Q07 siguen pendientes.
+Siguiente: **E6, replicación y recuperación de datos**; no ejecutada. E7 será
+HA del control/metadatos, E8 seguridad integral, E9 cloud y E10 benchmarks.
+
+## Etapa 4: resultado histórico conservado
+
 Actualizado: 2026-09-10 · **ETAPA 4 COMPLETA en Windows local**, con R=1/W=1. E1–E3 preservadas; revisión docente no presupuesta.
 
 E4 implementa un ControlNode y tres/cuatro DataNodes independientes, RF1/RF2

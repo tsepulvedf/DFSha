@@ -57,7 +57,7 @@ class Process:
 
 
 class Cluster:
-    def __init__(self, directory, block_size=4194304, capacities=None):
+    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30):
         self.directory = Path(directory).resolve()
         if self.directory.exists() and any(self.directory.iterdir()):
             raise ValueError('Use una raíz nueva; no se convierte ni sobrescribe H1')
@@ -100,6 +100,8 @@ class Cluster:
             '127.0.0.1:17445', self.internal.replace('localhost', '127.0.0.1')).replace('localhost:17443', self.target).replace(
             'block_size_bytes = 4194304', f'block_size_bytes = {block_size}')
         template = template.replace('[server]', '[server]\ncertificate_identity = ' + json.dumps(self.control_id))
+        if rf3:
+            template = template.replace('[distributed]', '[distributed]\nrf3_enabled = true\nlock_lease_seconds = ' + str(lease_seconds))
         self.faults = directory / 'faults'
         self.faults.mkdir()
         template = template.replace('[client]', 'authorized_nodes_path = ' + json.dumps(allowed_path.as_posix()) +
@@ -136,6 +138,7 @@ class Cluster:
             faults = directory / 'faults'
             faults.mkdir()
             cfg['test_fault_dir'] = faults.as_posix()
+            cfg['rf3_enabled'] = rf3
             write_toml(config, 'datanode', cfg)
             self.nodes.append(Process(directory, config, 'dfsha.datanode.server'))
         (self.directory / 'lab.json').write_text(json.dumps(dict(control_id=self.control_id, node_ids=self.node_ids,

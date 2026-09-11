@@ -132,6 +132,21 @@ class Monolith:
                              expires_at_unix_ms=session['expires'], service_epoch=self.system['epoch'])
 
     def unary(self, method, response_type, request, context):
+        if method == 'Lock' and hasattr(self, 'leases'):
+            import time
+            need(request.wait_timeout_ms <= 5000)
+            stop = time.monotonic() + request.wait_timeout_ms / 1000
+            while True:
+                try:
+                    return self.unary_once(method, response_type, request, context)
+                except Fault as exc:
+                    if exc.reason != 'LOCK_CONFLICT' or time.monotonic() >= stop:
+                        raise
+                    need(context.is_active(), 'DEADLINE_EXCEEDED')
+                    time.sleep(min(.025, max(0, stop - time.monotonic())))
+        return self.unary_once(method, response_type, request, context)
+
+    def unary_once(self, method, response_type, request, context):
         if method == 'Login':
             return self.Login(request, context)
         token = self.credentials(context)
@@ -161,7 +176,7 @@ class Monolith:
                 blocks = self.manifest(op)
             self.verify_seal(op, blocks, context)
             self.verified_seals[op['id']] = manifest_hash(blocks)
-        if method == 'CommitUpload':
+        if method in ('CommitUpload', 'CommitWrite'):
             self.fault('before_publish')
         with self.store.transaction(True) as tx:
             user, session = self.authenticated(tx, token, request)
@@ -170,7 +185,7 @@ class Monolith:
                 return previous
             response = getattr(self.commands, method)(tx, user, session, request)
             self.remember(tx, user, request, method, response)
-        if method == 'CommitUpload' and self.fault('after_commit_drop_response'):
+        if method in ('CommitUpload', 'CommitWrite') and self.fault('after_commit_drop_response'):
             raise Fault('SERVICE_UNAVAILABLE')
         return response
 
@@ -181,8 +196,9 @@ class Monolith:
                           lease_id=1, whole_file=True, includes_size=True, expires_at_unix_ms=op['expires']))
 
     def handle_message(self, tx, handle):
+        expires = self.leases.expiry_hint(handle) if hasattr(self, 'leases') else handle['expires']
         return ctl.Handle(handle_id=handle['id'], snapshot=proto(c.SnapshotRef, tx.get('snapshot', handle['snapshot'])['ref']),
-                          mode=ctl.R, expires_at_unix_ms=handle['expires'], revision=handle['revision'])
+                          mode=handle.get('mode', ctl.R), expires_at_unix_ms=expires, revision=handle['revision'])
 
     def make_blocks(self, root, key):
         return EncryptedBlockStore(root, key)
@@ -298,16 +314,44 @@ class Monolith:
                 yield data.ReadBlockFrame(chunk=data.DataChunk(offset=offset, data=chunk))
                 offset += len(chunk)
 
+    def operation_live(self, tx, op):
+        if not op or op['state'] != c.PREPARING:
+            return False
+        if hasattr(self, 'leases') and op.get('kind') == 'write':
+            handle = tx.get('handle', op['handle'])
+            locks = [tx.get('lock', identity) for identity in op['locks']]
+            return bool(handle and not handle['closed'] and self.leases.live(handle) and
+                        all(lock and self.leases.live(lock) for lock in locks))
+        return op['expires'] > now()
+
     def collect(self, restart=False):
         with self.maintenance_lock:
             with self.store.transaction(True) as tx:
+                if hasattr(self, 'leases'):
+                    for op in tx.all('upload'):
+                        if op.get('kind') == 'write' and op['state'] == c.PREPARING:
+                            handle = tx.get('handle', op['handle'])
+                            locks = [tx.get('lock', identity) for identity in op['locks']]
+                            if not handle or not self.leases.live(handle) or any(not x or not self.leases.live(x) for x in locks):
+                                op.update(state=c.EXPIRED, reserved=0)
+                                tx.put('upload', op)
+                        if op['state'] != c.PREPARING:
+                            self.leases.release_operation(tx, op)
+                    for handle in tx.all('handle'):
+                        if not self.leases.live(handle):
+                            handle['closed'] = True
+                            tx.put('handle', handle)
                 for op in tx.all('upload'):
-                    if op['state'] == c.PREPARING and (restart or op['expires'] <= now()):
+                    if op['state'] == c.PREPARING and (restart or not self.operation_live(tx, op)):
                         op.update(state=c.ABORTED if restart else c.EXPIRED, reserved=0)
                         tx.put('upload', op)
-                pins = {h['snapshot'] for h in tx.all('handle') if not h['closed'] and h['expires'] > now()}
+                pins = {h['snapshot'] for h in tx.all('handle') if not h['closed'] and
+                        (self.leases.live(h) if hasattr(self, 'leases') else h['expires'] > now())}
                 pins.update(n['snapshot'] for n in tx.all('node') if n['alive'] and n['snapshot'])
                 retained = set()
+                # S/S tasks pin their source even if the logical name is removed meanwhile.
+                retained.update(t['block']['block_version_id'] for t in tx.all('task') if
+                    t['kind'] == 'copy' and t['expires'] > now() and t['status']['state'] in ('ACCEPTED', 'RUNNING'))
                 for snap in tx.all('snapshot'):
                     if snap['id'] in pins:
                         retained.update(b['block_version_id'] for b in snap['blocks'])

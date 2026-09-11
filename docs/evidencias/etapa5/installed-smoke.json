@@ -1,0 +1,15 @@
+{
+  "status": "EJECUTADO",
+  "python": "F:\\DFSha\\.venv-verify-20260908T212227145653Z\\Scripts\\python.exe",
+  "package": "F:\\DFSha\\.venv-verify-20260908T212227145653Z\\Lib\\site-packages\\dfsha\\__init__.py",
+  "bytes": 8388608,
+  "delta_bytes": 5,
+  "sha256": "1e8c3182e47a41b98a8e7902f8c153d22e716fd033ca80ec9c9c535d1917e987",
+  "control_pid": 33432,
+  "datanode_pids": [
+    19032,
+    33488,
+    600
+  ],
+  "snapshots_verified": true
+}

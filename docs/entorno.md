@@ -1,4 +1,22 @@
-# DFSha — Entorno reproducible de etapas 2–3
+# DFSha — Entorno reproducible de etapas 2–5
+
+**E5:** el mismo Python 3.12.10 de `.venv-win` y lock de dependencias. Sin
+reinstalación del stack, etcd ni migración de datos. Contratos con la misma
+toolchain; 34 módulos generados importan. Configuración nueva:
+`scripts/lab_hito2.py init --rf3 --root .runtime/demo-e5`; perfiles seleccionables
+con `--block-size 4194304`, `67108864` o `134217728`. Todos los comandos se ejecutan
+con `.\.venv-win\Scripts\python.exe` desde `F:\DFSha`.
+Ver [arranque, CLI y verificación](etapa5-rf3.md). `verify_stage5.py --measure`
+incluye regresión y medición del delta; `--rf3-only` es una comprobación enfocada,
+no acredita H1/H2 por sí sola. Los resultados finales se registran en estado.
+
+Revisión de esta sesión: Git y wsl.exe están en PATH; Python y Docker no. No se
+encontró Docker en su ruta habitual de Program Files. Windows sigue siendo la
+ruta ejecutable canónica; no se crea una copia del repositorio para Linux.
+`wsl --status` fue EJECUTADO y terminó con código 1: subsistema Linux no instalado.
+La ejecución Linux está BLOQUEADA POR ENTORNO; no se instaló WSL ni se requirió
+reinicio del sistema. Puede repetirse en Linux con el entorno aislado documentado
+y `python scripts/verify_stage5.py --measure` cuando esté disponible.
 
 **E4 usa el mismo entorno Windows y dependencias fijadas.** No se requieren
 servicios etcd ni cambios de toolchain. Configuración y comandos completos en

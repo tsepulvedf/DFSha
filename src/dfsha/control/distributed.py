@@ -72,7 +72,7 @@ class ClusterCommands(Commands):
         for value in op['allocations'].values():
             assignment = tx.get('assignment', value['block_version_id'])
             node = tx.get('datanode', assignment['node']) if assignment else None
-            need(node and self.app.state(node) == 'READY' and
+            need(node and self.app.state(node) in ('READY', 'SUSPECT') and
                  int(node['location']['boot_generation']) == assignment['generation'], 'DATA_UNAVAILABLE')
         return super().CommitUpload(tx, user, session, req)
 
@@ -86,6 +86,12 @@ class DistributedControl(Monolith):
         super().__init__(cfg)
         self.queries = ClusterQueries(self)
         self.commands = ClusterCommands(self)
+        if cfg.get('rf3_enabled', False):
+            from dfsha.control.leases import SQLiteLeaseAuthority
+            from dfsha.control.access import AccessQueries, AccessCommands
+            self.leases = SQLiteLeaseAuthority(self)
+            self.queries = AccessQueries(self)
+            self.commands = AccessCommands(self)
         self.cfg['service_epoch'] = self.system['epoch']
         self.dispatch_lock = threading.Lock()
         with self.store.transaction(True) as tx:
@@ -119,7 +125,7 @@ class DistributedControl(Monolith):
         reserved = 0
         for a in tx.all('assignment'):
             op = tx.get('upload', a['operation'])
-            if a['node'] == node['id'] and not self.location(tx, a['id'], a['node']) and op and op['state'] == c.PREPARING and op['expires'] > now():
+            if a['node'] == node['id'] and not self.location(tx, a['id'], a['node']) and self.operation_live(tx, op):
                 reserved += a['reserved']
         reserved += sum(t.get('reserved', 0) for t in tx.all('task') if t['dest'] == node['id'] and
                         t['expires'] > now() and t['status']['state'] in ('ACCEPTED', 'RUNNING'))
@@ -135,7 +141,7 @@ class DistributedControl(Monolith):
     def plan(self, block, user, binding, read=False, tx=None):
         if read:
             nodes = [tx.get('datanode', x['node']) for x in tx.all('location') if x['block'] == block.block_version_id]
-            nodes = [x for x in nodes if self.state(x) == 'READY']
+            nodes = [x for x in nodes if self.state(x) in ('READY', 'SUSPECT')]
             need(nodes, 'DATA_UNAVAILABLE')
         else:
             assignment = tx.get('assignment', block.block_version_id)
@@ -157,7 +163,7 @@ class DistributedControl(Monolith):
                                   generation=int(chosen['location']['boot_generation']), reserved=cost)
                 tx.put('assignment', assignment)
             nodes = [tx.get('datanode', assignment['node'])]
-            need(self.state(nodes[0]) == 'READY' and int(nodes[0]['location']['boot_generation']) == assignment['generation'], 'DATA_UNAVAILABLE')
+            need(self.state(nodes[0]) in ('READY', 'SUSPECT') and int(nodes[0]['location']['boot_generation']) == assignment['generation'], 'DATA_UNAVAILABLE')
         return c.PlannedBlock(block=block, locations=[proto(c.BlockLocation, x['location']) for x in nodes],
             grants=[c.BlockGrant(block=block, node_id=x['id'], length=block.size_bytes,
                 action=c.READ_DATA if read else c.WRITE_DATA, expires_at_unix_ms=binding['expires'],
@@ -237,12 +243,15 @@ class DistributedControl(Monolith):
         return c.MutationResult(request_id=req.context.request_id, revision=req.page_index + 1)
 
     def AuthorizeBlock(self, req, ctx):
+        if req.action == c.PATCH_DATA:
+            from dfsha.control.patch_authority import authorize_patch
+            return authorize_patch(self, req, ctx)
         # RequestContext is the original user's context; authenticated transport identifies the DN.
         need(req.node_id in self.allowed and node_rpc.peer(ctx) == self.allowed[req.node_id]['identity'], 'PERMISSION_DENIED')
         with self.store.transaction() as tx:
             user, session = self.authenticated(tx, req.session_token, req)
             node = tx.get('datanode', req.node_id)
-            need(self.state(node) == 'READY', 'DATA_UNAVAILABLE')
+            need(self.state(node) in ('READY', 'SUSPECT'), 'DATA_UNAVAILABLE')
             if req.action == c.WRITE_DATA:
                 header = d.PutBlockHeader(context=req.context, operation=req.operation, block=req.block, fence=req.fence, capability=req.capability)
                 replay = self.replay(tx, user, header, 'PutBlock', c.DurableReceipt)
@@ -256,17 +265,31 @@ class DistributedControl(Monolith):
                 size, action = binding['block_size'], 'write'
             elif req.action == c.READ_DATA:
                 binding, snap = self.queries.handle(tx, user, session, req.handle_id)
+                if hasattr(self, 'leases'):
+                    from dfsha.control.access import READ_MODES
+                    need(binding['mode'] in READ_MODES and (not binding.get('busy') or binding['busy'] == req.read_id), 'PERMISSION_DENIED')
+                    if req.read_id:
+                        self.queries.validate_read(tx, binding, req.read_id,
+                            req.block.block_index * int(snap['ref']['block_size_bytes']) + req.offset, req.length)
                 need(snap['ref'] == asdict(req.snapshot) and asdict(req.block) in snap['blocks'] and
                      self.location(tx, req.block.block_version_id, node['id']), 'PERMISSION_DENIED')
                 size, action = int(snap['ref']['block_size_bytes']), 'read'
             else:
                 need(False, 'PERMISSION_DENIED')
-            need(req.offset == 0 and req.length == req.block.size_bytes, 'UNSUPPORTED_MODE')
+            if hasattr(self, 'leases') and req.action == c.READ_DATA:
+                need(req.offset <= req.block.size_bytes and 0 < req.length <= req.block.size_bytes - req.offset)
+                action = f'read:{req.offset}:{req.length}:{req.read_id}'
+            else:
+                need(req.offset == 0 and req.length == req.block.size_bytes, 'UNSUPPORTED_MODE')
             need(hmac.compare_digest(req.capability, self.capability(user, binding, req.block, node, action)), 'PERMISSION_DENIED')
+            expiry = self.leases.expiry_hint(binding) if hasattr(self, 'leases') and req.action == c.READ_DATA else binding['expires']
             return n.AuthorizationDecision(subject_id=user['id'], authz_revision=1, block_size_bytes=size,
-                valid_until_unix_ms=min(session['expires'], binding['expires']))
+                valid_until_unix_ms=min(session['expires'], expiry))
 
     def ReportDurable(self, req, ctx):
+        if req.HasField('patch'):
+            from dfsha.control.patch_authority import report_patch
+            return report_patch(self, req, ctx)
         receipt = req.receipt
         self.node_peer(ctx, req, receipt.node_id)
         with self.store.transaction(True) as tx:
@@ -357,7 +380,7 @@ class DistributedControl(Monolith):
         assignment = tx.get('assignment', block_id)
         if assignment and assignment['node'] == node_id:
             op = tx.get('upload', assignment['operation'])
-            if op and op['state'] == c.PREPARING and op['expires'] > now():
+            if self.operation_live(tx, op):
                 return False
         return not any(t['kind'] == 'copy' and t['dest'] == node_id and t['block']['block_version_id'] == block_id and
             t['expires'] > now() and t['status']['state'] in ('ACCEPTED', 'RUNNING') for t in tx.all('task'))
@@ -372,6 +395,13 @@ class DistributedControl(Monolith):
     def collect(self, restart=False):
         super().collect(restart)
         with self.store.transaction(True) as tx:
+            for task in tx.all('task'):
+                if task.get('write_operation') and task['status']['state'] in ('ACCEPTED', 'RUNNING'):
+                    op = tx.get('upload', task['write_operation'])
+                    if not op or op['state'] != c.PREPARING:
+                        task['status'] = asdict(n.TaskStatus(task_id=task['id'], state=n.FAILED, error_reason=c.OPERATION_EXPIRED))
+                        task['reserved'] = 0
+                        tx.put('task', task)
             for a in tx.all('assignment'):
                 op = tx.get('upload', a['operation'])
                 if op and op['state'] in (c.ABORTED, c.EXPIRED) and not self.location(tx, a['id'], a['node']):

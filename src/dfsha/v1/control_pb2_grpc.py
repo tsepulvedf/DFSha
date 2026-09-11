@@ -461,6 +461,16 @@ class FileAccessServiceStub:
                 request_serializer=dfsha_dot_v1_dot_control__pb2.ResolveBlocksRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_control__pb2.BlockPlan.FromString,
                 _registered_method=True)
+        self.BeginRead = channel.unary_unary(
+                '/dfsha.v1.FileAccessService/BeginRead',
+                request_serializer=dfsha_dot_v1_dot_control__pb2.BeginReadRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_control__pb2.ReadLease.FromString,
+                _registered_method=True)
+        self.EndRead = channel.unary_unary(
+                '/dfsha.v1.FileAccessService/EndRead',
+                request_serializer=dfsha_dot_v1_dot_control__pb2.EndReadRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
+                _registered_method=True)
 
 
 class FileAccessServiceServicer:
@@ -526,6 +536,18 @@ class FileAccessServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def BeginRead(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EndRead(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FileAccessServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -578,6 +600,16 @@ def add_FileAccessServiceServicer_to_server(servicer, server):
                     servicer.ResolveBlocks,
                     request_deserializer=dfsha_dot_v1_dot_control__pb2.ResolveBlocksRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_control__pb2.BlockPlan.SerializeToString,
+            ),
+            'BeginRead': grpc.unary_unary_rpc_method_handler(
+                    servicer.BeginRead,
+                    request_deserializer=dfsha_dot_v1_dot_control__pb2.BeginReadRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_control__pb2.ReadLease.SerializeToString,
+            ),
+            'EndRead': grpc.unary_unary_rpc_method_handler(
+                    servicer.EndRead,
+                    request_deserializer=dfsha_dot_v1_dot_control__pb2.EndReadRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_common__pb2.MutationResult.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -850,6 +882,60 @@ class FileAccessService:
             '/dfsha.v1.FileAccessService/ResolveBlocks',
             dfsha_dot_v1_dot_control__pb2.ResolveBlocksRequest.SerializeToString,
             dfsha_dot_v1_dot_control__pb2.BlockPlan.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def BeginRead(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.FileAccessService/BeginRead',
+            dfsha_dot_v1_dot_control__pb2.BeginReadRequest.SerializeToString,
+            dfsha_dot_v1_dot_control__pb2.ReadLease.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EndRead(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.FileAccessService/EndRead',
+            dfsha_dot_v1_dot_control__pb2.EndReadRequest.SerializeToString,
+            dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
             options,
             channel_credentials,
             insecure,

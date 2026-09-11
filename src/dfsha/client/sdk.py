@@ -18,9 +18,10 @@ from dfsha.v1 import (common_pb2 as c, identity_pb2 as ident, identity_pb2_grpc 
                      control_pb2 as ctl, control_pb2_grpc as cg, data_pb2 as data, data_pb2_grpc as dg)
 from dfsha.v1 import diagnostic_pb2 as diagnostic, diagnostic_pb2_grpc as diagnostic_rpc
 from dfsha.v1 import nodes_pb2 as nodes, nodes_pb2_grpc as nodes_rpc
+from dfsha.client.access import AccessClient
 
 
-class Client:
+class Client(AccessClient):
     def __init__(self, target, cert_dir, session=None):
         self.target, self.cert_dir = target, Path(cert_dir)
         self.channel = channel(target, self.cert_dir)
@@ -34,6 +35,11 @@ class Client:
         self.cwd, self.cwd_id = '/', ''
         self.last_commit_request = None
         self.traffic = {}  # Useful bytes confirmed per dynamically resolved node, no tokens or paths.
+        self._handle_guards, self._handle_guards_lock = {}, threading.Lock()
+
+    def handle_guard(self, handle):
+        with self._handle_guards_lock:
+            return self._handle_guards.setdefault(handle.handle_id, threading.RLock())
 
     def record_traffic(self, node_id, field, amount):
         record = self.traffic.setdefault(node_id, dict(client_write_bytes=0, client_read_bytes=0))
@@ -159,8 +165,9 @@ class Client:
         return self.call(self.files.Open, ctl.OpenRequest(path=self.path(path), mode=ctl.R))
 
     def close(self, handle):
-        return self.call(self.files.Close, ctl.HandleRequest(handle_id=handle.handle_id,
-                                                            expected_handle_revision=handle.revision))
+        with self.handle_guard(handle):
+            return self.call(self.files.Close, ctl.HandleRequest(handle_id=handle.handle_id,
+                                                                expected_handle_revision=handle.revision))
 
     @contextmanager
     def keepalive(self, value, upload=False):
@@ -341,7 +348,7 @@ class Client:
                     cursor = plan.next_cursor
                     if not cursor:
                         break
-                need(total == handle.snapshot.size_bytes and digest.digest() == handle.snapshot.file_sha256 and
+                need(total == handle.snapshot.size_bytes and (not handle.snapshot.HasField('file_sha256') or digest.digest() == handle.snapshot.file_sha256) and
                      manifest_hash(blocks) == handle.snapshot.manifest_sha256, 'CHECKSUM_MISMATCH')
                 out.flush()
                 os.fsync(out.fileno())

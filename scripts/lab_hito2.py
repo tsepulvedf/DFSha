@@ -11,9 +11,10 @@ def main():
     parser.add_argument('command', choices=('init', 'start', 'add-fourth', 'status', 'stop'))
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--block-size', type=int, choices=(4194304, 67108864, 134217728), default=4194304)
+    parser.add_argument('--rf3', action='store_true', help='Activar RF3 E5 en una raíz nueva; H2 histórico permanece reproducible')
     args = parser.parse_args()
     if args.command == 'init':
-        app = Cluster(args.root, block_size=args.block_size)
+        app = Cluster(args.root, block_size=args.block_size, rf3=args.rf3)
         print(json.dumps(dict(status='EJECUTADO', config=str(app.control.config), client_ca=str(app.certs),
             note='Usuario admin; contraseña development-password, exclusiva de este laboratorio local')))
         return

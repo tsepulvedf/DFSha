@@ -1,5 +1,37 @@
 # DFSha — Arquitectura y evolución
 
+**E5 implementada y verificada en Windows local:** [arquitectura de acceso parcial](etapa5-rf3.md). La misma
+SQLite contiene namespace, handles, leases, intenciones y resultados. Queries
+autorizan representaciones; BeginRead/Open/BeginWrite y cierres son comandos.
+PatchBlock procesa el contenido exclusivamente en DataNodes; el SDK envía el delta.
+No se añade etcd, otro control, event sourcing ni una proyección asíncrona.
+
+```mermaid
+flowchart LR
+    C[CLI / SDK]
+    subgraph host[Laboratorio Windows: procesos y volúmenes propios]
+      CN[ControlNode: consultas y comandos]
+      DB[(SQLite: namespace, snapshots, locks y resultados)]
+      D1[DataNode 1: AES-GCM / COW]
+      D2[DataNode 2: AES-GCM / COW]
+      D3[DataNode 3: AES-GCM / COW]
+      CN --- DB
+      CN <-->|mTLS: permisos y recibos| D1
+      CN <-->|mTLS: permisos y recibos| D2
+      CN <-->|mTLS: permisos y recibos| D3
+      D1 -->|mTLS: copia de base autorizada| D2
+    end
+    C <-->|TLS: metadatos y fencing| CN
+    C <-->|TLS: delta / rango| D1
+    C <-->|TLS: delta / rango| D2
+    C <-->|TLS: delta / rango| D3
+```
+
+La secuencia de preparación y publicación con fencing transaccional está en
+[E5](etapa5-rf3.md). Los componentes dibujados no acreditan HA: comparten host,
+hay un solo control y R=1/W=1. La copia S/S es una tarea controlada, no reparación
+automática de réplicas.
+
 **E4:** [diseño adoptado](etapa4-diseno.md), [hito ejecutable](hito2.md) y
 [protocolo](protocolos-hito2.md) extienden H1. ControlNode/NameNode: namespace,
 permisos, manifiestos, ubicaciones y coordinación; DataNodes: almacenamiento de

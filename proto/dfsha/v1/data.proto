@@ -16,7 +16,7 @@ message PatchBlockHeader {
   bytes delta_sha256 = 7; Fence fence = 8; bytes capability = 9;
 }
 message PatchBlockFrame { oneof frame { PatchBlockHeader header = 1; DataChunk chunk = 2; } }
-message GetBlockRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; BlockRef block = 4; optional uint64 offset = 5; optional uint64 length = 6; bytes capability = 7; }
+message GetBlockRequest { RequestContext context = 1; string handle_id = 2; SnapshotRef snapshot = 3; BlockRef block = 4; optional uint64 offset = 5; optional uint64 length = 6; bytes capability = 7; string read_id = 8; }
 message ReadBlockHeader { BlockRef block = 1; uint64 offset = 2; uint64 length = 3; bytes range_sha256 = 4; }
 message ReadBlockFrame { oneof frame { ReadBlockHeader header = 1; DataChunk chunk = 2; } }
 

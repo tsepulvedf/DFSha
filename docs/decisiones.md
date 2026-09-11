@@ -1,6 +1,9 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
-Actualizado 2026-09-09 · Etapas 1–3. D25–D30 implementan RF1/RF2 H1 y sustituyen
+Actualizado 2026-09-11 · Etapas 1–5. [D36–D44](etapa5-rf3.md) implementadas y
+verificadas en Windows local: RF3, fencing, parches y continuidad de heartbeats.
+114 pruebas aprobadas; evidencia y límites en [estado](estado.md).
+D25–D30 implementan RF1/RF2 H1 y sustituyen
 propuestas anteriores incompatibles: [diseño](etapa3-diseno.md) y [contrato](protocolos-hito1.md).
 E4 adopta [D31–D35](etapa4-diseno.md): adaptación de CQRS H1 sin contenido en
 control; identidades/encarnaciones e inventarios; colocación por ocupación y
@@ -115,6 +118,12 @@ Estas fuentes sustentan capacidades, no requisitos docentes. Páginas stable/lat
 
 No hay respuestas docentes registradas ni aprobación docente supuesta. Las consultas Q01–Q07 están en [especificación §10](especificacion.md#s10). Cuando llegue una aclaración, se añadirá una fila con fuente accesible y se actualizará primero la matriz, luego diseño, implementación y pruebas afectadas.
 # Decisiones de etapa 3
+
+**Actualización E5:** [D36–D44](etapa5-rf3.md) concretan el acceso parcial y
+reemplazan las propuestas incompatibles de etapas anteriores. Se conserva Python
+3.12.10 y la toolchain fijada; no se cambiaron dependencias. BeginRead/EndRead son
+contratos aditivos necesarios para serializar lecturas activas en el control.
+Los originales PDF/guía se preservan; la guía no prevalece sobre el prompt E5.
 
 [D25–D29](etapa3-diseno.md) actualizan el diseño por instrucción del usuario:
 CQRS local, CRUD y perfiles, contenedor cifrado con memoria acotada, publicación/recuperación

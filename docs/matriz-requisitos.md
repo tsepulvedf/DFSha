@@ -1,5 +1,21 @@
 # DFSha — Matriz de requisitos y trazabilidad
 
+## Seguimiento activo E5 (no sustituye fuentes originales)
+
+| ID / decisión | Diseño e implementación | Criterio y evidencia ejecutable | Estado de cierre |
+| --- | --- | --- | --- |
+| RF3 / D36–D44 | control/access.py, leases.py, patch_authority.py; client/access.py; datanode/patch.py | tests/test_stage5.py: modos, snapshots, read/write/locks, renovación, CLI y resultados | EJECUTADO: regresión final 114 aprobadas; ver [E5](etapa5-rf3.md#resultados-del-cierre) |
+| RNF3, RNF5 | Bases por bloque, exclusión de tamaño, merge sobre raíz vigente y fencing en misma transacción | Barreras: dos preparaciones simultáneas y [A1,B1]; conflicto de bloque, sucesor tras expiración, publicación atómica y restart | EJECUTADO dentro de la regresión final; no acredita consistencia con HA |
+| RNF4, RNF7, COM-01/02/04/05 | Ubicaciones dinámicas y PatchBlock; control sin contenido; base local o copia S/S | Test de base remota sin origen y measure_stage5.py: delta de 4 KiB / archivo de 512 MiB | EJECUTADO: copia S/S y lectura sin origen; delta 4096 bytes, cero contenido en CN |
+| RF1, RF2 | Manejadores H1/H2 reutilizados, overwrite con autoridad completa; recepción acepta hash global opcional tras parches | Regresión original más descarga RF2 después de write y snapshot tras overwrite/rm | EJECUTADO: regresión final y medición H2 corregida; fallos previos preservados |
+| RNF6 | Grants de rango, ACL vigente, AES-GCM y mTLS; write-only sin lectura de base | Rechazo de rango ampliado, modo write-only, revocación, corrupción y pruebas TLS heredadas | Protección parcial; RNF6 integral pendiente E8 |
+| RNF2, COM-03 | R=1/W=1, un control SQLite | Indisponibilidad controlada y datos/resultados persistentes; no prueba de HA | HA pendiente E7 y réplicas automáticas E6 |
+| INF / ENT | Windows local, fuentes originales, herramientas fijadas; documentación y evidencias sin datos grandes | verify_stage5.py y paquete instalado; Git conforme a flujo existente | Linux/Internet/cloud pendientes; cierre Git pendiente |
+
+Las pruebas omitidas no cuentan como aprobadas. El estado global vigente se
+consulta en [estado.md](estado.md); las tablas históricas siguientes conservan
+sus fechas y resultados originales.
+
 Actualizado 2026-09-08 · Etapas 1–2 · Fuente principal: [PDF local de siete páginas](enunciado/SI3007-262-proyecto1-dfs.docx.pdf). Las páginas indicadas son las impresas, coincidentes con las páginas físicas. Extracción/rúbrica originales conservadas.
 
 **Estado global E3:** RF1/RF2 implementados y comprobados; 87 pruebas aprobadas y

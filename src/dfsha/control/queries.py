@@ -111,6 +111,8 @@ class Queries:
                                      expires_at_unix_ms=op['expires'])
         if op.get('result'):
             result.result.CopyFrom(proto(c.CommitResult, op['result']))
+        if op.get('begin'):
+            result.write_intent.CopyFrom(proto(ctl.BeginWriteRequest, op['begin']))
         return result
 
     def handle(self, tx, user, session, identity):

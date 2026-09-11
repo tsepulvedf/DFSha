@@ -1,6 +1,10 @@
 # DFSha — Contratos de comunicación v1
 
-**Estado vigente E3:** aplicar [contrato operativo H1](protocolos-hito1.md), que
+**Perfil RF3 E5:** aplicar [semántica efectiva](etapa5-rf3.md) y las extensiones
+al final de este documento. Catálogo actual: 56 RPC; los estados H1, H2 y RF3
+se distinguen en rpc-catalog.json. Las cifras siguientes se conservan como historial.
+
+**Estado histórico E3:** aplicar [contrato operativo H1](protocolos-hito1.md), que
 define los métodos implementados, perfiles, cifrado, digest y plazos actuales.
 Las tablas siguientes conservan el diseño y registro de E2; sus propuestas
 incompatibles quedan sustituidas explícitamente por H1. El catálogo JSON ya
@@ -212,7 +216,22 @@ No se reutilizan números. Hay ahora 51 RPC propias. Los streams de bloques tien
 La apertura R y su renovación/cierre son comandos porque persisten pins.
 # Actualización E4: distribución con R=1/W=1
 
-El contrato aditivo actual contiene 54 RPC. El catálogo distingue implementación H1 y distribuida; los resultados históricos de E2/E3 conservan sus números originales. Las reglas ejecutables E4 y los nuevos campos se detallan en [protocolos-hito2.md](protocolos-hito2.md). La implementación por sí sola no acredita una prueba.
+El contrato de E4 contenía 54 RPC. E5 añade BeginRead/EndRead (56 en total) para registrar la lectura activa como comando y serializar el handle en el control. El catálogo distingue H1, H2 y el perfil RF3; los resultados históricos conservan sus números originales. La implementación por sí sola no acredita una prueba.
+
+## Contratos efectivos E5 (sustituyen propuestas RF3 anteriores)
+
+| RPC | Solicitud/respuesta | Autorización | Transporte/deadline | Confirmación y errores |
+| --- | --- | --- | --- | --- |
+| FileAccessService.BeginRead | BeginReadRequest(context,handle_id,snapshot,offset,length) → ReadLease | Sesión dueña, modo lector y ACL vigente | Unary / 5 s; request_id idempotente | Registra ocupación del handle y snapshot en una transacción; HANDLE_BUSY, STALE_HANDLE, PERMISSION_DENIED, INVALID_ARGUMENT. |
+| FileAccessService.EndRead | EndReadRequest(context,handle_id,read_id) → MutationResult | Misma sesión/handle | Unary / 5 s; idempotente | Libera solamente esa lectura; nunca confirma writes. |
+
+La semántica vigente de Open, BeginWrite/CommitWrite/AbortWrite, locks, ResolveBlocks,
+PatchBlock y lecturas está en [etapa5-rf3.md](etapa5-rf3.md). El delta admite hasta
+16 MiB, incluso en bloques de 64/128 MiB; PatchBlock también crea la primera versión
+de un bloque sin base. Deadlines de datos: 30/120/240 s por perfil. Los grants de
+lectura ligan rango y read_id; PATCH_DATA es una acción distinta de READ_DATA.
+El contexto mantiene la época estable de servicio y Fence usa la época de arranque
+RF3. Los commits comprueban fences dentro de la transacción SQLite.
 
 | RPC | Solicitud → respuesta | Acceso / efectos | Límite y confirmación |
 |---|---|---|---|

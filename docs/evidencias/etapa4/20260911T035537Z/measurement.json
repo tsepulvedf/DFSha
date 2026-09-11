@@ -1,0 +1,13 @@
+{
+  "status": "FALLIDO",
+  "timestamp": "2026-09-11T04:02:17.269645+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-h2\\65ffd3b3-8a8b-4703-8e8c-682acfd30234",
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "clients": 3,
+  "replicas": 1,
+  "durable_acks": 1,
+  "metric": "Windows PeakWorkingSetSize/PeakPagefileUsage; Linux VmHWM",
+  "scope": "TLS/mTLS loopback; un solo host",
+  "error": "RuntimeError: Roundtrip fall\u00f3: consultar logs privados en runtime"
+}

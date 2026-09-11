@@ -11,6 +11,7 @@
       "server_streaming": false,
       "implementation": "DIAGNOSTIC",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -22,6 +23,7 @@
       "server_streaming": false,
       "implementation": "DIAGNOSTIC",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -33,6 +35,7 @@
       "server_streaming": true,
       "implementation": "DIAGNOSTIC",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/diagnostic.proto"
     },
     {
@@ -44,6 +47,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -55,6 +59,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -66,6 +71,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -77,6 +83,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -88,6 +95,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -99,6 +107,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -110,6 +119,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -121,6 +131,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -132,6 +143,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
@@ -143,6 +155,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -154,6 +167,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -165,6 +179,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -176,6 +191,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -187,6 +203,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/namespace.proto"
     },
     {
@@ -198,6 +215,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -209,6 +227,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -220,6 +239,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -231,6 +251,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -242,6 +263,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -253,6 +275,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -264,6 +287,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -275,6 +299,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -286,6 +311,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -297,6 +323,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -308,6 +335,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -319,6 +347,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -330,6 +359,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -341,6 +371,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -352,6 +383,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -363,6 +395,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -374,6 +407,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -385,6 +419,31 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.BeginRead",
+      "path": "/dfsha.v1.FileAccessService/BeginRead",
+      "request": "dfsha.v1.BeginReadRequest",
+      "response": "dfsha.v1.ReadLease",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/control.proto"
+    },
+    {
+      "rpc": "dfsha.v1.FileAccessService.EndRead",
+      "path": "/dfsha.v1.FileAccessService/EndRead",
+      "request": "dfsha.v1.EndReadRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/control.proto"
     },
     {
@@ -396,6 +455,7 @@
       "server_streaming": false,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -407,6 +467,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -418,6 +479,7 @@
       "server_streaming": true,
       "implementation": "HITO1",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -429,6 +491,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
+      "rf3_implementation": "UNIMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -440,6 +503,7 @@
       "server_streaming": true,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/data.proto"
     },
     {
@@ -451,6 +515,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -462,6 +527,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -473,6 +539,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -484,6 +551,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -495,6 +563,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -506,6 +575,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -517,6 +587,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -528,6 +599,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -539,6 +611,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -550,6 +623,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -561,6 +635,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -572,6 +647,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -583,6 +659,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
@@ -594,6 +671,7 @@
       "server_streaming": false,
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     }
   ]

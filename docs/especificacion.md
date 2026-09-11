@@ -1,5 +1,11 @@
 # DFSha — Especificación formal del servicio
 
+**Actualización E5 del usuario:** [D36–D44 y semántica efectiva](etapa5-rf3.md)
+sustituyen las propuestas anteriores de RF3: seis modos, snapshots fijos,
+write atómico de hasta 16 MiB, locks por bloques/tamaño/archivo, fencing dentro
+del commit y época de arranque. Los bloques siguen siendo modificables mediante
+nuevas versiones; no se promete POSIX completo. Estado de pruebas en ese documento.
+
 **Actualización E4 del usuario:** distribución real de RF1/RF2 preservando las
 semánticas de H1; control sin contenido, bytes directos cliente–DN y copia S/S
 autorizada, R=1/W=1 temporal, ubicaciones separadas de manifiestos. No etcd ni HA
