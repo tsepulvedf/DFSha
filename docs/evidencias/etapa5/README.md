@@ -16,6 +16,7 @@ en Windows; R=1/W=1, un control SQLite y tres DataNodes.
 | [Smoke del wheel](installed-smoke.json) | EJECUTADO, aprobado | 8 MiB, parche de cinco bytes entre bloques, snapshots y descarga desde site-packages; cuatro procesos reales. |
 | [Regresión final](20260911T045117Z/result.json) | EJECUTADO, aprobado | 114 pruebas en 647,27 s, cero fallos/errores/omisiones; 34 módulos importados y 56 RPC. Incluye los ajustes de renovación, reloj monotónico y D44. |
 | [Medición final](20260911T045117Z/measurement.json) | EJECUTADO, aprobado | 512 MiB / bloques 64 MiB; delta 4096 bytes, 3,734 s, SHA-256 idéntico; dos cambios concurrentes verificados y memoria dentro de metas. |
+| [Publicación Git](git-publicacion.json) | EJECUTADO | Implementación 94d6407 publicada en origin/main; hash remoto idéntico y checkout limpio antes del commit documental de este registro. |
 
 La ejecución final terminó correctamente. Los fallos no se sustituyen por resultados
 posteriores ni se cuentan como aprobados. Logs privados, claves, volúmenes y

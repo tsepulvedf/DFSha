@@ -28,8 +28,11 @@ aprobó 512 MiB con tres procesos cliente. Los fallos permanecen en
 [el inventario de evidencias](evidencias/etapa5/README.md).
 
 Git inicial E5: main y origin/main en `92dd53b`; historial E2–E4 conservado.
-Implementación y verificación terminadas; commit y sincronización E5 pendientes
-del cierre Git de esta sesión. No se modificó la identidad del autor.
+Implementación E5 publicada: **`94d64072f2974dfb976166bc9ca8aa7ae607367f`**.
+Push normal a origin/main y hash remoto idéntico verificado; checkout limpio
+tras esa publicación. [Registro Git](evidencias/etapa5/git-publicacion.json).
+Este registro se incorpora mediante un commit documental posterior, sin cambiar
+el código probado. No se modificó la identidad del autor.
 
 Límites: un control/SQLite, R=1/W=1 y un host no acreditan HA. Linux está
 BLOQUEADO POR ENTORNO (WSL no instalado); Docker/Internet/cloud no ejecutados.

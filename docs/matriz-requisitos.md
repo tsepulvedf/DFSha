@@ -10,7 +10,7 @@
 | RF1, RF2 | Manejadores H1/H2 reutilizados, overwrite con autoridad completa; recepción acepta hash global opcional tras parches | Regresión original más descarga RF2 después de write y snapshot tras overwrite/rm | EJECUTADO: regresión final y medición H2 corregida; fallos previos preservados |
 | RNF6 | Grants de rango, ACL vigente, AES-GCM y mTLS; write-only sin lectura de base | Rechazo de rango ampliado, modo write-only, revocación, corrupción y pruebas TLS heredadas | Protección parcial; RNF6 integral pendiente E8 |
 | RNF2, COM-03 | R=1/W=1, un control SQLite | Indisponibilidad controlada y datos/resultados persistentes; no prueba de HA | HA pendiente E7 y réplicas automáticas E6 |
-| INF / ENT | Windows local, fuentes originales, herramientas fijadas; documentación y evidencias sin datos grandes | verify_stage5.py y paquete instalado; Git conforme a flujo existente | Linux/Internet/cloud pendientes; cierre Git pendiente |
+| INF / ENT | Windows local, fuentes originales, herramientas fijadas; documentación y evidencias sin datos grandes | verify_stage5.py y paquete instalado; Git conforme a flujo existente | EJECUTADO local y [publicado en GitHub](evidencias/etapa5/git-publicacion.json); Linux/Internet/cloud pendientes |
 
 Las pruebas omitidas no cuentan como aprobadas. El estado global vigente se
 consulta en [estado.md](estado.md); las tablas históricas siguientes conservan
