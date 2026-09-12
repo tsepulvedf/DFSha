@@ -3,14 +3,14 @@
   "rpcs": 58,
   "future_unimplemented": 28,
   "semantic_rows": 58,
-  "existing_local_links": 338,
+  "existing_local_links": 342,
   "original_sha256": {
     "docs/enunciado/SI3007-262-proyecto1-dfs.docx.pdf": "0ec8cc4cf92f9cf9345d5cf147d096a9cc74f78146aabce823d3890a31b446bf",
     "docs/propuesta/Prompts_Codex_DFSha_Opcion1_CS.md": "755d2bebc288133e54e4f3161a433c35e6d08a9f0a7c8dce9b9b031e41c902b3"
   },
   "document_sha256": {
     "README.md": "bbcc7d994e4f9849327bb3dfa12bd500916427536da3283e5f1c044ff8e4eb3f",
-    "docs/estado.md": "080c3a5b955cc1b2f94028db6effefd14cb25934b9d213c18e102e9dd09e8eeb",
+    "docs/estado.md": "7e21ce3367072518de7fabca2ce3fa208c185096028edf40f3c2600041bdc41e",
     "docs/especificacion.md": "74c589363be2eca38569c6dc77d6e854b2c77124e33689247ab0f0d8646eb42e",
     "docs/arquitectura.md": "01f5ab94aef91cdc139408a43c7b2d1dcb472399881d55b7c71ea1bcea4e055a",
     "docs/decisiones.md": "1834db248355793e8d6191d8760c8dd94f001900f8872864aff7b05461f450cb",
@@ -27,7 +27,7 @@
     "docs/etapa5-rf3.md": "30a700d1c113a3930de9aa256eaae6bb58a58e745b02d44709408126bbde480d",
     "docs/evidencias/etapa5/README.md": "595baf5666df6f26df948edabc72265d5dc181e904ebadfdfbba13c0dad2022f",
     "docs/etapa6-replicacion.md": "38fa650d64445d004bfc89b06384247cccb62fd9bf01efd25041f0b21dabda97",
-    "docs/evidencias/etapa6/README.md": "07d936b08062d64ba4eed3b71424b55e79284ef2bfed512e3f647a21bfbbde7a"
+    "docs/evidencias/etapa6/README.md": "7a69490e76810e5547d5a1e062b44211b65427592d509a16a84d1bdcb2db6714"
   },
   "scope": "auditor\u00eda documental, no prueba RF/RNF"
 }

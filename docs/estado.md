@@ -24,8 +24,12 @@ La primera medición de memoria CN/DN tomó lanzadores venv: se conserva marcada
 como inválida para ese propósito y se sustituyó por la medición final.
 
 Checkout inicial limpio `9f732f0`, main/origin/main coincidentes y remoto
-https://github.com/tsepulvedf/DFSha verificado. Publicación E6 pendiente del commit
-de cierre; no confundir acceso remoto con cambios ya sincronizados. PDF releído
+https://github.com/tsepulvedf/DFSha verificado. Implementación E6 publicada como
+**`7005b0999e161203afcdec92a10dfa0974d8f625`**: push normal a origin/main y hash
+remoto idéntico comprobado; checkout limpio después de publicarla.
+[Registro de publicación](evidencias/etapa6/git-publicacion.json).
+Este registro se incorpora en un commit documental posterior, sin cambiar código.
+PDF releído
 (siete páginas), originales conservados, dependencias sin cambios.
 
 Límites: un host y control único, dominios de proceso simulados; Linux BLOQUEADO

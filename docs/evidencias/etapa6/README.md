@@ -4,6 +4,12 @@ Fecha de cierre: 2026-09-12. Windows local, un ControlNode SQLite, tres DataNode
 y ampliación a cuatro, volúmenes separados; R3/W2 en dominios de proceso simulados.
 No acredita hosts independientes, Linux, Internet, HA del control ni seguridad integral.
 
+Implementación y evidencias publicadas en `7005b09`, push normal y hash remoto
+verificado: [registro Git](git-publicacion.json). Este registro documental se
+incorpora después del commit funcional. [Revisión publicable](delivery-review.json)
+comprobó 60 archivos y no detectó claves privadas, volúmenes ni archivos gigantes.
+La [auditoría](audit-final.json) verifica 58 filas RPC, enlaces y fuentes originales.
+
 ## Ejecuciones y correcciones conservadas
 
 | Evidencia | Resultado real y alcance |
