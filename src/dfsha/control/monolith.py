@@ -36,6 +36,8 @@ class Monolith:
         self.store = SQLiteMetadataStore(cfg['sqlite_path'])
         with self.store.transaction() as tx:
             self.system = tx.get('settings', 'system')
+            if not cfg.get('replication_enabled') and any(p.get('r', 1) > 1 for p in tx.all('policy')):
+                raise RuntimeError('PROTECTED_STORE_REQUIRES_REPLICATION_PROFILE')
         if not self.system or hashlib.sha256(key).hexdigest() != self.system['key_sha256']:
             raise RuntimeError('MASTER_KEY_MISMATCH: no se puede abrir el almacenamiento existente')
         self.auth = Authorizer(key, self.system)

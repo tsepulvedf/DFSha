@@ -1,5 +1,40 @@
 # DFSha — Arquitectura y evolución
 
+**E6:** [D45–D50 y secuencia de publicación](etapa6-replicacion.md) extienden
+la misma SQLite autoritativa con política/revisión, tareas, reservas, historial
+de recibos y salud de copias. El ControlNode conserva el papel de namespace y
+manifiestos asociado al NameNode; DFSha mantiene implementación propia.
+El mantenimiento planifica; los DataNodes transfieren ciphertext por mTLS.
+No circula contenido por el control. COM-01/02/04/05 verificadas; COM-03 pendiente E7.
+
+```mermaid
+flowchart LR
+    C[CLI / SDK] <-->|TLS: metadatos / protección| CN
+    subgraph host[Windows: simulación de fallos de procesos]
+      CN[ControlNode y mantenimiento] --- DB[(SQLite autoritativa)]
+      CN <-->|mTLS: tareas / permisos / recibos| D1[DN1 / volumen propio]
+      CN <-->|mTLS| D2[DN2 / volumen propio]
+      CN <-->|mTLS| D3[DN3 / volumen propio]
+      CN <-->|registro dinámico| D4[DN4 / volumen propio]
+      D1 <-->|mTLS ciphertext| D2
+      D2 <-->|mTLS ciphertext| D3
+      D3 <-->|mTLS reparación| D4
+    end
+    C <-->|TLS: bytes útiles| D1
+    C <-->|TLS: bytes útiles| D2
+    C <-->|TLS: bytes útiles| D3
+    C <-->|TLS: bytes útiles| D4
+```
+
+R3/W2 exige copias verificadas en dominios administrativos distintos dentro del
+perfil declarado. Con tres DN y R3, cada nodo puede contener todos los bloques;
+los primarios y las lecturas se reparten. Si cae uno, quedan dos copias activas:
+se mantiene R3 como objetivo y un cuarto permite repararlo sin esperar el retorno.
+El regreso puede dejar cuatro copias; no se elimina apresuradamente el excedente.
+El control/SQLite, el host y la custodia local de claves siguen siendo puntos de
+fallo del laboratorio. No se acredita HA del control ni independencia física.
+Los perfiles H1/H2/E5 R1 conservan sus raíces y verificadores originales.
+
 **E5 implementada y verificada en Windows local:** [arquitectura de acceso parcial](etapa5-rf3.md). La misma
 SQLite contiene namespace, handles, leases, intenciones y resultados. Queries
 autorizan representaciones; BeginRead/Open/BeginWrite y cierres son comandos.

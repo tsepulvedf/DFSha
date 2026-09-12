@@ -1,4 +1,23 @@
-# DFSha — Entorno reproducible de etapas 2–5
+# DFSha — Entorno reproducible de etapas 2–6
+
+**E6, Windows nativo:** Python 3.12.10, SQLite 3.49.1, grpcio/grpcio-tools
+1.83.1, protobuf 7.36.1, cryptography 50.0.1, argon2-cffi 25.1.0, pytest 9.1.1.
+Se conserva requirements.lock y el entorno `.venv-win`; no se instaló otro stack.
+`scripts/verify_stage6.py --measure` comprueba dependencias, stubs, regresiones y
+medición real. `--replication-only` limita las pruebas a E6.
+
+Arranque reproducible: `scripts/lab_hito2.py init --replication --root
+.runtime/demo-e6 --block-size 67108864`, seguido de start/status/add-fourth/stop
+con la misma raíz. [Comandos completos](etapa6-replicacion.md#reproducción-en-powershell).
+Cada proceso tiene raíz persistente, inventario y claves separados del contenido;
+la configuración administrativa liga dominios simulados e identidades mTLS.
+La memoria se toma del PID anunciado por el servidor, no del lanzador venv.
+[Mediciones y correcciones](evidencias/etapa6/README.md).
+
+Linux sigue BLOQUEADO POR ENTORNO: WSL no instalado. Cuando esté disponible,
+desde el mismo checkout y un venv Linux separado: `python scripts/verify_stage6.py
+--measure`. Ese comando no se acredita ejecutado en Linux. No hay etcd obligatorio,
+provisión cloud, cifrado de volumen ni ensayo de pérdida eléctrica en E6.
 
 **E5:** el mismo Python 3.12.10 de `.venv-win` y lock de dependencias. Sin
 reinstalación del stack, etcd ni migración de datos. Contratos con la misma

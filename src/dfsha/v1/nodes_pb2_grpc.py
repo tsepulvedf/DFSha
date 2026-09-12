@@ -611,6 +611,16 @@ class ClusterAdministrationServiceStub:
                 request_serializer=dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
                 _registered_method=True)
+        self.GetProtection = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/GetProtection',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.ProtectionRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_nodes__pb2.ProtectionStatus.FromString,
+                _registered_method=True)
+        self.PromoteProtection = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/PromoteProtection',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
+                _registered_method=True)
 
 
 class ClusterAdministrationServiceServicer:
@@ -635,6 +645,18 @@ class ClusterAdministrationServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetProtection(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PromoteProtection(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ClusterAdministrationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -652,6 +674,16 @@ def add_ClusterAdministrationServiceServicer_to_server(servicer, server):
                     servicer.CopyStatus,
                     request_deserializer=dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.SerializeToString,
+            ),
+            'GetProtection': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetProtection,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.ProtectionRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_nodes__pb2.ProtectionStatus.SerializeToString,
+            ),
+            'PromoteProtection': grpc.unary_unary_rpc_method_handler(
+                    servicer.PromoteProtection,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_common__pb2.MutationResult.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -736,6 +768,60 @@ class ClusterAdministrationService:
             '/dfsha.v1.ClusterAdministrationService/CopyStatus',
             dfsha_dot_v1_dot_nodes__pb2.GetTaskRequest.SerializeToString,
             dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetProtection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/GetProtection',
+            dfsha_dot_v1_dot_nodes__pb2.ProtectionRequest.SerializeToString,
+            dfsha_dot_v1_dot_nodes__pb2.ProtectionStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PromoteProtection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/PromoteProtection',
+            dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.SerializeToString,
+            dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
             options,
             channel_credentials,
             insecure,

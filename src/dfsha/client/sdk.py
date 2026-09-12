@@ -51,6 +51,29 @@ class Client(AccessClient):
     def nodes(self):
         return self.call(self.cluster.ListNodes, nodes.ClusterQuery())
 
+    def protection(self, path=None, *, operation_id='', snapshot_id='', cursor=''):
+        return self.call(self.cluster.GetProtection, nodes.ProtectionRequest(path=self.path(path) if path else None,
+            operation_id=operation_id, snapshot_id=snapshot_id, page=c.PageRequest(limit=64, cursor=cursor)))
+
+    def promote(self, path, revision):
+        return self.call(self.cluster.PromoteProtection, nodes.PromoteProtectionRequest(path=self.path(path), expected_policy_revision=revision))
+
+    def wait_durable(self, operation_id, seconds=240):
+        deadline = time.monotonic()+seconds
+        while True:
+            cursor, ready = '', True
+            while True:
+                status = self.protection(operation_id=operation_id, cursor=cursor)
+                need(status.operation_state in (c.PREPARING, c.COMMITTED), 'OPERATION_EXPIRED')
+                ready = ready and status.durable_ready
+                if not status.next_cursor:
+                    break
+                cursor = status.next_cursor
+            if ready:
+                return
+            need(time.monotonic() < deadline, 'INSUFFICIENT_REPLICAS')
+            time.sleep(.1)
+
     def copy_status(self, task_id):
         return self.call(self.cluster.CopyStatus, nodes.GetTaskRequest(task_id=task_id))
 
@@ -269,6 +292,8 @@ class Client(AccessClient):
                         fence=plan.fence, page_count=page_index, block_count=len(blocks), total_bytes=total,
                         manifest_sha256=manifest_hash(blocks)), deadline=300)
                     request = self.prepare(ctl.CommitUploadRequest(operation=plan.operation, seal=seal, fence=plan.fence))
+                    if plan.minimum_durable > 1:
+                        self.wait_durable(plan.operation.operation_id)
                     self.last_commit_request = request
                     return self.call(self.uploads.CommitUpload, request)
             except BaseException:
@@ -314,7 +339,7 @@ class Client(AccessClient):
                     self.record_traffic(location.node_id, 'client_read_bytes', offset)
                     return current, offset
             except grpc.RpcError as exc:
-                if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED) or attempt == 2:
+                if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED, grpc.StatusCode.DATA_LOSS) or attempt == 2:
                     raise
                 failed.add(location.node_id)
                 out.seek(start)
@@ -325,6 +350,8 @@ class Client(AccessClient):
                 need(fresh.snapshot == handle.snapshot and len(fresh.blocks) == 1 and fresh.blocks[0].block == block,
                      'CHECKSUM_MISMATCH')
                 allocation = fresh.blocks[0]
+                if not any(loc.node_id not in failed for loc in allocation.locations):
+                    raise exc
 
     def receive_handle(self, handle, local, overwrite=False):
         target = Path(local)

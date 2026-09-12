@@ -1,5 +1,21 @@
 # DFSha — Especificación formal del servicio
 
+**Actualización E6 del usuario, decisiones D45–D50:** la política persistida por
+archivo exige W=2 copias durables en dominios administrativos distintos para
+cada versión nueva; R=3 es el objetivo de copias, no quórum de lectura. Basta una
+copia íntegra de la versión fijada. La tercera copia y la reparación son trabajos
+persistentes; COMMITTED no se revierte por una degradación posterior. GetProtection
+separa política, historial de confirmaciones y disponibilidad actual por bloque.
+PromoteProtection eleva explícitamente archivos R1 y snapshots retenidos sin
+cambiar identidades ni contenido, invalidando preparaciones de política anterior.
+[Semántica, pruebas y límites E6](etapa6-replicacion.md).
+
+RF1/RF2/RF3 conservan sus reglas; W se añade a las comprobaciones transaccionales
+de ACL, tombstone, content_epoch, base y fencing. Archivos vacíos no generan
+confirmaciones ficticias. E6 usa dominios de proceso simulados en un único host;
+HA del control, infraestructura independiente y seguridad integral quedan pendientes.
+Estas decisiones actualizan propuestas anteriores; no se atribuyen al PDF.
+
 **Actualización E5 del usuario:** [D36–D44 y semántica efectiva](etapa5-rf3.md)
 sustituyen las propuestas anteriores de RF3: seis modos, snapshots fijos,
 write atómico de hasta 16 MiB, locks por bloques/tamaño/archivo, fencing dentro

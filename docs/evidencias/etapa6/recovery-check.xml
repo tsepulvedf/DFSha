@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="75.804" timestamp="2026-09-11T15:18:04.024573-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\7918bc10-da3f-4deb-9b85-99411583e771" /></properties><testcase classname="tests.test_stage6" name="test_volume_loss_keys_and_recovery" file="tests\test_stage6.py" line="275" time="44.204"><properties><property name="volume_repair_seconds_from_restart" value="9.687000000000012" /></properties></testcase><testcase classname="tests.test_stage6" name="test_old_maintenance_callback_and_duplicate_receipt" file="tests\test_stage6.py" line="313" time="31.175"><failure message="AssertionError: assert 'DEGRADED' == 'NORMAL'&#10;  &#10;  - NORMAL&#10;  + DEGRADED">cluster = &lt;hito2_runtime.Cluster object at 0x0000017410C4E6F0&gt;
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-24/test_old_maintenance_callback_0')
+
+    
+    def test_old_maintenance_callback_and_duplicate_receipt(cluster, tmp_path):
+        import tomllib
+        from dfsha.common import node_rpc
+        from dfsha.v1 import nodes_pb2_grpc as ng
+        client = cluster.client()
+        try:
+            upload(client, tmp_path, data=b'A'*4194304)
+            healthy(client, '/file')
+            h = client.open('/file', 'r+')
+            plan = client.begin_write(h, 0, b'X')
+            changes = client.prepare_blocks(h, plan, b'X')
+            client.wait_durable(plan.operation.operation_id)
+            changed = ctl.BlockChange()
+            changed.CopyFrom(changes[0])
+            changed.receipts.append(changes[0].receipts[0])
+            rejected(lambda: client.call(client.files.CommitWrite, ctl.CommitWriteRequest(operation=plan.operation,
+                handle_id=h.handle_id, expected_handle_revision=h.revision, fences=plan.fences, changes=[changed]), retries=0), 'CHECKSUM_MISMATCH')
+            client.commit_write(h, plan, changes)
+            client.close(h)
+            cfg = tomllib.loads(cluster.control.config.read_text(encoding='utf-8'))['server']
+            with SQLiteMetadataStore(cfg['sqlite_path']).transaction() as tx:
+                task = next(t for t in tx.all('task') if t['kind'] == 'copy' and t['status']['state'] == 'FINISHED')
+            dest = cluster.nodes[cluster.node_ids.index(task['dest'])]
+            dn_cfg = tomllib.loads(dest.config.read_text(encoding='utf-8'))['datanode']
+            callback = n.ReportTaskRequest(context=node_rpc.context_for(dn_cfg), node_id=task['dest'],
+                boot_generation=dest.info['generation'], task=proto(n.TaskStatus, task['status']),
+                fence=c.Fence(lock_id=task['id'], generation=task['generation'], service_epoch=cluster.epoch))
+            cluster.control.stop()
+            cluster.control.start()
+            cluster.wait_ready(3, client)
+            with node_rpc.channel(cluster.internal, dn_cfg) as channel:
+&gt;               rejected(lambda: ng.NodeRegistryServiceStub(channel).ReportTask(callback, timeout=5), 'LOCK_EXPIRED')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: assert 'DEGRADED' == 'NORMAL'
+E                 
+E                 - NORMAL
+E                 + DEGRADED
+
+tests\test_stage6.py:346: AssertionError</failure></testcase></testsuite></testsuites>

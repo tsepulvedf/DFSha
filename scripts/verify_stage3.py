@@ -26,7 +26,7 @@ def main():
     commands = [
         [sys.executable, '-m', 'pip', 'check'],
         [sys.executable, 'scripts/generate_proto.py', '--check'],
-        [sys.executable, '-m', 'pytest', '-q', '--ignore=tests/test_hito2.py', '--ignore=tests/test_stage5.py', f'--junitxml={directory / "pytest.xml"}'],
+        [sys.executable, '-m', 'pytest', '-q', '--ignore=tests/test_hito2.py', '--ignore=tests/test_stage5.py', '--ignore=tests/test_stage6.py', f'--junitxml={directory / "pytest.xml"}'],
         [sys.executable, 'scripts/audit_stage2.py', '--evidence', str(directory / 'auditoria.json')],
     ]
     if args.measure:

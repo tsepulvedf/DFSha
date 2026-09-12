@@ -1,5 +1,39 @@
 # DFSha — Estado del proyecto y continuidad
 
+**2026-09-12 · ETAPA 6 COMPLETA en su perfil Windows local de fallos de procesos.**
+R=3 objetivo / W=2 por versión nueva; un ControlNode SQLite, tres DataNodes y
+cuarto nodo incorporado dinámicamente. Replicación S/S automática, tareas
+persistentes con época, reparación, lectura alternativa, promoción R1 y GC seguro.
+RF1/RF2/RF3 y perfiles H1/H2/E5 preservados. [D45–D50 y demo](etapa6-replicacion.md).
+
+EJECUTADO: regresión conjunta **130 aprobadas en 1413,54 s**, sin omisiones,
+y una comprobación aislada adicional de generación física aprobada (131 casos
+distintos, no una única ejecución de 131). GC ampliada y repetida: conserva todas
+las copias con lector y las elimina después de close. Wheel instalado comprobado
+con procesos reales, 58 contratos RPC y 34 módulos generados importables.
+[Inventario y correcciones](evidencias/etapa6/README.md).
+
+Medición E6: 512 MiB, bloques de 64 MiB, tres copias por bloque; caída, lectura
+alternativa y reparación a tres copias con el cuarto nodo. SHA-256 correcto antes
+y después del parche. Cliente envía 4096 bytes de delta, control cero contenido.
+[Tablas, tiempos y memoria de PID reales](evidencias/etapa6/medicion.md).
+Máximos residentes de esa ejecución: cliente **63,02 MiB**, control **63,11 MiB**,
+DN máximo **56,23 MiB**. Detección desde stop **6,047 s**; lectura alternativa
+desde open **0,828 s**; reparación desde inicio del cuarto nodo **37,187 s**.
+La primera medición de memoria CN/DN tomó lanzadores venv: se conserva marcada
+como inválida para ese propósito y se sustituyó por la medición final.
+
+Checkout inicial limpio `9f732f0`, main/origin/main coincidentes y remoto
+https://github.com/tsepulvedf/DFSha verificado. Publicación E6 pendiente del commit
+de cierre; no confundir acceso remoto con cambios ya sincronizados. PDF releído
+(siete páginas), originales conservados, dependencias sin cambios.
+
+Límites: un host y control único, dominios de proceso simulados; Linux BLOQUEADO
+POR ENTORNO (WSL no instalado). Seguridad integral E8, hosts independientes,
+Internet/cloud, respaldos y Q01–Q07 pendientes. Carga amplia/benchmarks E10.
+Siguiente: **E7, HA del control y metadatos compartidos**, no ejecutada.
+Los cierres E1–E5 siguientes se conservan como antecedentes históricos.
+
 Actualizado: 2026-09-11 · **ETAPA 5 COMPLETA en Windows local**, R=1/W=1.
 RF3 implementa seis modos de apertura, snapshots, lectura por rangos, write atómico
 de hasta 16 MiB, PatchBlock directo cliente–DN, locks/leases con fencing comprobado

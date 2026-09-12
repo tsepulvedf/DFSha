@@ -1,0 +1,2683 @@
+{
+  "status": "EJECUTADO",
+  "timestamp": "2026-09-11T20:47:11.533000+00:00",
+  "bytes": 536870912,
+  "block_size": 67108864,
+  "chunk_bytes": 262144,
+  "target": 3,
+  "minimum": 2,
+  "failure_profile": "process-simulation",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e6\\d61151ec-431a-473f-911e-6b6bb4dbaa42",
+  "scope": "Un host Windows; un control y 3/4 DataNodes independientes; no tolerancia de host",
+  "upload_seconds": 88.17200000000003,
+  "commit": {
+    "operation": {
+      "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+      "request_id": "63c72820-0963-45ff-9f37-48848c7262d1",
+      "intent_sha256": "0oNAf7NmGn3OygG0Y8IlEvjQdF4uqF0gGpVCRnX78iI="
+    },
+    "state": "COMMITTED",
+    "snapshot": {
+      "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+      "content_epoch": "1",
+      "file_version": "1",
+      "manifest_root": "7ec6b3d3-3a23-4a6c-8f96-aa33de836045",
+      "size_bytes": "536870912",
+      "manifest_sha256": "RtmJYCRnxvNKWGzukHQGrSUMWTl3Th9yJEb0rQlV7e8=",
+      "file_sha256": "wEdzGjwTTz00KG1gjpwXMCfVD0OrnSBk88Ngk5l36Qg=",
+      "block_size_bytes": "67108864"
+    },
+    "accepted_bytes": "536870912",
+    "degraded": true,
+    "target_replicas": 3,
+    "minimum_durable": 2
+  },
+  "before_failure": [
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "51c7e4b9-a2cf-40ed-abb6-149f09393a13",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "9f51a326-52a7-44a6-8274-d5feb9c97a67",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "51c7e4b9-a2cf-40ed-abb6-149f09393a13",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "xP+a4VXwWA1Eya0TxDmo9h67iUNSD67/SrDXI2VA7fw=",
+            "durable_at_unix_ms": "1789159643927"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "15da8ac8-d8a3-49d6-a474-26272e615014",
+            "operation_id": "13ff2950-b988-4b5d-b61f-1e36e75bfde4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "51c7e4b9-a2cf-40ed-abb6-149f09393a13",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "xP+a4VXwWA1Eya0TxDmo9h67iUNSD67/SrDXI2VA7fw=",
+            "durable_at_unix_ms": "1789159651451"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "c754f25e-9590-449f-95ce-c557dc616ffc",
+            "operation_id": "57e8b423-afe3-4b70-b97d-e3b282f198a9",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "51c7e4b9-a2cf-40ed-abb6-149f09393a13",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "xP+a4VXwWA1Eya0TxDmo9h67iUNSD67/SrDXI2VA7fw=",
+            "durable_at_unix_ms": "1789159659273"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+        "block_index": "1",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "58a6da2f-54b9-478f-8b24-12d1f9c36106",
+            "operation_id": "5a67b9d1-2ed8-4e64-83fb-5566c00a6fae",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159663887"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "b4a8fd0d-3400-4a88-aeea-2ceba5ca93f8",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159649276"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "34c01222-82ce-451d-b99f-5f0d88d4b742",
+            "operation_id": "7ae4b085-5bc4-4e3a-8871-719451cd4864",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159693438"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+        "block_index": "2",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "2a115af0-f146-4e6e-8a98-d02267eb4369",
+            "operation_id": "dadf08fd-4935-409d-a601-bba95e3fbd2b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159737580"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7b4ab5a4-4c65-4705-a4d1-b45a4b70aa4e",
+            "operation_id": "ce51dc4b-b001-45bc-b729-f38aafd7a4c0",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159727096"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "e938fa29-7232-4064-8eef-6ee6a0b175de",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159655385"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+        "block_index": "3",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "31676e47-ac3b-4bc4-9adf-e2d95e0de9b2",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159659911"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "9dcf8860-dadd-4d36-88ac-d0eeb10128ba",
+            "operation_id": "b48c112c-2fc6-47b6-a5b9-9a7c441679ac",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159722019"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "3b887e02-39b0-461f-8009-4c779d506565",
+            "operation_id": "d589a808-c395-4cb1-a481-1d4e23b99d5d",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159732274"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+        "block_index": "4",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "86312e5a-d5eb-4f6c-a022-671de8e69175",
+            "operation_id": "78e6a2d8-6e12-46ce-8d8a-94d5970c1293",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159671537"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7d4d44f9-4aa1-4bba-8edc-866884d49852",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159664953"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bd5b27a9-0ca6-4c2b-a2ba-23ce6058b89c",
+            "operation_id": "94797ce3-4647-428d-94f7-99068b58d6c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159704049"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+        "block_index": "5",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "79b11dfe-ee6f-4c07-accd-f270069832ff",
+            "operation_id": "9b4f99a3-faf3-4658-88da-796471e366c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159708924"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "cbe18b4e-5135-4a75-84aa-84ba874f0a8e",
+            "operation_id": "2e4e5d5d-8aa0-42e9-a117-b3f8c8427993",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159678511"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bf17b45b-4f58-4371-b706-f88522e7def0",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159668277"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+        "block_index": "6",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "ef94cc05-7924-45ed-8648-451eb6b0e075",
+            "operation_id": "7aea9742-9cb9-4b25-b008-942be97e366b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159698440"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "e5cd5bf9-4b31-45fd-ad1a-db2d8c03f167",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159673298"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "1886348a-f0b4-49b1-a994-703826ac0e10",
+            "operation_id": "9ddfa399-f372-4d74-ac1a-c2eaca470981",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159713965"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+        "block_index": "7",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "a2daae6e-d103-4d56-8166-72542ee2ffd3",
+            "operation_id": "743f5c09-6a27-4fb1-9ec7-c990a0107f1f",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159688319"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "dcddfd8a-c4dc-4d5b-8e96-754984f9c5e4",
+            "operation_id": "55cfb2e9-f4e2-4eb5-98c4-e3589beb9c7e",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159682671"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "70694209-d724-4aec-b7af-f76540d9a4e6",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159677318"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        }
+      ]
+    }
+  ],
+  "download_seconds": 15.077999999999975,
+  "original_sha256": "c047731a3c134f3d34286d608e9c173027d50f43ab9d2064f3c360939977e908",
+  "downloaded_sha256": "c047731a3c134f3d34286d608e9c173027d50f43ab9d2064f3c360939977e908",
+  "client_useful_traffic": {
+    "16d380ea-aec5-4a8c-9072-23e4615b26df": {
+      "client_write_bytes": 134221824,
+      "client_read_bytes": 402661376
+    },
+    "e622ac39-487b-46e3-a506-4706e13d52e8": {
+      "client_write_bytes": 201326592,
+      "client_read_bytes": 335544320
+    },
+    "fc85fe29-ca5c-403b-8396-c1e5fb8187fb": {
+      "client_write_bytes": 201326592,
+      "client_read_bytes": 134217728
+    }
+  },
+  "transfer_traffic": {
+    "fc85fe29-ca5c-403b-8396-c1e5fb8187fb": {
+      "client_write_bytes": 201326592,
+      "replica_write_bytes": 335571975,
+      "replica_read_bytes": 402686370,
+      "client_read_bytes": 134217728
+    },
+    "e622ac39-487b-46e3-a506-4706e13d52e8": {
+      "client_write_bytes": 201326592,
+      "replica_write_bytes": 335571975,
+      "replica_read_bytes": 402686370,
+      "client_read_bytes": 201326592
+    },
+    "16d380ea-aec5-4a8c-9072-23e4615b26df": {
+      "client_write_bytes": 134217728,
+      "replica_read_bytes": 268457580,
+      "replica_write_bytes": 402686370,
+      "client_read_bytes": 201326592
+    }
+  },
+  "patch_commit_seconds": 9.561999999999898,
+  "patch_traffic": {
+    "fc85fe29-ca5c-403b-8396-c1e5fb8187fb": {
+      "client_read_bytes": 0,
+      "replica_read_bytes": 0,
+      "client_write_bytes": 0,
+      "replica_write_bytes": 67114395
+    },
+    "e622ac39-487b-46e3-a506-4706e13d52e8": {
+      "client_read_bytes": 0,
+      "replica_read_bytes": 0,
+      "client_write_bytes": 0,
+      "replica_write_bytes": 67114395
+    },
+    "16d380ea-aec5-4a8c-9072-23e4615b26df": {
+      "patch_ciphertext_stored_bytes": 67114395,
+      "client_read_bytes": 4096,
+      "replica_read_bytes": 134228790,
+      "client_write_bytes": 4096,
+      "patch_base_plaintext_processed_bytes": 268435456,
+      "replica_write_bytes": 0,
+      "patch_result_processed_bytes": 134217728
+    }
+  },
+  "detect_seconds_from_stop": 5.7970000000000255,
+  "degraded": [
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "0966fcf8-c413-4888-80e2-f41179023ce8",
+            "operation_id": "6e72564b-c6d8-4fcb-b902-05d908519d14",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159756584"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "0ca69895-768c-432e-8bf5-814ca1ad894f",
+            "operation_id": "4ded07ad-a03c-4f3e-a130-f9610498cf07",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159762479"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "06211264-5ea9-4fbb-a542-090ef144e674",
+            "operation_id": "f7815bbe-303a-45fc-a879-72acc52eba48",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159768050"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+        "block_index": "1",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "58a6da2f-54b9-478f-8b24-12d1f9c36106",
+            "operation_id": "5a67b9d1-2ed8-4e64-83fb-5566c00a6fae",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159663887"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "b4a8fd0d-3400-4a88-aeea-2ceba5ca93f8",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159649276"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "34c01222-82ce-451d-b99f-5f0d88d4b742",
+            "operation_id": "7ae4b085-5bc4-4e3a-8871-719451cd4864",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159693438"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+        "block_index": "2",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "2a115af0-f146-4e6e-8a98-d02267eb4369",
+            "operation_id": "dadf08fd-4935-409d-a601-bba95e3fbd2b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159737580"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7b4ab5a4-4c65-4705-a4d1-b45a4b70aa4e",
+            "operation_id": "ce51dc4b-b001-45bc-b729-f38aafd7a4c0",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159727096"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "e938fa29-7232-4064-8eef-6ee6a0b175de",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159655385"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+        "block_index": "3",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "31676e47-ac3b-4bc4-9adf-e2d95e0de9b2",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159659911"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "9dcf8860-dadd-4d36-88ac-d0eeb10128ba",
+            "operation_id": "b48c112c-2fc6-47b6-a5b9-9a7c441679ac",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159722019"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "3b887e02-39b0-461f-8009-4c779d506565",
+            "operation_id": "d589a808-c395-4cb1-a481-1d4e23b99d5d",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159732274"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+        "block_index": "4",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "86312e5a-d5eb-4f6c-a022-671de8e69175",
+            "operation_id": "78e6a2d8-6e12-46ce-8d8a-94d5970c1293",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159671537"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7d4d44f9-4aa1-4bba-8edc-866884d49852",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159664953"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bd5b27a9-0ca6-4c2b-a2ba-23ce6058b89c",
+            "operation_id": "94797ce3-4647-428d-94f7-99068b58d6c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159704049"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+        "block_index": "5",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "79b11dfe-ee6f-4c07-accd-f270069832ff",
+            "operation_id": "9b4f99a3-faf3-4658-88da-796471e366c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159708924"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "cbe18b4e-5135-4a75-84aa-84ba874f0a8e",
+            "operation_id": "2e4e5d5d-8aa0-42e9-a117-b3f8c8427993",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159678511"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bf17b45b-4f58-4371-b706-f88522e7def0",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159668277"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+        "block_index": "6",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "ef94cc05-7924-45ed-8648-451eb6b0e075",
+            "operation_id": "7aea9742-9cb9-4b25-b008-942be97e366b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159698440"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "e5cd5bf9-4b31-45fd-ad1a-db2d8c03f167",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159673298"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "1886348a-f0b4-49b1-a994-703826ac0e10",
+            "operation_id": "9ddfa399-f372-4d74-ac1a-c2eaca470981",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159713965"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+        "block_index": "7",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 3,
+      "eligible": 2,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "a2daae6e-d103-4d56-8166-72542ee2ffd3",
+            "operation_id": "743f5c09-6a27-4fb1-9ec7-c990a0107f1f",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159688319"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "dcddfd8a-c4dc-4d5b-8e96-754984f9c5e4",
+            "operation_id": "55cfb2e9-f4e2-4eb5-98c4-e3589beb9c7e",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159682671"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "70694209-d724-4aec-b7af-f76540d9a4e6",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159677318"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    }
+  ],
+  "alternate_seconds_from_open": 1.5470000000000255,
+  "after_repair": [
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "0966fcf8-c413-4888-80e2-f41179023ce8",
+            "operation_id": "6e72564b-c6d8-4fcb-b902-05d908519d14",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159756584"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "b67a6530-6455-4de1-ab1a-c39d314f3536",
+            "operation_id": "7476aa5d-ad78-4fe8-bb06-8082ef7847c6",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159799406"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "0ca69895-768c-432e-8bf5-814ca1ad894f",
+            "operation_id": "4ded07ad-a03c-4f3e-a130-f9610498cf07",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159762479"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "06211264-5ea9-4fbb-a542-090ef144e674",
+            "operation_id": "f7815bbe-303a-45fc-a879-72acc52eba48",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "ab65d877-8ecf-4aa4-8fa5-30ef1e2e277c",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "ZSvP+aXtvAfAMAowjXnD6uBQrTqIcFIrMLCk3g2XQjY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/y4RyVO/sB/cCjNWJn5oUEWfRqTMnHjdVgjl+2aqlwg=",
+            "durable_at_unix_ms": "1789159768050"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+        "block_index": "1",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "58a6da2f-54b9-478f-8b24-12d1f9c36106",
+            "operation_id": "5a67b9d1-2ed8-4e64-83fb-5566c00a6fae",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159663887"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "ac9ff2b5-bd12-4dec-bd7d-bf1136bab13c",
+            "operation_id": "f4fe9915-4356-403d-9aaf-ba8c63e805ea",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159817056"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "b4a8fd0d-3400-4a88-aeea-2ceba5ca93f8",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159649276"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "34c01222-82ce-451d-b99f-5f0d88d4b742",
+            "operation_id": "7ae4b085-5bc4-4e3a-8871-719451cd4864",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "6525325b-911f-4aac-9dbf-3e97ed78ec3d",
+              "block_index": "1",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "QYk/MqIDYLC9M23KjasP+ZNwnlunSLWBVOwfVX7Qy+E=",
+            "durable_at_unix_ms": "1789159693438"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+        "block_index": "2",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "2a115af0-f146-4e6e-8a98-d02267eb4369",
+            "operation_id": "dadf08fd-4935-409d-a601-bba95e3fbd2b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159737580"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "8353af1e-77af-4e36-b490-8e219c989c5f",
+            "operation_id": "7b52c3a7-a342-4f28-946b-1f77ec6fafa8",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159805224"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7b4ab5a4-4c65-4705-a4d1-b45a4b70aa4e",
+            "operation_id": "ce51dc4b-b001-45bc-b729-f38aafd7a4c0",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159727096"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "e938fa29-7232-4064-8eef-6ee6a0b175de",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "a6bd3563-5778-46d7-9448-10b900905ae9",
+              "block_index": "2",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "9/pTXp2Mmeh3ECU/Kw1TI/Ke+8BKHI7te9SpSeSr6t8=",
+            "durable_at_unix_ms": "1789159655385"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+        "block_index": "3",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "31676e47-ac3b-4bc4-9adf-e2d95e0de9b2",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159659911"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "c487029f-f7c3-4443-92fc-ae1862ef160a",
+            "operation_id": "70c9929f-ba53-4bde-a12c-54e5116cb606",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159793774"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "9dcf8860-dadd-4d36-88ac-d0eeb10128ba",
+            "operation_id": "b48c112c-2fc6-47b6-a5b9-9a7c441679ac",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159722019"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "3b887e02-39b0-461f-8009-4c779d506565",
+            "operation_id": "d589a808-c395-4cb1-a481-1d4e23b99d5d",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "26475cfb-a4d6-461e-bf2b-fa803a2a8340",
+              "block_index": "3",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "y8EHDrilHXZagGUkZDxrTSkoQm/XpZaq41n6nqB3EHA=",
+            "durable_at_unix_ms": "1789159732274"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+        "block_index": "4",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "86312e5a-d5eb-4f6c-a022-671de8e69175",
+            "operation_id": "78e6a2d8-6e12-46ce-8d8a-94d5970c1293",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159671537"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "8c9da41f-4d8b-4ebe-8523-7bbf12c79151",
+            "operation_id": "f8563463-5ddf-47da-9c7f-8e5e3f118981",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159822537"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "7d4d44f9-4aa1-4bba-8edc-866884d49852",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159664953"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bd5b27a9-0ca6-4c2b-a2ba-23ce6058b89c",
+            "operation_id": "94797ce3-4647-428d-94f7-99068b58d6c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "983ef8d4-e2e8-48dd-8f04-018d9f5db7ae",
+              "block_index": "4",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "YOgwekvf56KDBlNox/RbkWvr/9hTN0IUOEIDN5nUbzo=",
+            "durable_at_unix_ms": "1789159704049"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+        "block_index": "5",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "79b11dfe-ee6f-4c07-accd-f270069832ff",
+            "operation_id": "9b4f99a3-faf3-4658-88da-796471e366c4",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159708924"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "53e9ab48-7bdc-4d73-93fc-03708b105e70",
+            "operation_id": "147abd8f-6da8-4223-8172-285a4e06edc6",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159783506"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "cbe18b4e-5135-4a75-84aa-84ba874f0a8e",
+            "operation_id": "2e4e5d5d-8aa0-42e9-a117-b3f8c8427993",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159678511"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "bf17b45b-4f58-4371-b706-f88522e7def0",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "0f66e446-5c8f-4a61-ac57-d5862026da2d",
+              "block_index": "5",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "zOK/I3MPL3S2zyxkiWpKMR4dWdCzCrsI2pqDnAawPWA=",
+            "durable_at_unix_ms": "1789159668277"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+        "block_index": "6",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "ef94cc05-7924-45ed-8648-451eb6b0e075",
+            "operation_id": "7aea9742-9cb9-4b25-b008-942be97e366b",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159698440"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "2f6e7ce7-963f-49d1-a245-87de25cdb5f0",
+            "operation_id": "1f0caec6-3cd4-4e13-9349-989fcdafb1b8",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159789399"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "e5cd5bf9-4b31-45fd-ad1a-db2d8c03f167",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159673298"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "1886348a-f0b4-49b1-a994-703826ac0e10",
+            "operation_id": "9ddfa399-f372-4d74-ac1a-c2eaca470981",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "d3d7f099-4a3d-4011-adc3-461a4aa7f1ed",
+              "block_index": "6",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "/xm1Rqqd6+6UzA/quOomfiGI33S0yB5XZHX6e4fL5N0=",
+            "durable_at_unix_ms": "1789159713965"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    },
+    {
+      "block": {
+        "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+        "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+        "block_index": "7",
+        "size_bytes": "67108864",
+        "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+      },
+      "target": 3,
+      "confirmed": 4,
+      "eligible": 3,
+      "copies": [
+        {
+          "node": {
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57739",
+            "private_endpoint": "localhost:57740",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df"
+          },
+          "receipt": {
+            "receipt_id": "a2daae6e-d103-4d56-8166-72542ee2ffd3",
+            "operation_id": "743f5c09-6a27-4fb1-9ec7-c990a0107f1f",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "boot_generation": "1",
+            "failure_domain": "process-16d380ea-aec5-4a8c-9072-23e4615b26df",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159688319"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57741",
+            "private_endpoint": "localhost:57742",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e"
+          },
+          "receipt": {
+            "receipt_id": "169373d2-bdd0-4e17-b23d-0d239102ec03",
+            "operation_id": "adb41f27-d4ee-4f83-8288-e182b64feb14",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+            "boot_generation": "1",
+            "failure_domain": "process-be1e30ec-6279-454f-8a71-4e47783a599e",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159810912"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57737",
+            "private_endpoint": "localhost:57738",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8"
+          },
+          "receipt": {
+            "receipt_id": "dcddfd8a-c4dc-4d5b-8e96-754984f9c5e4",
+            "operation_id": "55cfb2e9-f4e2-4eb5-98c4-e3589beb9c7e",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+            "boot_generation": "1",
+            "failure_domain": "process-e622ac39-487b-46e3-a506-4706e13d52e8",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159682671"
+          },
+          "health": "VERIFIED",
+          "eligible": true
+        },
+        {
+          "node": {
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "client_endpoint": "localhost:57735",
+            "private_endpoint": "localhost:57736",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb"
+          },
+          "receipt": {
+            "receipt_id": "70694209-d724-4aec-b7af-f76540d9a4e6",
+            "operation_id": "5fe8e345-68a4-405f-9a4a-39c3ed7e42f2",
+            "block": {
+              "file_id": "27e21125-bc37-4f2a-a9f1-a8499c613600",
+              "block_version_id": "1103195d-1413-4baa-b41c-d817c0773e81",
+              "block_index": "7",
+              "size_bytes": "67108864",
+              "plaintext_sha256": "KB5RnfMHe1V8awP12oPE6NOXIZJZYV3XwzCPicro8qY="
+            },
+            "node_id": "fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "boot_generation": "1",
+            "failure_domain": "process-fc85fe29-ca5c-403b-8396-c1e5fb8187fb",
+            "stored_size_bytes": "67114395",
+            "ciphertext_sha256": "U/CtJ3xyESF9LwBkcjfPhGhNB6KdOtZxYoThc3Z9HKM=",
+            "durable_at_unix_ms": "1789159677318"
+          },
+          "health": "VERIFIED"
+        }
+      ]
+    }
+  ],
+  "repair_seconds_from_fourth_start": 45.858999999999924,
+  "patched_expected_sha256": "22c45085d585834221e85ede577e023e62d42d8ace4682feb7a09d6e69136250",
+  "repaired_download_sha256": "22c45085d585834221e85ede577e023e62d42d8ace4682feb7a09d6e69136250",
+  "control_content_bytes": 0,
+  "memory": {
+    "client": {
+      "peak_resident_bytes": 66691072,
+      "peak_commit_bytes": 48766976
+    },
+    "control": {
+      "peak_resident_bytes": 4362240,
+      "peak_commit_bytes": 819200
+    },
+    "datanodes": [
+      {
+        "node_id": "e622ac39-487b-46e3-a506-4706e13d52e8",
+        "peak_resident_bytes": 4370432,
+        "peak_commit_bytes": 823296
+      },
+      {
+        "node_id": "16d380ea-aec5-4a8c-9072-23e4615b26df",
+        "peak_resident_bytes": 4399104,
+        "peak_commit_bytes": 856064
+      },
+      {
+        "node_id": "be1e30ec-6279-454f-8a71-4e47783a599e",
+        "peak_resident_bytes": 4390912,
+        "peak_commit_bytes": 839680
+      }
+    ]
+  },
+  "memory_goals_met": true
+}

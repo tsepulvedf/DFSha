@@ -30,7 +30,11 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
         if app is not None:
             raise ValueError('Seleccione un solo perfil')
         from dfsha.control.distributed import DistributedControl
-        app = DistributedControl({**cfg, **configuration['distributed']})
+        control_class = DistributedControl
+        if configuration['distributed'].get('replication_enabled'):
+            from dfsha.control.replication import ReplicatedControl
+            control_class = ReplicatedControl
+        app = control_class({**cfg, **configuration['distributed']})
     certs = Path(cfg["certificate_dir"])
     stop = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):

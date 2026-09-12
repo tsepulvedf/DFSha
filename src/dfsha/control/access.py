@@ -343,8 +343,12 @@ class AccessCommands(ClusterCommands):
             record = tx.get('block', replacement.block_version_id)
             assignment = tx.get('assignment', replacement.block_version_id)
             dn = tx.get('datanode', assignment['node'])
-            need(record and record['ref'] == asdict(replacement) and self.app.location(tx, replacement.block_version_id, dn['id']) and
-                 self.app.state(dn) in ('READY', 'SUSPECT') and assignment['generation'] == int(dn['location']['boot_generation']), 'DATA_UNAVAILABLE')
+            if hasattr(self.app, 'require_durable'):
+                need(record and record['ref'] == asdict(replacement), 'DATA_UNAVAILABLE')
+                self.app.require_durable(tx, op, replacement)
+            else:
+                need(record and record['ref'] == asdict(replacement) and self.app.location(tx, replacement.block_version_id, dn['id']) and
+                     self.app.state(dn) in ('READY', 'SUSPECT') and assignment['generation'] == int(dn['location']['boot_generation']), 'DATA_UNAVAILABLE')
             need(len(change.receipts) == 1 and asdict(change.receipts[0]) == record['receipt'], 'CHECKSUM_MISMATCH')
             if index == len(blocks):
                 blocks.append(asdict(replacement))

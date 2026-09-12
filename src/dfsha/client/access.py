@@ -67,6 +67,7 @@ class AccessClient:
                     grant = allocation.grants[0]
                     expected_offset, expected_length = grant.offset, grant.length
                     received, digest, attempts = 0, hashlib.sha256(), 0
+                    failed_nodes = set()
                     while received < expected_length:
                         location = next(x for x in allocation.locations if x.node_id == grant.node_id)
                         request = self.prepare(d.GetBlockRequest(handle_id=handle.handle_id, snapshot=handle.snapshot,
@@ -90,9 +91,10 @@ class AccessClient:
                                     yield frame.chunk.data
                                 need(wire_position == grant.length, 'DATA_LOSS')
                         except grpc.RpcError as exc:
-                            if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED) or attempts >= 2:
+                            if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED, grpc.StatusCode.DATA_LOSS) or attempts >= 2:
                                 raise
                             attempts += 1
+                            failed_nodes.add(location.node_id)
                             if received == expected_length:
                                 raise
                             position = allocation.block.block_index * handle.snapshot.block_size_bytes + expected_offset + received
@@ -100,7 +102,9 @@ class AccessClient:
                                 snapshot=handle.snapshot, offset=position, length=expected_length-received, page=c.PageRequest(limit=1), read_id=read_id))
                             need(len(fresh.blocks) == 1 and fresh.blocks[0].block == allocation.block, 'DATA_UNAVAILABLE')
                             allocation = fresh.blocks[0]
-                            grant = next((g for g in allocation.grants if g.node_id != location.node_id), allocation.grants[0])
+                            grant = next((g for g in allocation.grants if g.node_id not in failed_nodes), None)
+                            if grant is None:
+                                raise exc
                     if expected_offset == 0 and expected_length == allocation.block.size_bytes:
                         need(digest.digest() == allocation.block.plaintext_sha256, 'CHECKSUM_MISMATCH')
                 if not plan.next_cursor:
@@ -158,6 +162,8 @@ class AccessClient:
         return changes
 
     def commit_write(self, handle, plan, changes, request_id=None):
+        if plan.minimum_durable > 1:
+            self.wait_durable(plan.operation.operation_id)
         request = self.prepare(ctl.CommitWriteRequest(operation=plan.operation, handle_id=handle.handle_id,
             changes=changes, fences=plan.fences, expected_handle_revision=handle.revision), request_id)
         self.last_commit_request = request

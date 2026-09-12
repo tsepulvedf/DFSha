@@ -1,5 +1,14 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
+Actualización 2026-09-12: **[D45–D50](etapa6-replicacion.md#decisiones-d45d50)**
+adoptadas en E6: política persistida R3/W2, dominios administrativos explícitos,
+commit por bloque, tareas con época y reconciliación, salud/cuarentena/GC y
+promoción desde R1. Implementación: control/replication.py, autoridad existente,
+SDK y DataNodes. 130 pruebas de regresión aprobadas; verificaciones complementarias
+y medición en [evidencias E6](evidencias/etapa6/README.md). Stack fijado sin cambios.
+Un solo control y un solo host son límites deliberados del laboratorio; Q01–Q07
+sin aclaraciones docentes nuevas. Los apartados E1–E5 conservan su contexto histórico.
+
 Actualizado 2026-09-11 · Etapas 1–5. [D36–D44](etapa5-rf3.md) implementadas y
 verificadas en Windows local: RF3, fencing, parches y continuidad de heartbeats.
 114 pruebas aprobadas; evidencia y límites en [estado](estado.md).

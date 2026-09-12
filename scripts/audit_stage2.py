@@ -23,6 +23,7 @@ def main():
     from dfsha.control.distributed import DistributedControl, ClusterQueries, ClusterCommands
     from dfsha.datanode.service import DataNode
     from dfsha.control.access import AccessQueries, AccessCommands
+    from dfsha.control.replication import ReplicatedControl, ProtectionQueries, ProtectionCommands
     for module in ("diagnostic", "identity", "namespace", "control", "data", "nodes"):
         descriptor = importlib.import_module(f"dfsha.v1.{module}_pb2").DESCRIPTOR
         for service in descriptor.services_by_name.values():
@@ -42,6 +43,9 @@ def main():
                         any(hasattr(cls, method.name) for cls in (AccessQueries, AccessCommands, DataNode)) or
                         (service.name in ('NodeRegistryService', 'InternalAuthorizationService') and hasattr(DistributedControl, method.name))
                         else 'UNIMPLEMENTED',
+                    "replication_implementation": "IMPLEMENTED" if module == 'diagnostic' or method.name == 'Login' or
+                        any(hasattr(cls, method.name) for cls in (ProtectionQueries, ProtectionCommands, DataNode)) or
+                        (service.name in ('NodeRegistryService', 'InternalAuthorizationService') and hasattr(ReplicatedControl, method.name)) else 'UNIMPLEMENTED',
                     "source": f"proto/dfsha/v1/{module}.proto"})
     catalog = {"version": "dfsha.v1", "semantic_contract": "docs/protocolos.md", "rpcs": records}
     catalog_file = ROOT / "docs/rpc-catalog.json"
@@ -56,14 +60,15 @@ def main():
         if f"| {short} " not in protocols:
             raise RuntimeError(f"RPC sin fila semántica: {short}")
     future = sum(r["implementation"] == "UNIMPLEMENTED" for r in records)
-    if len(records) != 56 or future != 26:
+    if len(records) != 58 or future != 28:
         raise RuntimeError("Revisar número de RPC y evidencia")
     documents = [ROOT / "README.md"] + [ROOT / "docs" / name for name in (
         "estado.md", "especificacion.md", "arquitectura.md", "decisiones.md", "matriz-requisitos.md",
         "protocolos.md", "entorno.md", "hito1.md", "protocolos-hito1.md", "etapa3-diseno.md")]
     documents += [ROOT / "docs/evidencias/etapa2/README.md", ROOT / "docs/evidencias/etapa3/README.md"]
     documents += [ROOT / path for path in ('docs/hito2.md', 'docs/protocolos-hito2.md',
-        'docs/etapa5-rf3.md', 'docs/evidencias/etapa5/README.md')]
+        'docs/etapa5-rf3.md', 'docs/evidencias/etapa5/README.md',
+        'docs/etapa6-replicacion.md', 'docs/evidencias/etapa6/README.md')]
     links = 0
     for document in documents:
         content = document.read_text(encoding="utf-8")

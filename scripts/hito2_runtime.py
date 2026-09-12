@@ -57,7 +57,8 @@ class Process:
 
 
 class Cluster:
-    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30):
+    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30, replication=False, default_replicas=3):
+        rf3 = rf3 or replication
         self.directory = Path(directory).resolve()
         if self.directory.exists() and any(self.directory.iterdir()):
             raise ValueError('Use una raíz nueva; no se convierte ni sobrescribe H1')
@@ -88,7 +89,7 @@ class Cluster:
         self.allowed = {}
         for identity, capacity in zip(self.node_ids, self.capacities):
             self.allowed[identity] = dict(identity=identity, client_endpoint=f'localhost:{free_port()}',
-                private_endpoint=f'localhost:{free_port()}', failure_domain='local-host', capacity_bytes=capacity)
+                private_endpoint=f'localhost:{free_port()}', failure_domain=('process-'+identity) if replication else 'local-host', capacity_bytes=capacity)
         allowed_path = self.directory / 'authorized-nodes.json'
         allowed_path.write_text(json.dumps(self.allowed, indent=2), encoding='utf-8')
         directory = self.directory / 'control'
@@ -102,6 +103,8 @@ class Cluster:
         template = template.replace('[server]', '[server]\ncertificate_identity = ' + json.dumps(self.control_id))
         if rf3:
             template = template.replace('[distributed]', '[distributed]\nrf3_enabled = true\nlock_lease_seconds = ' + str(lease_seconds))
+        if replication:
+            template = template.replace('[distributed]', '[distributed]\nreplication_enabled = true\nfailure_profile = "process-simulation"\ndefault_replicas = ' + str(default_replicas))
         self.faults = directory / 'faults'
         self.faults.mkdir()
         template = template.replace('[client]', 'authorized_nodes_path = ' + json.dumps(allowed_path.as_posix()) +
@@ -139,6 +142,7 @@ class Cluster:
             faults.mkdir()
             cfg['test_fault_dir'] = faults.as_posix()
             cfg['rf3_enabled'] = rf3
+            cfg['replication_enabled'] = replication
             write_toml(config, 'datanode', cfg)
             self.nodes.append(Process(directory, config, 'dfsha.datanode.server'))
         (self.directory / 'lab.json').write_text(json.dumps(dict(control_id=self.control_id, node_ids=self.node_ids,

@@ -31,7 +31,7 @@ message BeginUploadRequest {
   RequestContext context = 1; PathRef path = 2; bool overwrite = 3;
   uint64 total_bytes = 4; bytes file_sha256 = 5; SnapshotRef expected_snapshot = 6;
 }
-message UploadPlan { OperationRef operation = 1; string file_id = 2; uint64 content_epoch = 3; Fence fence = 4; uint32 block_bytes = 5; uint64 expires_at_unix_ms = 6; }
+message UploadPlan { OperationRef operation = 1; string file_id = 2; uint64 content_epoch = 3; Fence fence = 4; uint32 block_bytes = 5; uint64 expires_at_unix_ms = 6; uint32 minimum_durable = 7; }
 message AllocateBlocksRequest { RequestContext context = 1; OperationRef operation = 2; repeated BlockRef blocks = 3; Fence fence = 4; } // <=64.
 message BlockPlan { repeated PlannedBlock blocks = 1; string next_cursor = 2; SnapshotRef snapshot = 3; }
 message StageManifestPageRequest {
@@ -55,7 +55,7 @@ message BeginWriteRequest {
   repeated WritePart parts = 8; // 1..5, partición contigua del delta, hashes por DN.
 }
 message WritePart { uint64 block_index = 1; uint64 block_offset = 2; uint64 delta_offset = 3; uint64 length = 4; bytes delta_sha256 = 5; }
-message WritePlan { OperationRef operation = 1; repeated PlannedBlock blocks = 2; repeated Fence fences = 3; SnapshotRef base = 4; }
+message WritePlan { OperationRef operation = 1; repeated PlannedBlock blocks = 2; repeated Fence fences = 3; SnapshotRef base = 4; uint32 minimum_durable = 5; }
 message BlockChange { BlockRef base = 1; BlockRef replacement = 2; repeated DurableReceipt receipts = 3; }
 message CommitWriteRequest { RequestContext context = 1; OperationRef operation = 2; string handle_id = 3; repeated BlockChange changes = 4; repeated Fence fences = 5; uint64 expected_handle_revision = 6; } // <=5 bloques.
 message LockRequest { RequestContext context = 1; string handle_id = 2; bool whole_file = 3; optional uint64 offset = 4; optional uint64 length = 5; uint32 wait_timeout_ms = 6; }

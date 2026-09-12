@@ -11,3 +11,5 @@ third_party/licenses/* -text
 *.pdf binary
 *.zip binary
 *.png binary
+# JUnit conserva literalmente los tracebacks, incluidos espacios al final de línea.
+docs/evidencias/**/*.xml whitespace=-blank-at-eol

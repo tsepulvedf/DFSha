@@ -70,6 +70,9 @@ class ClusterCommands(Commands):
     def CommitUpload(self, tx, user, session, req):
         op = self.operation(tx, user, session, req.operation, req.fence)
         for value in op['allocations'].values():
+            if hasattr(self.app, 'require_durable'):
+                self.app.require_durable(tx, op, proto(c.BlockRef, value))
+                continue
             assignment = tx.get('assignment', value['block_version_id'])
             node = tx.get('datanode', assignment['node']) if assignment else None
             need(node and self.app.state(node) in ('READY', 'SUSPECT') and
@@ -351,6 +354,8 @@ class DistributedControl(Monolith):
             task = tx.get('task', req.task.task_id)
             node = tx.get('datanode', req.node_id)
             need(task and task['dest'] == req.node_id and node and int(node['location']['boot_generation']) == req.boot_generation, 'PERMISSION_DENIED')
+            if hasattr(self, 'validate_task_report'):
+                self.validate_task_report(tx, req, task, node)
             if task['status']['state'] == 'FINISHED':
                 need(task['status'] == asdict(req.task), 'IDEMPOTENCY_MISMATCH')
                 return c.MutationResult(request_id=req.context.request_id, revision=1)

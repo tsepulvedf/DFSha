@@ -1,6 +1,21 @@
 # DFSha — Matriz de requisitos y trazabilidad
 
-## Seguimiento activo E5 (no sustituye fuentes originales)
+## Seguimiento activo E6 (no sustituye fuentes originales)
+
+| ID / decisión | Diseño e implementación | Criterio observable / evidencia | Estado |
+| --- | --- | --- | --- |
+| RNF2 / D45–D48 | control/replication.py: política R3/W2, reservas y tareas persistidas | tests/test_stage6.py: tercera diferida, dos destinos, cuarto nodo, reinicios y pérdida de volumen aislado; measure_stage6.py, 512 MiB | EJECUTADO ante fallos de proceso; HA de control/host pendiente E7/infraestructura |
+| RNF3, RF2, RF3 / D47 | W por cada bloque, revisión de política, base, permisos y fencing en commit existente | W insuficiente multibloque no publica; dos escritores con barreras conservan cambios; lease vencido con dos copias no publica; respuesta perdida idempotente | EJECUTADO, regresión conjunta 130 aprobadas |
+| RNF4, RNF7, COM-01/02/04/05 | Resolución de réplicas exactas, tráfico cliente directo y ciphertext S/S | Tabla por nodo/bloque, SHA-256, parche 4096 bytes y cero contenido por control | EJECUTADO; COM-03 pendiente E7 |
+| RNF2, RNF3 / D49–D50 | Historial/estado saludable, scrub, cuarentena, RETIRED y promoción R1 | Corrupción con alternativa, stream interrumpido, promoción con snapshot antiguo, callback obsoleto y GC tras close | EJECUTADO; límites y cobertura en evidencias E6 |
+| RF1/RF2/RF3, RNF5 | Misma lógica CQRS, límites globales y streaming 256 KiB | Regresión H1/H2/E5 y E6; perfiles 4/64/128 MiB, memoria de procesos reales | EJECUTADO; 128 MiB funcional, no optimizado; benchmark amplio E10 |
+| RNF6 | TLS/mTLS, autorización de tareas/recibos, AES-GCM y claves persistidas | Pruebas negativas heredadas, usuario sin rol administrativo y clave incorrecta en retorno | EJECUTADO parcial; volúmenes, backups y seguridad integral pendientes E8 |
+| INF, ENT, Q01–Q07 | Windows local, fuentes originales y dependencias preservadas | Verificador, wheel instalado, documentación y revisión Git E6 | Véase [estado real](estado.md); Linux bloqueado, Internet/cloud y consultas docentes pendientes |
+
+Evidencia: [inventario E6](evidencias/etapa6/README.md), [semántica E6](etapa6-replicacion.md).
+Las tablas siguientes son históricas y no sustituyen el estado vigente.
+
+## Seguimiento histórico E5 (no sustituye fuentes originales)
 
 | ID / decisión | Diseño e implementación | Criterio y evidencia ejecutable | Estado de cierre |
 | --- | --- | --- | --- |

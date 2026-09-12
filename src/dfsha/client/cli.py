@@ -33,6 +33,12 @@ def parser():
     copy.add_argument('destination_node_id')
     status = sub.add_parser('copy-status')
     status.add_argument('task_id')
+    status = sub.add_parser('protection')
+    status.add_argument('path')
+    status.add_argument('--cursor', default='')
+    status = sub.add_parser('promote')
+    status.add_argument('path')
+    status.add_argument('revision', type=int)
     for name in ('ls', 'stat', 'cd', 'mkdir', 'rmdir', 'rm'):
         cmd = sub.add_parser(name)
         cmd.add_argument('path', nargs='?' if name in ('ls', 'stat') else None, default='.')
@@ -75,6 +81,10 @@ def parser():
 
 def execute(client, args):
     command = args.command
+    if command == 'protection':
+        return client.protection(args.path, cursor=args.cursor)
+    if command == 'promote':
+        return client.promote(args.path, args.revision)
     if command == 'open':
         if args.alias in client.handles:
             raise ValueError('El alias ya tiene un handle; ciérrelo primero')

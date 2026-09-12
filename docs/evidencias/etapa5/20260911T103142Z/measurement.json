@@ -1,0 +1,76 @@
+{
+  "status": "EJECUTADO",
+  "timestamp": "2026-09-11T10:41:41.160873+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e5\\7c5de4c0-9b20-461b-9502-d2b1b311cca2",
+  "file_bytes": 536870912,
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "replicas": 1,
+  "durable_acks": 1,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "scope": "Un host local; tres clientes SDK en proceso de medici\u00f3n; CN y tres DN separados",
+  "patch_seconds": 2.938,
+  "patch_traffic": {
+    "0743baa6-078b-4099-a5cb-5fe5a3a5d999": {
+      "replica_write_bytes": 0,
+      "client_read_bytes": 0,
+      "patch_base_plaintext_processed_bytes": 268435456,
+      "client_write_bytes": 4096,
+      "patch_ciphertext_stored_bytes": 67114395,
+      "replica_read_bytes": 0,
+      "patch_result_processed_bytes": 134217728
+    },
+    "1f107e91-ffaa-43a8-bb4f-18eb15be7c35": {
+      "client_write_bytes": 0,
+      "replica_write_bytes": 0,
+      "client_read_bytes": 0,
+      "replica_read_bytes": 0
+    },
+    "0c2c5758-5d80-4777-9e28-d317fdaa9b7b": {
+      "client_write_bytes": 0,
+      "replica_write_bytes": 0,
+      "client_read_bytes": 0,
+      "replica_read_bytes": 0
+    }
+  },
+  "original_sha256": "c047731a3c134f3d34286d608e9c173027d50f43ab9d2064f3c360939977e908",
+  "expected_sha256": "33dd21353ac79226f9ea36aa5bf30804a4226533bdc6fcd626ebd0e0661abe9d",
+  "downloaded_sha256": "33dd21353ac79226f9ea36aa5bf30804a4226533bdc6fcd626ebd0e0661abe9d",
+  "control_content_bytes": 0,
+  "concurrent_commit_versions": [
+    4,
+    3
+  ],
+  "concurrent_patches_verified": true,
+  "client_process_memory": {
+    "pid": 34296,
+    "peak_resident_bytes": 66383872,
+    "peak_commit_bytes": 48238592
+  },
+  "control_memory": {
+    "pid": 1900,
+    "peak_resident_bytes": 66875392,
+    "peak_commit_bytes": 48578560
+  },
+  "datanode_memory": [
+    {
+      "node_id": "0743baa6-078b-4099-a5cb-5fe5a3a5d999",
+      "pid": 15536,
+      "peak_resident_bytes": 57225216,
+      "peak_commit_bytes": 38219776
+    },
+    {
+      "node_id": "1f107e91-ffaa-43a8-bb4f-18eb15be7c35",
+      "pid": 8000,
+      "peak_resident_bytes": 57716736,
+      "peak_commit_bytes": 38756352
+    },
+    {
+      "node_id": "0c2c5758-5d80-4777-9e28-d317fdaa9b7b",
+      "pid": 31560,
+      "peak_resident_bytes": 58208256,
+      "peak_commit_bytes": 39448576
+    }
+  ],
+  "memory_goals_met": true
+}

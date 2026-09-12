@@ -1,5 +1,22 @@
 # DFSha
 
+**Etapa 6: replicación y recuperación de datos en Windows local.** Perfil
+`--replication`: R=3 objetivo, W=2 por bloque nuevo, copias S/S automáticas,
+reparación y promoción administrativa de archivos R1. Un ControlNode SQLite y
+tres DataNodes, ampliables a cuatro; los clientes transfieren directamente con
+los DataNodes. H1/H2/E5 conservan sus perfiles R1 en raíces separadas.
+[Demo, política y límites](docs/etapa6-replicacion.md),
+[evidencias E6](docs/evidencias/etapa6/README.md), [estado](docs/estado.md).
+
+```powershell
+.\.venv-win\Scripts\python.exe scripts/verify_stage6.py --measure
+```
+
+La regresión conjunta aprobó 130 pruebas. R3/W2 local acredita fallos de procesos;
+no acredita pérdida de un host, HA del control ni acceso por Internet. E7 será
+alta disponibilidad del control; no se ejecuta en esta entrega.
+Los resultados de E3–E5 siguientes se conservan como antecedentes históricos.
+
 **Etapa 5 completa en Windows local: RF3 y concurrencia parcial.** Open/close,
 lectura por rangos, parches COW y locks funcionan en el perfil `--rf3`, reutilizando el control y DataNodes
 de H2. [Semántica y reproducción](docs/etapa5-rf3.md); [estado real](docs/estado.md).
@@ -9,7 +26,7 @@ Verificación E5: **114 pruebas aprobadas, sin omisiones**, contratos regenerado
 paquete instalado probado. Parche de 4 KiB sobre 512 MiB: 4096 bytes cliente→DN,
 cero contenido en control y hash final correcto. Dos escritores preparan bloques
 distintos antes de publicar y conservan ambos cambios. [Resultados y memoria](docs/etapa5-rf3.md#resultados-del-cierre).
-Siguiente etapa: E6, replicación y recuperación; todavía no ejecutada.
+En el cierre histórico E5, el siguiente paso era E6; su resultado vigente figura arriba.
 
 Proyecto 1 de SI3007/ST0263, período 2026-2. Opción 1: cliente/servidor de una organización, con composición S/S mediante red privada.
 

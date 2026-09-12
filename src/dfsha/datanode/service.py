@@ -124,7 +124,8 @@ class DataNode:
         with self.store.transaction() as tx:
             records = tx.all('block')
             counters = tx.get('settings', 'traffic') or {}
-        return dict(used_bytes=sum(x['stored_size'] for x in records),
+            quarantine_bytes = sum(x['stored_size'] for x in tx.all('quarantine'))
+        return dict(used_bytes=sum(x['stored_size'] for x in records) + quarantine_bytes,
             free_bytes=shutil.disk_usage(self.blocks.root).free, active_streams=len(self.blocks.active),
             reserved_bytes=self.reserved, **{k: counters.get(k, 0) for k in self.counters})
 
@@ -296,6 +297,8 @@ class DataNode:
                         payload = chunk[low-position:high-position]
                         yield d.ReadBlockFrame(chunk=d.DataChunk(offset=total, data=payload))
                         total += len(payload)
+                        if self.cfg.get('replication_enabled') and total < length and self.fault('interrupt_get'):
+                            raise Fault('DATA_UNAVAILABLE')
                     position += len(chunk)
                     if position >= start + length:
                         break
@@ -314,6 +317,10 @@ class DataNode:
         receipt = proto(c.DurableReceipt, record['receipt'])
         need(receipt.receipt_id == req.receipt_id and receipt.operation_id == req.operation_id and
              req.expected_boot_generation == self.generation, 'VERSION_CONFLICT')
+        if req.verify_content:
+            with self.coordinator.admit(min(b for b in DEADLINES if b >= req.block.size_bytes)), self.blocks.pin(req.block.block_version_id):
+                for _ in self.blocks.read_verified(req.block):
+                    pass
         return receipt
 
     def internal_authorize(self, task, action):
@@ -346,6 +353,17 @@ class DataNode:
             with self.coordinator.admit(min((b for b in DEADLINES if b >= req.block.size_bytes), default=134217728)), self.blocks.pin(req.block.block_version_id, exclusive=True):
                 with self.store.transaction() as tx:
                     existing = tx.get('block', req.block.block_version_id)
+                if req.replace_receipt_id and existing:
+                    need(existing['receipt']['receipt_id'] == req.replace_receipt_id, 'VERSION_CONFLICT')
+                    self.internal_authorize(req, c.STORE_REPLICA)
+                    target = self.blocks.path(req.block.file_id, req.block.block_version_id)
+                    quarantine = target.with_name(req.block.block_version_id+'.'+req.replace_receipt_id+'.quarantine')
+                    if target.exists():
+                        os.replace(target, quarantine)
+                    with self.store.transaction(True) as tx:
+                        tx.put('quarantine', dict(id=req.replace_receipt_id, ref=existing['ref'], stored_size=existing['stored_size']))
+                        tx.delete('block', req.block.block_version_id)
+                    existing = None
                 if existing:
                     receipt = proto(c.DurableReceipt, existing['receipt'])
                     need(receipt.block == req.block and receipt.ciphertext_sha256 == req.ciphertext_sha256, 'CHECKSUM_MISMATCH')
@@ -422,7 +440,8 @@ class DataNode:
 
     def report_task(self, task):
         self.registry.ReportTask(n.ReportTaskRequest(context=self.context(), node_id=self.node_id,
-            boot_generation=self.generation, task=proto(n.TaskStatus, task['status'])), timeout=5)
+            boot_generation=self.generation, task=proto(n.TaskStatus, task['status']),
+            fence=proto(c.Fence, task['request']['fence']) if self.cfg.get('replication_enabled') else None), timeout=5)
         with self.store.transaction(True) as tx:
             task['reported'] = True
             tx.put('task', task)
@@ -445,6 +464,13 @@ class DataNode:
             task_capability=req.task_capability, action=c.DELETE_RETIRED, destination_node_id=self.node_id,
             block=req.block, fence=req.fence), timeout=5)
         with self.blocks.pin(req.block.block_version_id, exclusive=True):
+            if self.cfg.get('replication_enabled'):
+                with self.store.transaction() as tx:
+                    current = tx.get('block', req.block.block_version_id)
+                need(not current or current['receipt']['receipt_id'] == req.expected_receipt_id, 'VERSION_CONFLICT')
+                self.authorization.AuthorizeInternal(n.AuthorizeInternalRequest(context=self.context(), task_id=req.task_id,
+                    task_capability=req.task_capability, action=c.DELETE_RETIRED, destination_node_id=self.node_id,
+                    block=req.block, fence=req.fence), timeout=5)
             self.blocks.path(req.block.file_id, req.block.block_version_id).unlink(missing_ok=True)
             status = n.TaskStatus(task_id=req.task_id, state=n.FINISHED)
             task = dict(id=req.task_id, request=asdict(req), status=asdict(status))

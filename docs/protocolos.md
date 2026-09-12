@@ -1,7 +1,24 @@
 # DFSha — Contratos de comunicación v1
 
+**E6 implementada:** [política y tareas](etapa6-replicacion.md); extensiones
+aditivas, sin reutilizar números. 58 RPC; el catálogo separa perfiles históricos.
+
+| RPC | Solicitud → respuesta | Acceso / efectos | Límite y confirmación |
+| --- | --- | --- | --- |
+| ClusterAdministrationService.GetProtection | ProtectionRequest(path u operation_id, snapshot_id opcional, page) → ProtectionStatus | Consulta TLS con sesión; ACL de lectura para archivo o propietario de operación; snapshot retenido exige handle propio | Unary 5 s; ≤64 bloques/página; estado por página, próximo cursor, W alcanzado y copias elegibles; NOT_FOUND, STALE_HANDLE, PERMISSION_DENIED |
+| ClusterAdministrationService.PromoteProtection | PromoteProtectionRequest(path, expected_policy_revision) → MutationResult | Comando TLS, admin; eleva política y registra promoción; cancela operaciones antiguas | Unary 5 s; request_id/digest idempotente; respuesta confirma barrera, no copias obtenidas. VERSION_CONFLICT, PERMISSION_DENIED; progreso por GetProtection |
+
+VerifyReceipt añade `verify_content=6`; ReplicateBlock añade `replace_receipt_id=10`
+para comparar la instancia antes de cuarentena. DeleteRetiredBlock añade
+`expected_receipt_id=7`: compara la instancia física bajo pin exclusivo antes
+de borrar y revalida autorización; VERSION_CONFLICT preserva la copia reemplazada.
+ReportTask utiliza su Fence ya
+previsto: dueño/época/generación se comprueban dentro de la transacción que registra
+la copia. UploadPlan.minimum_durable=7 y WritePlan.minimum_durable=5 permiten al
+SDK esperar W; un cliente anterior no puede saltarse la validación en commit.
+
 **Perfil RF3 E5:** aplicar [semántica efectiva](etapa5-rf3.md) y las extensiones
-al final de este documento. Catálogo actual: 56 RPC; los estados H1, H2 y RF3
+al final de este documento. Catálogo histórico E5: 56 RPC; los estados H1, H2 y RF3
 se distinguen en rpc-catalog.json. Las cifras siguientes se conservan como historial.
 
 **Estado histórico E3:** aplicar [contrato operativo H1](protocolos-hito1.md), que

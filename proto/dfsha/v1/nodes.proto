@@ -36,20 +36,27 @@ message AuthorizeBlockRequest {
 message AuthorizeInternalRequest { RequestContext context = 1; string task_id = 2; bytes task_capability = 3; AccessAction action = 4; string source_node_id = 5; string destination_node_id = 6; BlockRef block = 7; Fence fence = 8; }
 // Una denegación usa PERMISSION_DENIED, nunca un éxito con allowed=false.
 message AuthorizationDecision { string subject_id = 1; uint64 authz_revision = 2; uint64 valid_until_unix_ms = 3; uint64 block_size_bytes = 4; DurableReceipt replay_receipt = 5; uint64 replacement_size_bytes = 6; }
-message VerifyReceiptRequest { RequestContext context = 1; string operation_id = 2; string receipt_id = 3; BlockRef block = 4; uint64 expected_boot_generation = 5; }
-message ReplicateBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; BlockLocation source = 4; BlockLocation destination = 5; bytes task_capability = 6; Fence fence = 7; uint64 ciphertext_length = 8; bytes ciphertext_sha256 = 9; }
+message VerifyReceiptRequest { RequestContext context = 1; string operation_id = 2; string receipt_id = 3; BlockRef block = 4; uint64 expected_boot_generation = 5; bool verify_content = 6; }
+message ReplicateBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; BlockLocation source = 4; BlockLocation destination = 5; bytes task_capability = 6; Fence fence = 7; uint64 ciphertext_length = 8; bytes ciphertext_sha256 = 9; string replace_receipt_id = 10; }
 message GetTaskRequest { RequestContext context = 1; string task_id = 2; }
 enum TaskState { TASK_STATE_UNSPECIFIED = 0; ACCEPTED = 1; RUNNING = 2; FINISHED = 3; FAILED = 4; }
 message TaskStatus { string task_id = 1; TaskState state = 2; DurableReceipt receipt = 3; ErrorReason error_reason = 4; }
 message ReportTaskRequest { RequestContext context = 1; string node_id = 2; uint64 boot_generation = 3; TaskStatus task = 4; Fence fence = 5; }
-message DeleteRetiredBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; uint64 retirement_revision = 4; bytes task_capability = 5; Fence fence = 6; }
+message DeleteRetiredBlockRequest { RequestContext context = 1; string task_id = 2; BlockRef block = 3; uint64 retirement_revision = 4; bytes task_capability = 5; Fence fence = 6; string expected_receipt_id = 7; }
 
 // API administrativa de control por TLS + sesión admin, nunca identidad de nodo.
 service ClusterAdministrationService {
   rpc ListNodes(ClusterQuery) returns (NodeStatusPage);
   rpc CopyBlock(CopyBlockRequest) returns (TaskStatus);
   rpc CopyStatus(GetTaskRequest) returns (TaskStatus);
+  rpc GetProtection(ProtectionRequest) returns (ProtectionStatus);
+  rpc PromoteProtection(PromoteProtectionRequest) returns (MutationResult);
 }
+message ProtectionRequest { RequestContext context = 1; PathRef path = 2; string operation_id = 3; string snapshot_id = 4; PageRequest page = 5; }
+message PromoteProtectionRequest { RequestContext context = 1; PathRef path = 2; uint64 expected_policy_revision = 3; }
+message CopyProtection { BlockLocation node = 1; DurableReceipt receipt = 2; string health = 3; bool eligible = 4; }
+message BlockProtection { BlockRef block = 1; uint32 target = 2; uint32 confirmed = 3; uint32 eligible = 4; repeated CopyProtection copies = 5; uint32 pending_tasks = 6; }
+message ProtectionStatus { string file_id = 1; uint32 target_replicas = 2; uint32 minimum_durable = 3; uint64 policy_revision = 4; string policy_state = 5; string failure_profile = 6; repeated BlockProtection blocks = 7; string state = 8; bool durable_ready = 9; string next_cursor = 10; OperationState operation_state = 11; }
 message ClusterQuery { RequestContext context = 1; PageRequest page = 2; }
 message NodeStatus {
   BlockLocation node = 1; string state = 2; uint64 capacity_bytes = 3;
