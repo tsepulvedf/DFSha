@@ -92,6 +92,8 @@ class Authorizer:
     def authenticate(self, tx, token):
         session = tx.get('session', hashlib.sha256(token).hexdigest())
         need(session and not session['revoked'] and session['expires'] > now(), 'UNAUTHENTICATED')
+        if hasattr(tx, 'session_live'):
+            need(tx.session_live(session), 'UNAUTHENTICATED')
         user = tx.get('user', session['user'])
         need(user and not user['disabled'], 'UNAUTHENTICATED')
         return user, session

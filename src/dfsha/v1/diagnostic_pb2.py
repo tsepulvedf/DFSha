@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x66sha/v1/diagnostic.proto\x12\x08\x64\x66sha.v1\"#\n\rHealthRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\"\x9b\x01\n\x0eHealthResponse\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08listener\x18\x03 \x01(\t\x12\x18\n\x10\x64iagnostic_ready\x18\x04 \x01(\x08\x12\x1e\n\x16\x66ilesystem_implemented\x18\x05 \x01(\x08\x12\x18\n\x10metadata_backend\x18\x06 \x01(\t\"K\n\x10\x44iagnosticHeader\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x13\n\x0btotal_bytes\x18\x02 \x01(\x04\x12\x0e\n\x06sha256\x18\x03 \x01(\x0c\"/\n\x0f\x44iagnosticChunk\x12\x0e\n\x06offset\x18\x01 \x01(\x04\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"t\n\x0f\x44iagnosticFrame\x12,\n\x06header\x18\x01 \x01(\x0b\x32\x1a.dfsha.v1.DiagnosticHeaderH\x00\x12*\n\x05\x63hunk\x18\x02 \x01(\x0b\x32\x19.dfsha.v1.DiagnosticChunkH\x00\x42\x07\n\x05\x66rame\"_\n\x0c\x44igestResult\x12\x16\n\x0ereceived_bytes\x18\x01 \x01(\x04\x12\x0e\n\x06sha256\x18\x02 \x01(\x0c\x12\x0e\n\x06\x63hunks\x18\x03 \x01(\r\x12\x17\n\x0fmax_chunk_bytes\x18\x04 \x01(\r\"O\n\x0fGenerateRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x13\n\x0btotal_bytes\x18\x02 \x01(\x04\x12\x13\n\x0b\x63hunk_bytes\x18\x03 \x01(\r2\xdf\x01\n\x11\x44iagnosticService\x12;\n\x06Health\x12\x17.dfsha.v1.HealthRequest\x1a\x18.dfsha.v1.HealthResponse\x12\x43\n\x0cStreamDigest\x12\x19.dfsha.v1.DiagnosticFrame\x1a\x16.dfsha.v1.DigestResult(\x01\x12H\n\x0eGenerateStream\x12\x19.dfsha.v1.GenerateRequest\x1a\x19.dfsha.v1.DiagnosticChunk0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19\x64\x66sha/v1/diagnostic.proto\x12\x08\x64\x66sha.v1\"#\n\rHealthRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\"\xec\x01\n\x0eHealthResponse\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x10\n\x08listener\x18\x03 \x01(\t\x12\x18\n\x10\x64iagnostic_ready\x18\x04 \x01(\x08\x12\x1e\n\x16\x66ilesystem_implemented\x18\x05 \x01(\x08\x12\x18\n\x10metadata_backend\x18\x06 \x01(\t\x12\x1a\n\x12metadata_available\x18\x07 \x01(\x08\x12\x18\n\x10\x63ontrol_instance\x18\x08 \x01(\t\x12\x19\n\x11metadata_revision\x18\t \x01(\x04\"K\n\x10\x44iagnosticHeader\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x13\n\x0btotal_bytes\x18\x02 \x01(\x04\x12\x0e\n\x06sha256\x18\x03 \x01(\x0c\"/\n\x0f\x44iagnosticChunk\x12\x0e\n\x06offset\x18\x01 \x01(\x04\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"t\n\x0f\x44iagnosticFrame\x12,\n\x06header\x18\x01 \x01(\x0b\x32\x1a.dfsha.v1.DiagnosticHeaderH\x00\x12*\n\x05\x63hunk\x18\x02 \x01(\x0b\x32\x19.dfsha.v1.DiagnosticChunkH\x00\x42\x07\n\x05\x66rame\"_\n\x0c\x44igestResult\x12\x16\n\x0ereceived_bytes\x18\x01 \x01(\x04\x12\x0e\n\x06sha256\x18\x02 \x01(\x0c\x12\x0e\n\x06\x63hunks\x18\x03 \x01(\r\x12\x17\n\x0fmax_chunk_bytes\x18\x04 \x01(\r\"O\n\x0fGenerateRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x13\n\x0btotal_bytes\x18\x02 \x01(\x04\x12\x13\n\x0b\x63hunk_bytes\x18\x03 \x01(\r2\xdf\x01\n\x11\x44iagnosticService\x12;\n\x06Health\x12\x17.dfsha.v1.HealthRequest\x1a\x18.dfsha.v1.HealthResponse\x12\x43\n\x0cStreamDigest\x12\x19.dfsha.v1.DiagnosticFrame\x1a\x16.dfsha.v1.DigestResult(\x01\x12H\n\x0eGenerateStream\x12\x19.dfsha.v1.GenerateRequest\x1a\x19.dfsha.v1.DiagnosticChunk0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,17 +34,17 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_HEALTHREQUEST']._serialized_start=39
   _globals['_HEALTHREQUEST']._serialized_end=74
   _globals['_HEALTHRESPONSE']._serialized_start=77
-  _globals['_HEALTHRESPONSE']._serialized_end=232
-  _globals['_DIAGNOSTICHEADER']._serialized_start=234
-  _globals['_DIAGNOSTICHEADER']._serialized_end=309
-  _globals['_DIAGNOSTICCHUNK']._serialized_start=311
-  _globals['_DIAGNOSTICCHUNK']._serialized_end=358
-  _globals['_DIAGNOSTICFRAME']._serialized_start=360
-  _globals['_DIAGNOSTICFRAME']._serialized_end=476
-  _globals['_DIGESTRESULT']._serialized_start=478
-  _globals['_DIGESTRESULT']._serialized_end=573
-  _globals['_GENERATEREQUEST']._serialized_start=575
-  _globals['_GENERATEREQUEST']._serialized_end=654
-  _globals['_DIAGNOSTICSERVICE']._serialized_start=657
-  _globals['_DIAGNOSTICSERVICE']._serialized_end=880
+  _globals['_HEALTHRESPONSE']._serialized_end=313
+  _globals['_DIAGNOSTICHEADER']._serialized_start=315
+  _globals['_DIAGNOSTICHEADER']._serialized_end=390
+  _globals['_DIAGNOSTICCHUNK']._serialized_start=392
+  _globals['_DIAGNOSTICCHUNK']._serialized_end=439
+  _globals['_DIAGNOSTICFRAME']._serialized_start=441
+  _globals['_DIAGNOSTICFRAME']._serialized_end=557
+  _globals['_DIGESTRESULT']._serialized_start=559
+  _globals['_DIGESTRESULT']._serialized_end=654
+  _globals['_GENERATEREQUEST']._serialized_start=656
+  _globals['_GENERATEREQUEST']._serialized_end=735
+  _globals['_DIAGNOSTICSERVICE']._serialized_start=738
+  _globals['_DIAGNOSTICSERVICE']._serialized_end=961
 # @@protoc_insertion_point(module_scope)

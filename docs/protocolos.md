@@ -1,5 +1,15 @@
 # DFSha — Contratos de comunicación v1
 
+**Perfil E7 verificado en Windows local:** [contratos y configuración HA](etapa7-ha-control.md).
+Se conservan RPC v1 y numeración. Health añade disponibilidad de metadatos,
+instancia y revisión; estar vivo no equivale a tener mayoría disponible.
+SDK/CLI admiten `public_targets`; DataNodes, `control_internal_targets` e
+identidades administrativas de los controles. Los datos mantienen transporte
+directo C↔DN y DN↔DN. E7 usa presupuesto de 15 s para consultas/comandos de
+control; el perfil histórico conserva 5 s. SealManifest y streams conservan sus
+límites específicos. Cada conmutación conserva solicitud, request_id e intención.
+Los internos de PatchBlock también utilizan el presupuesto configurado del control.
+
 **E6 implementada:** [política y tareas](etapa6-replicacion.md); extensiones
 aditivas, sin reutilizar números. 58 RPC; el catálogo separa perfiles históricos.
 

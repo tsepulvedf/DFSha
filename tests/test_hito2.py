@@ -344,7 +344,8 @@ def test_interruption_expiry_restart_and_late_receipts(cluster):
         client.send(source, '/atomic')
         source.write_bytes(b'new must not become visible')
         (cluster.faults / 'before_publish').touch()
-        with pytest.raises(grpc.RpcError):
+        from dfsha.common.domain import Fault
+        with pytest.raises(Fault, match='OUTCOME_UNKNOWN'):
             client.send(source, '/atomic', overwrite=True)
         assert cluster.control.process.wait(timeout=10) == 93
         cluster.control.stop()

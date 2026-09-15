@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="243.237" timestamp="2026-09-12T19:49:48.080155-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\7de5adc8-8cad-40d0-812d-e28b3a4c9e2c" /></properties><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="6" time="242.954"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.DEADLINE_EXCEEDED&#10;&#09;details = &quot;Deadline Exceeded&quot;&#10;&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Deadline Exceeded&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/7de5adc8-8cad-40d0-812d-e28b3a4c9e2c')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-34/test_cross_control_session_han0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000002A8CBBF9F80&gt;
+
+    def test_cross_control_session_handle_and_data(run_dir, tmp_path, record_property):
+        with HACluster(run_dir/('ha7-'+str(uuid.uuid4()))) as lab:
+            a = lab.client(0)
+            b = lab.client(1, a.session)
+            try:
+                a.mkdir('/shared')
+                assert b.stat('/shared').object_id == a.stat('/shared').object_id
+                local = tmp_path/'source'
+                local.write_bytes(b'A'*5000000)
+&gt;               result = a.send(local, '/shared/file')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:303: in send
+    self.wait_durable(plan.operation.operation_id)
+src\dfsha\client\sdk.py:71: in wait_durable
+    status = self.protection(operation_id=operation_id, cursor=cursor)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\sdk.py:60: in protection
+    return self.call(self.cluster.GetProtection, nodes.ProtectionRequest(path=self.path(path) if path else None,
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\common\failover.py:45: in invoke
+    raise error
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000002A8CBC6A150&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000002A8CBC8B080&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Deadline Exceeded"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase></testsuite></testsuites>

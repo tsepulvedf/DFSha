@@ -38,13 +38,16 @@ def register(server, app, services):
             if not hasattr(app, method.name):
                 continue
             fn = getattr(app, method.name)
-            def invoke(request, ctx, fn=fn, maximum=302 if method.client_streaming else 7):
+            def invoke(request, ctx, fn=fn, maximum=302 if method.client_streaming else app.cfg.get('control_rpc_timeout_seconds', 5)+2):
                 try:
                     need(ctx.time_remaining() is not None and ctx.time_remaining() <= maximum)
                     return fn(request, ctx)
                 except Fault as exc:
+                    import traceback
                     from dfsha.common.telemetry import event
-                    event('node_rpc_rejected', code=fn.__name__ + ':' + exc.reason)
+                    frames = traceback.extract_tb(exc.__traceback__)
+                    site = frames[-2] if len(frames) > 1 else frames[-1]
+                    event('node_rpc_rejected', code=fn.__name__ + ':' + exc.reason + ':' + Path(site.filename).name + ':' + str(site.lineno))
                     abort(ctx, exc.code, c.ErrorReason.Value(exc.reason))
                 except grpc.RpcError as exc:
                     from dfsha.common.rpc import controlled_error

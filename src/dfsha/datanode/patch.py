@@ -18,7 +18,8 @@ def patch_block(node, requests, ctx):
         session_token=node.credentials(ctx), node_id=node.node_id, action=c.PATCH_DATA,
         capability=header.capability, operation=header.operation, block=header.base,
         replacement_block_version_id=header.new_block_version_id, offset=header.block_offset,
-        length=header.delta_length, delta_sha256=header.delta_sha256, fence=header.fence), timeout=5)
+        length=header.delta_length, delta_sha256=header.delta_sha256, fence=header.fence),
+        timeout=node.cfg.get('control_rpc_timeout_seconds', 5))
     if decision.HasField('replay_receipt'):
         return decision.replay_receipt
     need(ctx.time_remaining() <= DEADLINES[decision.block_size_bytes] + 2 and decision.valid_until_unix_ms > now())
@@ -122,5 +123,6 @@ def patch_block(node, requests, ctx):
             finally:
                 with node.guard:
                     node.reserved -= amount
-    node.registry.ReportDurable(n.ReportDurableRequest(context=node.context(), receipt=receipt, patch=header), timeout=5)
+    node.registry.ReportDurable(n.ReportDurableRequest(context=node.context(), receipt=receipt, patch=header),
+        timeout=node.cfg.get('control_rpc_timeout_seconds', 5))
     return receipt

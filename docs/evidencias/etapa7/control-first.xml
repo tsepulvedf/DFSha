@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="16.549" timestamp="2026-09-12T19:39:28.803926-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\2949ba69-9a17-400f-a88f-d2bdb2f3210b" /></properties><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="6" time="15.584"><failure message="KeyError: 'key_path'">run_dir = WindowsPath('F:/DFSha/.runtime/tests/2949ba69-9a17-400f-a88f-d2bdb2f3210b')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-30/test_cross_control_session_han0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000001C9FE4CA020&gt;
+
+    def test_cross_control_session_handle_and_data(run_dir, tmp_path, record_property):
+&gt;       with HACluster(run_dir/('ha7-'+str(uuid.uuid4()))) as lab:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\ha_runtime.py:190: in __enter__
+    self.activate()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;ha_runtime.HACluster object at 0x000001C9FE2FE4B0&gt;
+
+    def activate(self):
+        import shutil
+        import tomllib
+        from dfsha.control.etcd_metadata import EtcdMetadataStore
+        from dfsha.control.migration import migrate
+        original = tomllib.loads(self.control.config.read_text(encoding='utf-8'))
+        cfg = self.etcd.config(self.control_id)
+        cfg['etcd_certificate_dir'] = str(self.directory/'identities'/self.control_id)
+        store = EtcdMetadataStore(cfg)
+        try:
+            self.migration = migrate(original['server']['sqlite_path'], self.directory/'migration'/'sqlite-backup.sqlite3', store)
+        finally:
+            store.channel.close()
+        self.epoch = self.migration['epoch']
+        for index, identity in enumerate(self.control_ids):
+            directory = self.control.directory if index == 0 else self.directory/f'control-{index+1}'
+            directory.mkdir(parents=True, exist_ok=True)
+            server, distributed = dict(original['server']), dict(original['distributed'])
+            server.update(metadata_backend='etcd', certificate_identity=identity,
+                certificate_dir=(self.directory/'identities'/identity).as_posix(),
+                public_bind=self.public_targets[index].replace('localhost', '127.0.0.1'),
+                internal_bind=self.internal_targets[index].replace('localhost', '127.0.0.1'))
+            if index:
+                secrets = self.directory/'secrets'/identity
+                secrets.mkdir(parents=True)
+&gt;               shutil.copyfile(server['key_path'], secrets/'metadata.key')
+                                ^^^^^^^^^^^^^^^^^^
+E               KeyError: 'key_path'
+
+scripts\ha_runtime.py:158: KeyError</failure></testcase></testsuite></testsuites>

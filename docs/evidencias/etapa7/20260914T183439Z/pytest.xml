@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="148" time="2246.477" timestamp="2026-09-14T13:34:43.744602-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\60ed7352-d838-4dad-bf0c-c185657bdf28" /></properties><testcase classname="tests.test_block_path_race" name="test_new_file_directory_created_during_resolution" file="tests\test_block_path_race.py" line="9" time="0.008"><properties><property name="real_windows_errors" value="[3, 2, 2]" /><property name="root" value="C:\Users\Tommysepf\AppData\Local\Temp\pytest-of-Tommysepf\pytest-48\test_new_file_directory_create0\blocks" /><property name="resolved_paths" value="['\\\\?\\C:\\Users\\Tommysepf\\AppData\\Local\\Temp\\pytest-of-Tommysepf\\pytest-48\\test_new_file_directory_create0\\blocks\\4e826e62-3382-45a9-8c81-bd50bf091650\\2adf9788-a5a7-40a9-a82b-5ce079d40645.blk']" /></properties></testcase><testcase classname="tests.test_block_path_race" name="test_junction_outside_block_root_is_denied" file="tests\test_block_path_race.py" line="52" time="0.004" /><testcase classname="tests.test_contract_limits" name="test_manifest_page_and_maximum_write_fit_transport_budget" file="tests\test_contract_limits.py" line="7" time="0.001"><properties><property name="manifest_page_bytes" value="8399" /><property name="commit_write_bytes" value="7701" /></properties></testcase><testcase classname="tests.test_etcd" name="test_put_get_and_conditional_transactions" file="tests\test_etcd.py" line="68" time="3.303"><properties><property name="transaction" value="put/get; CAS accepted; stale CAS rejected; value unchanged" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lease_creation_and_real_expiry" file="tests\test_etcd.py" line="90" time="2.440"><properties><property name="observed_expiry_seconds" value="2.281" /></properties></testcase><testcase classname="tests.test_etcd" name="test_lock_unlock_and_obsolete_ownership_rejected" file="tests\test_etcd.py" line="101" time="0.435"><properties><property name="fencing" value="create_revision compared inside Txn; obsolete owner rejected" /></properties></testcase><testcase classname="tests.test_etcd" name="test_watch_receives_real_event" file="tests\test_etcd.py" line="125" time="0.058"><properties><property name="watch_revision" value="11" /></properties></testcase><testcase classname="tests.test_etcd" name="test_mtls_identity_and_rbac_are_enforced" file="tests\test_etcd.py" line="147" time="0.386" /><testcase classname="tests.test_etcd" name="test_unavailable_service_has_controlled_error" file="tests\test_etcd.py" line="165" time="3.741"><properties><property name="controlled_unavailability" value="{&quot;status&quot;: &quot;FALLIDO&quot;, &quot;code&quot;: &quot;DEADLINE_EXCEEDED&quot;, &quot;reason&quot;: &quot;DEADLINE_EXCEEDED&quot;}" /></properties></testcase><testcase classname="tests.test_hito1" name="test_rf1_paths_permissions_pagination_cwd" file="tests\test_hito1.py" line="52" time="3.295" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[0]" file="tests\test_hito1.py" line="84" time="2.100" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[17]" file="tests\test_hito1.py" line="84" time="2.901" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194303]" file="tests\test_hito1.py" line="84" time="3.500" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194304]" file="tests\test_hito1.py" line="84" time="4.071" /><testcase classname="tests.test_hito1" name="test_binary_boundaries[4194305]" file="tests\test_hito1.py" line="84" time="4.456" /><testcase classname="tests.test_hito1" name="test_overwrite_snapshot_delete_idempotency" file="tests\test_hito1.py" line="97" time="6.152" /><testcase classname="tests.test_hito1" name="test_corruption_block_auth_and_credentials" file="tests\test_hito1.py" line="122" time="3.841" /><testcase classname="tests.test_hito1" name="test_restart_profile_preservation_and_missing_key" file="tests\test_hito1.py" line="150" time="11.863" /><testcase classname="tests.test_hito1" name="test_fault_recovery_and_lost_commit_response" file="tests\test_hito1.py" line="182" time="23.278"><failure message="dfsha.common.domain.Fault: OUTCOME_UNKNOWN">self = &lt;dfsha.client.sdk.Client object at 0x000001F83A6951F0&gt;
+local = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28/h1-450e6914-ec21-4a8e-8e74-0d90f8b3a446/source')
+remote = '/file', overwrite = True
+
+    def send(self, local, remote, overwrite=False):
+        local = Path(local)
+        with local.open('rb') as source:
+            stat = os.fstat(source.fileno())
+            total = stat.st_size
+            full_hash = hashlib.sha256()
+            while chunk := source.read(CHUNK):
+                full_hash.update(chunk)
+            source.seek(0)
+            expected = None
+            if overwrite:
+                try:
+                    expected = self.stat(remote).snapshot
+                except grpc.RpcError as exc:
+                    if exc.code() != grpc.StatusCode.NOT_FOUND:
+                        raise
+            plan = self.call(self.uploads.BeginUpload, ctl.BeginUploadRequest(path=self.path(remote),
+                overwrite=overwrite, total_bytes=total, file_sha256=full_hash.digest(), expected_snapshot=expected))
+            blocks, page, page_index = [], [], 0
+            try:
+                with self.keepalive(plan, upload=True):
+                    count = (total + plan.block_bytes - 1) // plan.block_bytes
+                    for index in range(count):
+                        start = index * plan.block_bytes
+                        length = min(plan.block_bytes, total - start)
+                        digest, left = hashlib.sha256(), length
+                        while left:
+                            chunk = source.read(min(CHUNK, left))
+                            need(chunk, 'CHECKSUM_MISMATCH')
+                            digest.update(chunk)
+                            left -= len(chunk)
+                        source.seek(start)
+                        allocation = self.call(self.uploads.AllocateBlocks, ctl.AllocateBlocksRequest(
+                            operation=plan.operation, fence=plan.fence, blocks=[c.BlockRef(file_id=plan.file_id,
+                                block_index=index, size_bytes=length, plaintext_sha256=digest.digest())])).blocks[0]
+                        header = self.prepare(data.PutBlockHeader(operation=plan.operation, block=allocation.block,
+                            fence=plan.fence, capability=allocation.grants[0].capability))
+    
+                        def frames():
+                            source.seek(start)
+                            yield data.PutBlockFrame(header=header)
+                            offset = 0
+                            while offset &lt; length:
+                                chunk = source.read(min(CHUNK, length - offset))
+                                need(chunk, 'CHECKSUM_MISMATCH')
+                                yield data.PutBlockFrame(chunk=data.DataChunk(offset=offset, data=chunk))
+                                offset += len(chunk)
+                        # Endpoint comes from the authoritative plan, never a client placement table.
+                        with channel(allocation.locations[0].client_endpoint, self.cert_dir) as connection:
+                            rpc = dg.BlockServiceStub(connection).PutBlock
+                            for attempt in range(3):
+                                try:
+                                    receipt = rpc(frames(), metadata=self.metadata, timeout=DEADLINES[plan.block_bytes])
+                                    break
+                                except grpc.RpcError as exc:
+                                    if exc.code() != grpc.StatusCode.UNAVAILABLE or attempt == 2:
+                                        raise
+                                    time.sleep(.1)
+                        need(receipt.block == allocation.block and receipt.operation_id == plan.operation.operation_id,
+                             'CHECKSUM_MISMATCH')
+                        self.record_traffic(receipt.node_id, 'client_write_bytes', length)
+                        source.seek(start + length)
+                        blocks.append(allocation.block)
+                        page.append(allocation.block)
+                        if len(page) == 64 or index == count - 1:
+                            self.call(self.uploads.StageManifestPage, ctl.StageManifestPageRequest(operation=plan.operation,
+                                fence=plan.fence, page_index=page_index, blocks=page, page_sha256=manifest_hash(page)))
+                            page, page_index = [], page_index + 1
+                    need(os.fstat(source.fileno()).st_size == total and os.fstat(source.fileno()).st_mtime_ns == stat.st_mtime_ns,
+                         'CHECKSUM_MISMATCH')
+                    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+                        fence=plan.fence, page_count=page_index, block_count=len(blocks), total_bytes=total,
+                        manifest_sha256=manifest_hash(blocks)), deadline=300)
+                    request = self.prepare(ctl.CommitUploadRequest(operation=plan.operation, seal=seal, fence=plan.fence))
+                    if plan.minimum_durable &gt; 1:
+                        self.wait_durable(plan.operation.operation_id)
+                    self.last_commit_request = request
+                    try:
+&gt;                       return self.call(self.uploads.CommitUpload, request)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\dfsha\client\sdk.py:307: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001F83A88D850&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001F83A897900&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Deadline Exceeded"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError
+
+The above exception was the direct cause of the following exception:
+
+admin = &lt;dfsha.client.sdk.Client object at 0x000001F83A6951F0&gt;
+h1 = &lt;hito1_runtime.Hito1Process object at 0x000001F83A8467B0&gt;
+
+    def test_fault_recovery_and_lost_commit_response(admin, h1):
+        source = h1.directory / 'source'
+        source.write_bytes(b'old')
+        admin.send(source, '/file')
+        source.write_bytes(b'new')
+        for point in ('after_block_persist', 'before_publish'):
+            (h1.faults / point).touch()
+            with pytest.raises(grpc.RpcError):
+&gt;               admin.send(source, '/file', overwrite=True)
+
+tests\test_hito1.py:191: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;dfsha.client.sdk.Client object at 0x000001F83A6951F0&gt;
+local = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28/h1-450e6914-ec21-4a8e-8e74-0d90f8b3a446/source')
+remote = '/file', overwrite = True
+
+    def send(self, local, remote, overwrite=False):
+        local = Path(local)
+        with local.open('rb') as source:
+            stat = os.fstat(source.fileno())
+            total = stat.st_size
+            full_hash = hashlib.sha256()
+            while chunk := source.read(CHUNK):
+                full_hash.update(chunk)
+            source.seek(0)
+            expected = None
+            if overwrite:
+                try:
+                    expected = self.stat(remote).snapshot
+                except grpc.RpcError as exc:
+                    if exc.code() != grpc.StatusCode.NOT_FOUND:
+                        raise
+            plan = self.call(self.uploads.BeginUpload, ctl.BeginUploadRequest(path=self.path(remote),
+                overwrite=overwrite, total_bytes=total, file_sha256=full_hash.digest(), expected_snapshot=expected))
+            blocks, page, page_index = [], [], 0
+            try:
+                with self.keepalive(plan, upload=True):
+                    count = (total + plan.block_bytes - 1) // plan.block_bytes
+                    for index in range(count):
+                        start = index * plan.block_bytes
+                        length = min(plan.block_bytes, total - start)
+                        digest, left = hashlib.sha256(), length
+                        while left:
+                            chunk = source.read(min(CHUNK, left))
+                            need(chunk, 'CHECKSUM_MISMATCH')
+                            digest.update(chunk)
+                            left -= len(chunk)
+                        source.seek(start)
+                        allocation = self.call(self.uploads.AllocateBlocks, ctl.AllocateBlocksRequest(
+                            operation=plan.operation, fence=plan.fence, blocks=[c.BlockRef(file_id=plan.file_id,
+                                block_index=index, size_bytes=length, plaintext_sha256=digest.digest())])).blocks[0]
+                        header = self.prepare(data.PutBlockHeader(operation=plan.operation, block=allocation.block,
+                            fence=plan.fence, capability=allocation.grants[0].capability))
+    
+                        def frames():
+                            source.seek(start)
+                            yield data.PutBlockFrame(header=header)
+                            offset = 0
+                            while offset &lt; length:
+                                chunk = source.read(min(CHUNK, length - offset))
+                                need(chunk, 'CHECKSUM_MISMATCH')
+                                yield data.PutBlockFrame(chunk=data.DataChunk(offset=offset, data=chunk))
+                                offset += len(chunk)
+                        # Endpoint comes from the authoritative plan, never a client placement table.
+                        with channel(allocation.locations[0].client_endpoint, self.cert_dir) as connection:
+                            rpc = dg.BlockServiceStub(connection).PutBlock
+                            for attempt in range(3):
+                                try:
+                                    receipt = rpc(frames(), metadata=self.metadata, timeout=DEADLINES[plan.block_bytes])
+                                    break
+                                except grpc.RpcError as exc:
+                                    if exc.code() != grpc.StatusCode.UNAVAILABLE or attempt == 2:
+                                        raise
+                                    time.sleep(.1)
+                        need(receipt.block == allocation.block and receipt.operation_id == plan.operation.operation_id,
+                             'CHECKSUM_MISMATCH')
+                        self.record_traffic(receipt.node_id, 'client_write_bytes', length)
+                        source.seek(start + length)
+                        blocks.append(allocation.block)
+                        page.append(allocation.block)
+                        if len(page) == 64 or index == count - 1:
+                            self.call(self.uploads.StageManifestPage, ctl.StageManifestPageRequest(operation=plan.operation,
+                                fence=plan.fence, page_index=page_index, blocks=page, page_sha256=manifest_hash(page)))
+                            page, page_index = [], page_index + 1
+                    need(os.fstat(source.fileno()).st_size == total and os.fstat(source.fileno()).st_mtime_ns == stat.st_mtime_ns,
+                         'CHECKSUM_MISMATCH')
+                    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+                        fence=plan.fence, page_count=page_index, block_count=len(blocks), total_bytes=total,
+                        manifest_sha256=manifest_hash(blocks)), deadline=300)
+                    request = self.prepare(ctl.CommitUploadRequest(operation=plan.operation, seal=seal, fence=plan.fence))
+                    if plan.minimum_durable &gt; 1:
+                        self.wait_durable(plan.operation.operation_id)
+                    self.last_commit_request = request
+                    try:
+                        return self.call(self.uploads.CommitUpload, request)
+                    except grpc.RpcError as exc:
+                        if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED):
+                            raise
+                        try:
+                            status = self.operation(plan.operation.operation_id)
+                        except grpc.RpcError:
+&gt;                           raise Fault('OUTCOME_UNKNOWN') from exc
+E                           dfsha.common.domain.Fault: OUTCOME_UNKNOWN
+
+src\dfsha\client\sdk.py:314: Fault</failure></testcase><testcase classname="tests.test_hito1" name="test_interrupted_upload_space_and_future" file="tests\test_hito1.py" line="206" time="3.026" /><testcase classname="tests.test_hito1" name="test_large_profiles_boundaries[67108864]" file="tests\test_hito1.py" line="228" time="14.664" /><testcase classname="tests.test_hito1" name="test_large_profiles_boundaries[134217728]" file="tests\test_hito1.py" line="228" time="23.131" /><testcase classname="tests.test_hito1" name="test_reservations_remove_no_resurrection_and_revocation" file="tests\test_hito1.py" line="242" time="5.976" /><testcase classname="tests.test_hito1" name="test_cli_process_and_interactive_shell" file="tests\test_hito1.py" line="270" time="7.781" /><testcase classname="tests.test_hito1" name="test_renewals_long_name_and_parallel_snapshot_readers" file="tests\test_hito1.py" line="292" time="7.601" /><testcase classname="tests.test_hito2" name="test_distribution_roundtrip_copy_restart" file="tests\test_hito2.py" line="30" time="30.521"><properties><property name="copy_evidence" value="{&quot;task_id&quot;: &quot;bf2f250c-0ab1-406f-93e0-5e09062c39c4&quot;, &quot;source&quot;: &quot;306af0ec-6bb4-4fd0-afe2-63f3ada6cd24&quot;, &quot;destination&quot;: &quot;5087f22c-8cc9-4c61-a0b6-b05a3ce2d16f&quot;, &quot;bytes&quot;: 4195034, &quot;ciphertext_sha256&quot;: &quot;193669676de85cda1ffa16560e5cf6150ac12db6eea583377d9722752c98ac3a&quot;, &quot;block_sha256&quot;: &quot;2b07811057df887086f06a67edc6ebf911de8b6741156e7a2eb1416a4b8b1b2e&quot;, &quot;source_stopped_read&quot;: true, &quot;receipt_recovered_after_destination_restart&quot;: true, &quot;nodes&quot;: [{&quot;node&quot;: {&quot;node_id&quot;: &quot;306af0ec-6bb4-4fd0-afe2-63f3ada6cd24&quot;, &quot;boot_generation&quot;: &quot;2&quot;, &quot;client_endpoint&quot;: &quot;localhost:57308&quot;, &quot;private_endpoint&quot;: &quot;localhost:57309&quot;, &quot;failure_domain&quot;: &quot;local-host&quot;}, &quot;state&quot;: &quot;READY&quot;, &quot;capacity_bytes&quot;: &quot;17179869184&quot;, &quot;used_bytes&quot;: &quot;4195459&quot;, &quot;free_bytes&quot;: &quot;649334738944&quot;, &quot;last_heartbeat_unix_ms&quot;: &quot;1789411052071&quot;, &quot;client_write_bytes&quot;: &quot;4194305&quot;, &quot;client_read_bytes&quot;: &quot;8388609&quot;, &quot;replica_read_bytes&quot;: &quot;4195034&quot;, &quot;confirmed_blocks&quot;: &quot;2&quot;}, {&quot;node&quot;: {&quot;node_id&quot;: &quot;5087f22c-8cc9-4c61-a0b6-b05a3ce2d16f&quot;, &quot;boot_generation&quot;: &quot;2&quot;, &quot;client_endpoint&quot;: &quot;localhost:57304&quot;, &quot;private_endpoint&quot;: &quot;localhost:57305&quot;, &quot;failure_domain&quot;: &quot;local-host&quot;}, &quot;state&quot;: &quot;READY&quot;, &quot;capacity_bytes&quot;: &quot;17179869184&quot;, &quot;used_bytes&quot;: &quot;8390068&quot;, &quot;free_bytes&quot;: &quot;649334747136&quot;, &quot;last_heartbeat_unix_ms&quot;: &quot;1789411052451&quot;, &quot;client_write_bytes&quot;: &quot;4194304&quot;, &quot;client_read_bytes&quot;: &quot;12582912&quot;, &quot;replica_write_bytes&quot;: &quot;4195034&quot;, &quot;confirmed_blocks&quot;: &quot;2&quot;}, {&quot;node&quot;: {&quot;node_id&quot;: &quot;fb83f92a-5761-4f60-bee1-a18eec9594d6&quot;, &quot;boot_generation&quot;: &quot;1&quot;, &quot;client_endpoint&quot;: &quot;localhost:57306&quot;, &quot;private_endpoint&quot;: &quot;localhost:57307&quot;, &quot;failure_domain&quot;: &quot;local-host&quot;}, &quot;state&quot;: &quot;READY&quot;, &quot;capacity_bytes&quot;: &quot;17179869184&quot;, &quot;used_bytes&quot;: &quot;4195034&quot;, &quot;free_bytes&quot;: &quot;649334743040&quot;, &quot;last_heartbeat_unix_ms&quot;: &quot;1789411051951&quot;, &quot;client_write_bytes&quot;: &quot;4194304&quot;, &quot;client_read_bytes&quot;: &quot;8388608&quot;, &quot;confirmed_blocks&quot;: &quot;1&quot;}]}" /></properties></testcase><testcase classname="tests.test_hito2" name="test_cli_process_and_unindexed_crash_recovery" file="tests\test_hito2.py" line="102" time="15.744" /><testcase classname="tests.test_hito2" name="test_namespace_snapshot_lost_commit_and_control_restart" file="tests\test_hito2.py" line="147" time="20.286" /><testcase classname="tests.test_hito2" name="test_profiles_boundaries_and_coexistence[4194304]" file="tests\test_hito2.py" line="168" time="30.774" /><testcase classname="tests.test_hito2" name="test_profiles_boundaries_and_coexistence[67108864]" file="tests\test_hito2.py" line="168" time="40.809" /><testcase classname="tests.test_hito2" name="test_profiles_boundaries_and_coexistence[134217728]" file="tests\test_hito2.py" line="168" time="53.704" /><testcase classname="tests.test_hito2" name="test_dynamic_fourth_node_reservations_and_unavailable" file="tests\test_hito2.py" line="198" time="22.581" /><testcase classname="tests.test_hito2" name="test_block_authentication_corruption_and_internal_roles" file="tests\test_hito2.py" line="243" time="12.938" /><testcase classname="tests.test_hito2" name="test_interruption_expiry_restart_and_late_receipts" file="tests\test_hito2.py" line="306" time="20.557"><failure message="dfsha.common.domain.Fault: OUTCOME_UNKNOWN">self = &lt;dfsha.client.sdk.Client object at 0x000001F83A905B20&gt;
+local = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28/h2-47eff365-c8b8-42d3-9c5f-713dfc923322/original')
+remote = '/atomic', overwrite = True
+
+    def send(self, local, remote, overwrite=False):
+        local = Path(local)
+        with local.open('rb') as source:
+            stat = os.fstat(source.fileno())
+            total = stat.st_size
+            full_hash = hashlib.sha256()
+            while chunk := source.read(CHUNK):
+                full_hash.update(chunk)
+            source.seek(0)
+            expected = None
+            if overwrite:
+                try:
+                    expected = self.stat(remote).snapshot
+                except grpc.RpcError as exc:
+                    if exc.code() != grpc.StatusCode.NOT_FOUND:
+                        raise
+            plan = self.call(self.uploads.BeginUpload, ctl.BeginUploadRequest(path=self.path(remote),
+                overwrite=overwrite, total_bytes=total, file_sha256=full_hash.digest(), expected_snapshot=expected))
+            blocks, page, page_index = [], [], 0
+            try:
+                with self.keepalive(plan, upload=True):
+                    count = (total + plan.block_bytes - 1) // plan.block_bytes
+                    for index in range(count):
+                        start = index * plan.block_bytes
+                        length = min(plan.block_bytes, total - start)
+                        digest, left = hashlib.sha256(), length
+                        while left:
+                            chunk = source.read(min(CHUNK, left))
+                            need(chunk, 'CHECKSUM_MISMATCH')
+                            digest.update(chunk)
+                            left -= len(chunk)
+                        source.seek(start)
+                        allocation = self.call(self.uploads.AllocateBlocks, ctl.AllocateBlocksRequest(
+                            operation=plan.operation, fence=plan.fence, blocks=[c.BlockRef(file_id=plan.file_id,
+                                block_index=index, size_bytes=length, plaintext_sha256=digest.digest())])).blocks[0]
+                        header = self.prepare(data.PutBlockHeader(operation=plan.operation, block=allocation.block,
+                            fence=plan.fence, capability=allocation.grants[0].capability))
+    
+                        def frames():
+                            source.seek(start)
+                            yield data.PutBlockFrame(header=header)
+                            offset = 0
+                            while offset &lt; length:
+                                chunk = source.read(min(CHUNK, length - offset))
+                                need(chunk, 'CHECKSUM_MISMATCH')
+                                yield data.PutBlockFrame(chunk=data.DataChunk(offset=offset, data=chunk))
+                                offset += len(chunk)
+                        # Endpoint comes from the authoritative plan, never a client placement table.
+                        with channel(allocation.locations[0].client_endpoint, self.cert_dir) as connection:
+                            rpc = dg.BlockServiceStub(connection).PutBlock
+                            for attempt in range(3):
+                                try:
+                                    receipt = rpc(frames(), metadata=self.metadata, timeout=DEADLINES[plan.block_bytes])
+                                    break
+                                except grpc.RpcError as exc:
+                                    if exc.code() != grpc.StatusCode.UNAVAILABLE or attempt == 2:
+                                        raise
+                                    time.sleep(.1)
+                        need(receipt.block == allocation.block and receipt.operation_id == plan.operation.operation_id,
+                             'CHECKSUM_MISMATCH')
+                        self.record_traffic(receipt.node_id, 'client_write_bytes', length)
+                        source.seek(start + length)
+                        blocks.append(allocation.block)
+                        page.append(allocation.block)
+                        if len(page) == 64 or index == count - 1:
+                            self.call(self.uploads.StageManifestPage, ctl.StageManifestPageRequest(operation=plan.operation,
+                                fence=plan.fence, page_index=page_index, blocks=page, page_sha256=manifest_hash(page)))
+                            page, page_index = [], page_index + 1
+                    need(os.fstat(source.fileno()).st_size == total and os.fstat(source.fileno()).st_mtime_ns == stat.st_mtime_ns,
+                         'CHECKSUM_MISMATCH')
+                    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+                        fence=plan.fence, page_count=page_index, block_count=len(blocks), total_bytes=total,
+                        manifest_sha256=manifest_hash(blocks)), deadline=300)
+                    request = self.prepare(ctl.CommitUploadRequest(operation=plan.operation, seal=seal, fence=plan.fence))
+                    if plan.minimum_durable &gt; 1:
+                        self.wait_durable(plan.operation.operation_id)
+                    self.last_commit_request = request
+                    try:
+&gt;                       return self.call(self.uploads.CommitUpload, request)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\dfsha\client\sdk.py:307: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001F83A907620&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001F83BF9C5C0&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Deadline Exceeded"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError
+
+The above exception was the direct cause of the following exception:
+
+cluster = &lt;hito2_runtime.Cluster object at 0x000001F83A8B2F90&gt;
+
+    def test_interruption_expiry_restart_and_late_receipts(cluster):
+        import grpc
+        import tomllib
+        from dfsha.common.rpc import channel
+        from dfsha.common import node_rpc
+        from dfsha.control.metadata import SQLiteMetadataStore
+        from dfsha.v1 import data_pb2 as d, data_pb2_grpc as dg
+        from test_hito1 import error
+        client = cluster.client()
+        try:
+            plan, block = allocation(client, '/interrupted', b'abcdef')
+            header = client.prepare(d.PutBlockHeader(operation=plan.operation, fence=plan.fence, block=block.block,
+                capability=block.grants[0].capability))
+            with channel(block.locations[0].client_endpoint, cluster.certs) as connection:
+                error('CHECKSUM_MISMATCH', lambda: dg.BlockServiceStub(connection).PutBlock(iter([d.PutBlockFrame(header=header)]),
+                    metadata=client.metadata, timeout=30))
+            error('NOT_FOUND', lambda: client.stat('/interrupted'))
+            node = cluster.nodes[cluster.node_ids.index(block.locations[0].node_id)]
+            node.stop()
+            node.start()
+            cluster.wait_ready(3, client)
+            error('OPERATION_EXPIRED', lambda: client.call(client.uploads.RenewUpload, ctl.OperationRequest(operation=plan.operation)))
+            assert sum(x.reserved_bytes for x in cluster.statuses(client).nodes) == 0
+            # Expiration is injected in authoritative metadata; authorization itself still uses real RPC.
+            plan, block = allocation(client, '/expired', b'abcdef')
+            db = SQLiteMetadataStore(cluster.control.directory / 'metadata.sqlite3')
+            with db.transaction(True) as tx:
+                op = tx.get('upload', plan.operation.operation_id)
+                op['expires'] = 1
+                tx.put('upload', op)
+            header = client.prepare(d.PutBlockHeader(operation=plan.operation, fence=plan.fence, block=block.block,
+                capability=block.grants[0].capability))
+            with channel(block.locations[0].client_endpoint, cluster.certs) as connection:
+                error('OPERATION_EXPIRED', lambda: dg.BlockServiceStub(connection).PutBlock(iter([d.PutBlockFrame(header=header)]),
+                    metadata=client.metadata, timeout=30))
+            source = cluster.directory / 'original'
+            source.write_bytes(b'old visible version')
+            client.send(source, '/atomic')
+            source.write_bytes(b'new must not become visible')
+            (cluster.faults / 'before_publish').touch()
+            from dfsha.common.domain import Fault
+&gt;           with pytest.raises(Fault, match='OUTCOME_UNKNOWN'):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_hito2.py:348: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;dfsha.client.sdk.Client object at 0x000001F83A905B20&gt;
+local = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28/h2-47eff365-c8b8-42d3-9c5f-713dfc923322/original')
+remote = '/atomic', overwrite = True
+
+    def send(self, local, remote, overwrite=False):
+        local = Path(local)
+        with local.open('rb') as source:
+            stat = os.fstat(source.fileno())
+            total = stat.st_size
+            full_hash = hashlib.sha256()
+            while chunk := source.read(CHUNK):
+                full_hash.update(chunk)
+            source.seek(0)
+            expected = None
+            if overwrite:
+                try:
+                    expected = self.stat(remote).snapshot
+                except grpc.RpcError as exc:
+                    if exc.code() != grpc.StatusCode.NOT_FOUND:
+                        raise
+            plan = self.call(self.uploads.BeginUpload, ctl.BeginUploadRequest(path=self.path(remote),
+                overwrite=overwrite, total_bytes=total, file_sha256=full_hash.digest(), expected_snapshot=expected))
+            blocks, page, page_index = [], [], 0
+            try:
+                with self.keepalive(plan, upload=True):
+                    count = (total + plan.block_bytes - 1) // plan.block_bytes
+                    for index in range(count):
+                        start = index * plan.block_bytes
+                        length = min(plan.block_bytes, total - start)
+                        digest, left = hashlib.sha256(), length
+                        while left:
+                            chunk = source.read(min(CHUNK, left))
+                            need(chunk, 'CHECKSUM_MISMATCH')
+                            digest.update(chunk)
+                            left -= len(chunk)
+                        source.seek(start)
+                        allocation = self.call(self.uploads.AllocateBlocks, ctl.AllocateBlocksRequest(
+                            operation=plan.operation, fence=plan.fence, blocks=[c.BlockRef(file_id=plan.file_id,
+                                block_index=index, size_bytes=length, plaintext_sha256=digest.digest())])).blocks[0]
+                        header = self.prepare(data.PutBlockHeader(operation=plan.operation, block=allocation.block,
+                            fence=plan.fence, capability=allocation.grants[0].capability))
+    
+                        def frames():
+                            source.seek(start)
+                            yield data.PutBlockFrame(header=header)
+                            offset = 0
+                            while offset &lt; length:
+                                chunk = source.read(min(CHUNK, length - offset))
+                                need(chunk, 'CHECKSUM_MISMATCH')
+                                yield data.PutBlockFrame(chunk=data.DataChunk(offset=offset, data=chunk))
+                                offset += len(chunk)
+                        # Endpoint comes from the authoritative plan, never a client placement table.
+                        with channel(allocation.locations[0].client_endpoint, self.cert_dir) as connection:
+                            rpc = dg.BlockServiceStub(connection).PutBlock
+                            for attempt in range(3):
+                                try:
+                                    receipt = rpc(frames(), metadata=self.metadata, timeout=DEADLINES[plan.block_bytes])
+                                    break
+                                except grpc.RpcError as exc:
+                                    if exc.code() != grpc.StatusCode.UNAVAILABLE or attempt == 2:
+                                        raise
+                                    time.sleep(.1)
+                        need(receipt.block == allocation.block and receipt.operation_id == plan.operation.operation_id,
+                             'CHECKSUM_MISMATCH')
+                        self.record_traffic(receipt.node_id, 'client_write_bytes', length)
+                        source.seek(start + length)
+                        blocks.append(allocation.block)
+                        page.append(allocation.block)
+                        if len(page) == 64 or index == count - 1:
+                            self.call(self.uploads.StageManifestPage, ctl.StageManifestPageRequest(operation=plan.operation,
+                                fence=plan.fence, page_index=page_index, blocks=page, page_sha256=manifest_hash(page)))
+                            page, page_index = [], page_index + 1
+                    need(os.fstat(source.fileno()).st_size == total and os.fstat(source.fileno()).st_mtime_ns == stat.st_mtime_ns,
+                         'CHECKSUM_MISMATCH')
+                    seal = self.call(self.uploads.SealManifest, ctl.SealManifestRequest(operation=plan.operation,
+                        fence=plan.fence, page_count=page_index, block_count=len(blocks), total_bytes=total,
+                        manifest_sha256=manifest_hash(blocks)), deadline=300)
+                    request = self.prepare(ctl.CommitUploadRequest(operation=plan.operation, seal=seal, fence=plan.fence))
+                    if plan.minimum_durable &gt; 1:
+                        self.wait_durable(plan.operation.operation_id)
+                    self.last_commit_request = request
+                    try:
+                        return self.call(self.uploads.CommitUpload, request)
+                    except grpc.RpcError as exc:
+                        if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED):
+                            raise
+                        try:
+                            status = self.operation(plan.operation.operation_id)
+                        except grpc.RpcError:
+&gt;                           raise Fault('OUTCOME_UNKNOWN') from exc
+E                           dfsha.common.domain.Fault: OUTCOME_UNKNOWN
+
+src\dfsha\client\sdk.py:314: Fault</failure></testcase><testcase classname="tests.test_hito2" name="test_control_outage_node_space_keys_and_forged_receipts" file="tests\test_hito2.py" line="358" time="16.403" /><testcase classname="tests.test_local_storage" name="test_sqlite_persistence_and_rollback_without_etcd" file="tests\test_local_storage.py" line="6" time="0.020" /><testcase classname="tests.test_security" name="test_authenticated_encryption_and_tamper_rejection" file="tests\test_security.py" line="9" time="0.001" /><testcase classname="tests.test_security" name="test_argon2id_password_verification" file="tests\test_security.py" line="21" time="0.058" /><testcase classname="tests.test_stage5" name="test_modes_ranges_and_atomic_patch" file="tests\test_stage5.py" line="30" time="24.746" /><testcase classname="tests.test_stage5" name="test_parallel_disjoint_merge_and_conflict" file="tests\test_stage5.py" line="77" time="20.387"><properties><property name="parallel_preparation" value="two barriers; both durable preparations before either commit; [A1,B1]" /><property name="delta_bytes" value="8192" /><property name="control_content_bytes" value="0" /></properties></testcase><testcase classname="tests.test_stage5" name="test_multiblock_atomic_abort_and_idempotency" file="tests\test_stage5.py" line="132" time="14.647" /><testcase classname="tests.test_stage5" name="test_fencing_successor_restart_and_persistent_result" file="tests\test_stage5.py" line="158" time="21.737" /><testcase classname="tests.test_stage5" name="test_growth_read_serialization_tombstone_and_permissions" file="tests\test_stage5.py" line="194" time="28.727" /><testcase classname="tests.test_stage5" name="test_profile_boundary_small_delta[4194304]" file="tests\test_stage5.py" line="249" time="17.043"><properties><property name="block_size_bytes" value="4194304" /><property name="delta_client_write_bytes" value="6" /></properties></testcase><testcase classname="tests.test_stage5" name="test_profile_boundary_small_delta[67108864]" file="tests\test_stage5.py" line="249" time="17.633"><properties><property name="block_size_bytes" value="67108864" /><property name="delta_client_write_bytes" value="6" /></properties></testcase><testcase classname="tests.test_stage5" name="test_profile_boundary_small_delta[134217728]" file="tests\test_stage5.py" line="249" time="25.573"><properties><property name="block_size_bytes" value="134217728" /><property name="delta_client_write_bytes" value="6" /></properties></testcase><testcase classname="tests.test_stage5" name="test_remote_base_copy_capacity_and_partial_authorization" file="tests\test_stage5.py" line="277" time="13.160"><properties><property name="remote_base" value="source stopped; destination serves patched object" /><property name="replica_ciphertext_bytes" value="4195034" /><property name="client_delta_bytes" value="5" /></properties></testcase><testcase classname="tests.test_stage5" name="test_patch_failures_and_restart_before_publication" file="tests\test_stage5.py" line="330" time="28.516" /><testcase classname="tests.test_stage5" name="test_full_locks_overwrite_and_cli" file="tests\test_stage5.py" line="397" time="24.951" /><testcase classname="tests.test_stage5" name="test_monotonic_gc_and_reservation_ignore_wall_hints" file="tests\test_stage5.py" line="445" time="3.068" /><testcase classname="tests.test_stage6" name="test_late_delete_physical_generation_guard" file="tests\test_stage6.py" line="42" time="0.038" /><testcase classname="tests.test_stage6" name="test_third_delayed_w2_and_empty" file="tests\test_stage6.py" line="69" time="19.237"><properties><property name="before_third" value="{'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'target_replicas': 3, 'minimum_durable': 2, 'policy_revision': '1', 'policy_state': 'ACTIVE', 'failure_profile': 'process-simulation', 'blocks': [{'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'target': 3, 'confirmed': 2, 'eligible': 2, 'copies': [{'node': {'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'client_endpoint': 'localhost:56028', 'private_endpoint': 'localhost:56029', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14'}, 'receipt': {'receipt_id': '25034ed3-94d7-43a9-9f2a-0bab9e8f811d', 'operation_id': '6657ac99-9b1b-4975-b93f-ce6e6d0eb7b1', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '276t+xZFBa7kq6PBsGo4yLsbUzZ05xS5IQxesJDdt3M=', 'durable_at_unix_ms': '1789411534002'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'client_endpoint': 'localhost:56026', 'private_endpoint': 'localhost:56027', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4'}, 'receipt': {'receipt_id': '2059d0c9-4a32-4f4d-a97f-b474c4c0f5ff', 'operation_id': '9c0b18e3-8d5e-48c7-99e1-04c6f6f9455a', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '276t+xZFBa7kq6PBsGo4yLsbUzZ05xS5IQxesJDdt3M=', 'durable_at_unix_ms': '1789411540731'}, 'health': 'VERIFIED', 'eligible': True}], 'pending_tasks': 1}, {'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'target': 3, 'confirmed': 3, 'eligible': 3, 'copies': [{'node': {'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'client_endpoint': 'localhost:56028', 'private_endpoint': 'localhost:56029', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14'}, 'receipt': {'receipt_id': 'eb6c1f06-53a7-4324-b31f-a83eca3852f1', 'operation_id': '2d185735-edf7-470e-9ada-030fa28eff9b', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411536138'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'client_endpoint': 'localhost:56030', 'private_endpoint': 'localhost:56031', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163'}, 'receipt': {'receipt_id': 'b66233fb-6a8f-41ab-a220-fbab3c0e5658', 'operation_id': '6657ac99-9b1b-4975-b93f-ce6e6d0eb7b1', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411534854'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'client_endpoint': 'localhost:56026', 'private_endpoint': 'localhost:56027', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4'}, 'receipt': {'receipt_id': 'c8d3f5bf-1a3e-414e-bb7a-9ff615280ca5', 'operation_id': '7d7045f8-dad6-49b1-8b9d-32d63dbb1fa8', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411538296'}, 'health': 'VERIFIED', 'eligible': True}]}], 'state': 'DEGRADED', 'durable_ready': True}" /><property name="after_third" value="{'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'target_replicas': 3, 'minimum_durable': 2, 'policy_revision': '1', 'policy_state': 'ACTIVE', 'failure_profile': 'process-simulation', 'blocks': [{'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'target': 3, 'confirmed': 3, 'eligible': 3, 'copies': [{'node': {'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'client_endpoint': 'localhost:56028', 'private_endpoint': 'localhost:56029', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14'}, 'receipt': {'receipt_id': '25034ed3-94d7-43a9-9f2a-0bab9e8f811d', 'operation_id': '6657ac99-9b1b-4975-b93f-ce6e6d0eb7b1', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '276t+xZFBa7kq6PBsGo4yLsbUzZ05xS5IQxesJDdt3M=', 'durable_at_unix_ms': '1789411534002'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'client_endpoint': 'localhost:56030', 'private_endpoint': 'localhost:56031', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163'}, 'receipt': {'receipt_id': 'a0daaeaf-fa45-43d5-82ab-830f65789b95', 'operation_id': '1adb9739-b2ff-4ca5-b2c7-9a0801d588eb', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '276t+xZFBa7kq6PBsGo4yLsbUzZ05xS5IQxesJDdt3M=', 'durable_at_unix_ms': '1789411544224'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'client_endpoint': 'localhost:56026', 'private_endpoint': 'localhost:56027', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4'}, 'receipt': {'receipt_id': '2059d0c9-4a32-4f4d-a97f-b474c4c0f5ff', 'operation_id': '9c0b18e3-8d5e-48c7-99e1-04c6f6f9455a', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '7539c009-ff16-4d7c-86b2-943c7b81d29c', 'size_bytes': '4194304', 'plaintext_sha256': '1Nukmy1iK+9suXD3OZBI0fZ0xymbAYCQlK99zNkQcmA='}, 'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '276t+xZFBa7kq6PBsGo4yLsbUzZ05xS5IQxesJDdt3M=', 'durable_at_unix_ms': '1789411540731'}, 'health': 'VERIFIED', 'eligible': True}]}, {'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'target': 3, 'confirmed': 3, 'eligible': 3, 'copies': [{'node': {'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'client_endpoint': 'localhost:56028', 'private_endpoint': 'localhost:56029', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14'}, 'receipt': {'receipt_id': 'eb6c1f06-53a7-4324-b31f-a83eca3852f1', 'operation_id': '2d185735-edf7-470e-9ada-030fa28eff9b', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': '14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'boot_generation': '1', 'failure_domain': 'process-14f65c0b-6b81-41ed-a953-6cb8f7b15c14', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411536138'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'client_endpoint': 'localhost:56030', 'private_endpoint': 'localhost:56031', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163'}, 'receipt': {'receipt_id': 'b66233fb-6a8f-41ab-a220-fbab3c0e5658', 'operation_id': '6657ac99-9b1b-4975-b93f-ce6e6d0eb7b1', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': 'f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'boot_generation': '1', 'failure_domain': 'process-f8b8875a-a7b1-45dc-b595-ec5bae1d8163', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411534854'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'client_endpoint': 'localhost:56026', 'private_endpoint': 'localhost:56027', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4'}, 'receipt': {'receipt_id': 'c8d3f5bf-1a3e-414e-bb7a-9ff615280ca5', 'operation_id': '7d7045f8-dad6-49b1-8b9d-32d63dbb1fa8', 'block': {'file_id': '041adeeb-efeb-4755-96f8-f0c00b7f400a', 'block_version_id': '1b1a23de-93c6-40f1-8a8b-8c96c9ef2150', 'block_index': '1', 'size_bytes': '805696', 'plaintext_sha256': 'quSY1sMNtmd6Cy3AmXEiEiueLPuNnS3pp0rzt70SCr0='}, 'node_id': 'fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'boot_generation': '1', 'failure_domain': 'process-fd5cc168-c653-4a23-82eb-7a4e15e927f4', 'stored_size_bytes': '806185', 'ciphertext_sha256': '3eX1LTVq95dYr4s+LeHniqK2BgURBn/iMU5r7qa7u1M=', 'durable_at_unix_ms': '1789411538296'}, 'health': 'VERIFIED', 'eligible': True}]}], 'state': 'NORMAL', 'durable_ready': True}" /></properties></testcase><testcase classname="tests.test_stage6" name="test_two_nodes_degraded_one_rejects_and_fourth_repairs" file="tests\test_stage6.py" line="98" time="51.383"><properties><property name="detection_seconds_from_stop" value="6.078000000008615" /><property name="repair_seconds_from_fourth_start" value="10.421999999991385" /><property name="before" value="{'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'target_replicas': 3, 'minimum_durable': 2, 'policy_revision': '1', 'policy_state': 'ACTIVE', 'failure_profile': 'process-simulation', 'blocks': [{'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'target': 3, 'confirmed': 3, 'eligible': 2, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': 'fc9c18ee-e1ea-4b42-a7b1-e9e1b44b3c9c', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411552749'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': '7406c223-3fb3-4310-9132-b295c82dc345', 'operation_id': '26b96509-9fbb-4e79-82b1-c6c46a00abbe', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411556140'}, 'health': 'VERIFIED'}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': '630a03cd-5f28-47fc-9345-3e3622568fc8', 'operation_id': '2fcbc8b2-539f-419c-9c9a-1544522695c9', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411558801'}, 'health': 'VERIFIED', 'eligible': True}]}, {'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'target': 3, 'confirmed': 3, 'eligible': 2, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': '065a4535-a6fb-4d90-bc63-ffdd4153ee1e', 'operation_id': '420fed5b-402d-4e29-8657-5106964c6b16', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411563312'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': 'da0fc85f-8a50-4017-a5b7-d8ccab684e42', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411553860'}, 'health': 'VERIFIED'}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': '4f0df8c0-9733-4e58-a734-f3accdf8f632', 'operation_id': '3b3558f0-7695-4032-a24a-06b9457cbce3', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411561337'}, 'health': 'VERIFIED', 'eligible': True}]}, {'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'target': 3, 'confirmed': 3, 'eligible': 2, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': 'a9b974cc-999f-4088-82a8-a1a3f97c0e07', 'operation_id': '866604a6-faf4-46c7-b926-2861650c24c1', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411567788'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': '66779e8b-c19c-4c07-84ef-6d953453816b', 'operation_id': '437adaee-b904-48aa-8ea7-7da52b196d9b', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411565373'}, 'health': 'VERIFIED'}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': 'd7f05179-8524-4bcd-ae2d-a20f4e85e5e8', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411554545'}, 'health': 'VERIFIED', 'eligible': True}]}], 'state': 'DEGRADED', 'durable_ready': True}" /><property name="after" value="{'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'target_replicas': 3, 'minimum_durable': 2, 'policy_revision': '1', 'policy_state': 'ACTIVE', 'failure_profile': 'process-simulation', 'blocks': [{'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'target': 3, 'confirmed': 4, 'eligible': 3, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '2', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': 'fc9c18ee-e1ea-4b42-a7b1-e9e1b44b3c9c', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411552749'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': '7406c223-3fb3-4310-9132-b295c82dc345', 'operation_id': '26b96509-9fbb-4e79-82b1-c6c46a00abbe', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411556140'}, 'health': 'VERIFIED'}, {'node': {'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'client_endpoint': 'localhost:62013', 'private_endpoint': 'localhost:62014', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461'}, 'receipt': {'receipt_id': 'b7cbaaf3-f148-4015-b897-8206e9066cb7', 'operation_id': 'a383f2d4-f02c-423c-acca-375f8e84337f', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411595745'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': '630a03cd-5f28-47fc-9345-3e3622568fc8', 'operation_id': '2fcbc8b2-539f-419c-9c9a-1544522695c9', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '16696fa3-f07b-46f2-937d-abc387fcb3f9', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'O1fLF0pGr0m48eajBBbj1PqfTVrfWQu6sIn6Q6vEq9U=', 'durable_at_unix_ms': '1789411558801'}, 'health': 'VERIFIED', 'eligible': True}]}, {'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'target': 3, 'confirmed': 4, 'eligible': 3, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '2', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': '065a4535-a6fb-4d90-bc63-ffdd4153ee1e', 'operation_id': '420fed5b-402d-4e29-8657-5106964c6b16', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411563312'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': 'da0fc85f-8a50-4017-a5b7-d8ccab684e42', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411553860'}, 'health': 'VERIFIED'}, {'node': {'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'client_endpoint': 'localhost:62013', 'private_endpoint': 'localhost:62014', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461'}, 'receipt': {'receipt_id': '46a21f6a-9715-4031-893e-456444f776cb', 'operation_id': '18edeff0-9f7f-45ba-b3bd-4c60fc039991', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411588593'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': '4f0df8c0-9733-4e58-a734-f3accdf8f632', 'operation_id': '3b3558f0-7695-4032-a24a-06b9457cbce3', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': 'd6c831bc-e9fa-4ab3-bcde-5a3c6e19dbc7', 'block_index': '1', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '4195034', 'ciphertext_sha256': '7duxRguGdRu9IhIc8gAolQqE1hI3i3tWFMbcmsdyn/s=', 'durable_at_unix_ms': '1789411561337'}, 'health': 'VERIFIED', 'eligible': True}]}, {'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'target': 3, 'confirmed': 4, 'eligible': 3, 'copies': [{'node': {'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '2', 'client_endpoint': 'localhost:62009', 'private_endpoint': 'localhost:62010', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431'}, 'receipt': {'receipt_id': 'a9b974cc-999f-4088-82a8-a1a3f97c0e07', 'operation_id': '866604a6-faf4-46c7-b926-2861650c24c1', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': '2a3552d9-6676-450c-bb1f-2798df96d431', 'boot_generation': '1', 'failure_domain': 'process-2a3552d9-6676-450c-bb1f-2798df96d431', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411567788'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'client_endpoint': 'localhost:62007', 'private_endpoint': 'localhost:62008', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698'}, 'receipt': {'receipt_id': '66779e8b-c19c-4c07-84ef-6d953453816b', 'operation_id': '437adaee-b904-48aa-8ea7-7da52b196d9b', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': '4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'boot_generation': '1', 'failure_domain': 'process-4f6ac8f8-78c4-45c6-95b6-2efa2a818698', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411565373'}, 'health': 'VERIFIED'}, {'node': {'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'client_endpoint': 'localhost:62013', 'private_endpoint': 'localhost:62014', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461'}, 'receipt': {'receipt_id': '6c0af3df-5296-4041-9ab9-1311e5d1030f', 'operation_id': '3bdc6212-43e5-402b-b23c-5eadf22bf79e', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': '9f9b7421-afa4-4888-84e3-d00ee0355461', 'boot_generation': '1', 'failure_domain': 'process-9f9b7421-afa4-4888-84e3-d00ee0355461', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411591051'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'client_endpoint': 'localhost:62011', 'private_endpoint': 'localhost:62012', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e'}, 'receipt': {'receipt_id': 'd7f05179-8524-4bcd-ae2d-a20f4e85e5e8', 'operation_id': '298b3323-074e-4e31-9baa-20a79973492a', 'block': {'file_id': 'a4a09057-9e64-487f-99c1-785535b2e428', 'block_version_id': '0f7ae06e-5fea-4e2a-a657-be3b0f3689fb', 'block_index': '2', 'size_bytes': '611392', 'plaintext_sha256': 'GyKZu0MfeHJ45P0tCCI4g85JimiCIabwe/BYLDfzuzU='}, 'node_id': 'bc09445b-a89c-4528-b1be-30d054d53c5e', 'boot_generation': '1', 'failure_domain': 'process-bc09445b-a89c-4528-b1be-30d054d53c5e', 'stored_size_bytes': '611861', 'ciphertext_sha256': 'TH04xpjM3GLLNKPp3Bo9w3rMJCQhlKEiJikH78WlBzw=', 'durable_at_unix_ms': '1789411554545'}, 'health': 'VERIFIED', 'eligible': True}]}], 'state': 'NORMAL', 'durable_ready': True}" /></properties></testcase><testcase classname="tests.test_stage6" name="test_multiblock_insufficient_atomic_and_stale_fencing" file="tests\test_stage6.py" line="134" time="23.461" /><testcase classname="tests.test_stage6" name="test_disjoint_concurrent_and_lost_commit" file="tests\test_stage6.py" line="156" time="25.943" /><testcase classname="tests.test_stage6" name="test_profiles_patch_delta[4194304]" file="tests\test_stage6.py" line="188" time="29.556"><properties><property name="block_bytes" value="4194304" /><property name="patch_client_bytes" value="3" /><property name="replica_ciphertext_bytes" value="8390918" /></properties></testcase><testcase classname="tests.test_stage6" name="test_profiles_patch_delta[67108864]" file="tests\test_stage6.py" line="188" time="42.020"><properties><property name="block_bytes" value="67108864" /><property name="patch_client_bytes" value="3" /><property name="replica_ciphertext_bytes" value="134230065" /></properties></testcase><testcase classname="tests.test_stage6" name="test_profiles_patch_delta[134217728]" file="tests\test_stage6.py" line="188" time="50.184"><properties><property name="block_bytes" value="134217728" /><property name="patch_client_bytes" value="3" /><property name="replica_ciphertext_bytes" value="134229655" /></properties></testcase><testcase classname="tests.test_stage6" name="test_corrupt_copy_repair_and_interrupted_read" file="tests\test_stage6.py" line="220" time="45.719"><properties><property name="repaired" value="{'file_id': '87885b97-cf36-4d84-8042-d578aeedcfac', 'target_replicas': 3, 'minimum_durable': 2, 'policy_revision': '1', 'policy_state': 'ACTIVE', 'failure_profile': 'process-simulation', 'blocks': [{'block': {'file_id': '87885b97-cf36-4d84-8042-d578aeedcfac', 'block_version_id': '9db267c4-77e4-4478-ad87-8ff8dff52de5', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'target': 3, 'confirmed': 3, 'eligible': 3, 'copies': [{'node': {'node_id': '0fef588b-a710-422a-89b1-fad844090830', 'boot_generation': '1', 'client_endpoint': 'localhost:51488', 'private_endpoint': 'localhost:51489', 'failure_domain': 'process-0fef588b-a710-422a-89b1-fad844090830'}, 'receipt': {'receipt_id': 'b45b99ed-9b64-4b79-8825-f2a87e1a55d4', 'operation_id': '9db8277a-7438-4c05-ba34-01804d280b09', 'block': {'file_id': '87885b97-cf36-4d84-8042-d578aeedcfac', 'block_version_id': '9db267c4-77e4-4478-ad87-8ff8dff52de5', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '0fef588b-a710-422a-89b1-fad844090830', 'boot_generation': '1', 'failure_domain': 'process-0fef588b-a710-422a-89b1-fad844090830', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'rIk/iNKowjypNC3UWpoe6VqJyGIjUkaf7aBBAg8K2Mk=', 'durable_at_unix_ms': '1789411808791'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '540e0bb6-8231-4add-a34d-14b18ad78ed5', 'boot_generation': '1', 'client_endpoint': 'localhost:51490', 'private_endpoint': 'localhost:51491', 'failure_domain': 'process-540e0bb6-8231-4add-a34d-14b18ad78ed5'}, 'receipt': {'receipt_id': '6ea6e29a-8889-44ed-851d-580ce42e091d', 'operation_id': 'e454c3a7-3b5a-46ee-94e6-c94246e0e7ca', 'block': {'file_id': '87885b97-cf36-4d84-8042-d578aeedcfac', 'block_version_id': '9db267c4-77e4-4478-ad87-8ff8dff52de5', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '540e0bb6-8231-4add-a34d-14b18ad78ed5', 'boot_generation': '1', 'failure_domain': 'process-540e0bb6-8231-4add-a34d-14b18ad78ed5', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'rIk/iNKowjypNC3UWpoe6VqJyGIjUkaf7aBBAg8K2Mk=', 'durable_at_unix_ms': '1789411777276'}, 'health': 'VERIFIED', 'eligible': True}, {'node': {'node_id': '5606dc70-7c94-4858-b6fa-27a9891b1cf3', 'boot_generation': '1', 'client_endpoint': 'localhost:51486', 'private_endpoint': 'localhost:51487', 'failure_domain': 'process-5606dc70-7c94-4858-b6fa-27a9891b1cf3'}, 'receipt': {'receipt_id': '77ad2ae8-c08c-4bf3-8aca-f12abbde905a', 'operation_id': 'f33a7821-8c5a-4da0-bf32-77bb56e0a50c', 'block': {'file_id': '87885b97-cf36-4d84-8042-d578aeedcfac', 'block_version_id': '9db267c4-77e4-4478-ad87-8ff8dff52de5', 'size_bytes': '4194304', 'plaintext_sha256': 'pYeJ6RDl+TmvxDOgD+9ZMHApJ9wZLLI3/Z50Sb1v/h0='}, 'node_id': '5606dc70-7c94-4858-b6fa-27a9891b1cf3', 'boot_generation': '1', 'failure_domain': 'process-5606dc70-7c94-4858-b6fa-27a9891b1cf3', 'stored_size_bytes': '4195034', 'ciphertext_sha256': 'rIk/iNKowjypNC3UWpoe6VqJyGIjUkaf7aBBAg8K2Mk=', 'durable_at_unix_ms': '1789411779466'}, 'health': 'VERIFIED', 'eligible': True}]}], 'state': 'NORMAL', 'durable_ready': True}" /></properties></testcase><testcase classname="tests.test_stage6" name="test_restart_pending_and_gc_tombstone" file="tests\test_stage6.py" line="258" time="34.300" /><testcase classname="tests.test_stage6" name="test_promotion_r1_retained_snapshot" file="tests\test_stage6.py" line="287" time="35.410" /><testcase classname="tests.test_stage6" name="test_volume_loss_keys_and_recovery" file="tests\test_stage6.py" line="315" time="23.983"><properties><property name="volume_repair_seconds_from_restart" value="6.0" /></properties></testcase><testcase classname="tests.test_stage6" name="test_old_maintenance_callback_and_duplicate_receipt" file="tests\test_stage6.py" line="353" time="22.395" /><testcase classname="tests.test_stage6" name="test_expired_writer_with_two_copies" file="tests\test_stage6.py" line="390" time="35.560" /><testcase classname="tests.test_stage6" name="test_commit_without_original_primary_and_permissions" file="tests\test_stage6.py" line="413" time="25.620" /><testcase classname="tests.test_stage7_authorization" name="test_shared_user_revocation_and_open_truncate_gc" file="tests\test_stage7_authorization.py" line="12" time="112.164"><properties><property name="reader_snapshot_bytes" value="0" /><property name="authorization" value="CN0 creates/revokes; ordinary session on CN1; CN2 checks current rights" /><property name="gc" value="concurrent open/truncate across CNs; rm preserves valid snapshot; retirement after close" /></properties></testcase><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="14" time="148.647"><properties><property name="members" value="[{'member': 14915325922185804836, 'cluster': 3597657383770710818, 'leader': 14915325922185804836, 'revision': 491, 'members': [11937700358312161313, 14251164225619273715, 14915325922185804836], 'endpoint': '127.0.0.1:52608', 'pid': 23740}, {'member': 11937700358312161313, 'cluster': 3597657383770710818, 'leader': 14915325922185804836, 'revision': 491, 'members': [11937700358312161313, 14251164225619273715, 14915325922185804836], 'endpoint': '127.0.0.1:52603', 'pid': 14836}, {'member': 14251164225619273715, 'cluster': 3597657383770710818, 'leader': 14915325922185804836, 'revision': 491, 'members': [11937700358312161313, 14251164225619273715, 14915325922185804836], 'endpoint': '127.0.0.1:52604', 'pid': 14676}]" /><property name="migration" value="{'status': 'EJECUTADO', 'records': 7, 'original_sha256': '8ddbd37232bce8631a72016f7a30b22aa52a15d994de7f036fe0f1bc7ef8884c', 'imported_sha256': 'c2ce7a977ec324931f18a0aa379f4e32f6511da5f47956fae9e5150ee27efe9c', 'epoch': '4eed5c06-d5b1-42ef-afff-2e2a69b5f122', 'retained_snapshots': 0, 'sqlite_disabled': True, 'backup': 'F:\\DFSha\\.runtime\\tests\\60ed7352-d838-4dad-bf0c-c185657bdf28\\ha7-45a27ca5-2416-4478-ad08-7b5d48e0b94d\\migration\\sqlite-backup.sqlite3', 'root': '629b16ed6690ad3329c7832ae5a32e6961fd21451b41e25f6180d658b796e074'}" /></properties></testcase><testcase classname="tests.test_stage7_control" name="test_cross_control_parallel_publication_and_lost_reply" file="tests\test_stage7_control.py" line="39" time="208.864"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'LOCK_CONFLICT'&#10;  Actual message: '&lt;_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.DEADLINE_EXCEEDED\n\tdetails = &quot;Stream removed (Deadline Exceeded)&quot;\n\tdebug_error_string = &quot;DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)&quot;\n&gt;'">run_dir = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-48/test_cross_control_parallel_pu0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000001F83A8FC4A0&gt;
+
+    def test_cross_control_parallel_publication_and_lost_reply(run_dir, tmp_path, record_property):
+        with HACluster(run_dir/('parallel7-'+str(uuid.uuid4()))) as lab:
+            a, b = lab.client(0), lab.client(1)
+            size = 4194304
+            source = tmp_path/'parallel'
+            source.write_bytes(b'A'*size+b'B'*size)
+            try:
+                a.send(source, '/parallel')
+                left, right, reader = a.open('/parallel', 'r+'), b.open('/parallel', 'r+'), a.open('/parallel')
+                barrier = threading.Barrier(2)
+                with ExitStack() as leases:
+                    leases.enter_context(a.keepalive(reader))
+                    def prepare(sdk, handle, offset, data):
+                        plan = sdk.begin_write(handle, offset, data)
+                        keeper = sdk.write_keepalive(handle, plan)
+                        keeper.__enter__()
+                        try:
+                            barrier.wait(20)
+                            blocks = sdk.prepare_blocks(handle, plan, data)
+                            sdk.wait_durable(plan.operation.operation_id)
+                            return plan, blocks, keeper
+                        except BaseException:
+                            keeper.__exit__(None, None, None)
+                            raise
+                    with ThreadPoolExecutor(2) as pool:
+                        fa = pool.submit(prepare, a, left, 0, b'a'*4096)
+                        fb = pool.submit(prepare, b, right, size, b'b'*4096)
+                        pa, ca, ka = fa.result(timeout=240)
+                        leases.callback(ka.__exit__, None, None, None)
+                        pb, cb, kb = fb.result(timeout=240)
+                        leases.callback(kb.__exit__, None, None, None)
+                    # Both independent preparations attained W2 before either publication.
+                    assert a.operation(pa.operation.operation_id).state == c.PREPARING
+                    assert b.operation(pb.operation.operation_id).state == c.PREPARING
+                    a.commit_write(left, pa, ca)
+                    b.commit_write(right, pb, cb)
+                    assert a.read(reader, 0, 1) == b'A'
+                    assert a.read(left, size, 1) == b'B'
+                    assert b.read(right, 0, 1) == b'a'
+                fresh = a.open('/parallel', 'r+')
+                lock = a.lock(fresh, 0, 1)
+&gt;               with pytest.raises(grpc.RpcError, match='LOCK_CONFLICT'):
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: Regex pattern did not match.
+E                 Expected regex: 'LOCK_CONFLICT'
+E                 Actual message: '&lt;_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.DEADLINE_EXCEEDED\n\tdetails = "Stream removed (Deadline Exceeded)"\n\tdebug_error_string = "DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)"\n&gt;'
+
+tests\test_stage7_control.py:81: AssertionError</failure></testcase><testcase classname="tests.test_stage7_control" name="test_e6_migration_and_full_backup_restore" file="tests\test_stage7_control.py" line="112" time="112.679"><properties><property name="backup" value="{'status': 'EJECUTADO', 'files': 103, 'snapshot': {'hash': 2347569375, 'revision': 137, 'totalKey': 225, 'totalSize': 544768, 'version': '3.6.0'}, 'offline': True, 'block_objects': 6}" /><property name="migration" value="{'status': 'EJECUTADO', 'records': 55, 'original_sha256': '82c4892766434eb8d3aea67b3a63022c6054eb4510d0f69e81e60631044350c0', 'imported_sha256': '60a41b57245412af75d74993dda3a77c5a678473132dd5ec6d9d1a153f4476c2', 'epoch': 'a527e0c7-e258-4f61-9227-796e62c08dd6', 'retained_snapshots': 1, 'sqlite_disabled': True, 'backup': 'F:\\DFSha\\.runtime\\tests\\60ed7352-d838-4dad-bf0c-c185657bdf28\\migration7-a67b6d8d-6e14-4f93-8a27-361cd009e537\\migration\\sqlite-backup.sqlite3', 'root': '0bf8621f50b50a6c6f6fc52e43bced2badbdbdd9373b5fac4b8f012dd964ef15'}" /><property name="sha256" value="ef383a6fa2d1eb530d473bfdbb0d67884a2b5fe9bbd7241e1256496b665b3697" /></properties></testcase><testcase classname="tests.test_stage7_control" name="test_control_failover_network_partition_and_quorum" file="tests\test_stage7_control.py" line="168" time="119.998"><properties><property name="partition_recovery_seconds" value="2.73499999998603" /><property name="quorum_error_seconds" value="5.10899999999674" /></properties></testcase><testcase classname="tests.test_stage7_control" name="test_expired_writer_with_two_copies_cannot_publish" file="tests\test_stage7_control.py" line="238" time="173.527" /><testcase classname="tests.test_stage7_control" name="test_cross_control_capacity_reservations_are_atomic" file="tests\test_stage7_control.py" line="278" time="45.295" /><testcase classname="tests.test_stage7_control" name="test_restart_entire_lab_preserves_epoch_and_unexpired_handle" file="tests\test_stage7_control.py" line="315" time="91.836" /><testcase classname="tests.test_stage7_control" name="test_maintenance_takeover_rejects_old_callback_and_preserves_snapshot" file="tests\test_stage7_control.py" line="341" time="52.006"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.CANCELLED&#10;&#09;details = &quot;CANCELLED&quot;&#10;&#09;debug_error_string = &quot;CANCELLED:CANCELLED&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/60ed7352-d838-4dad-bf0c-c185657bdf28')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-48/test_maintenance_takeover_reje0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000001F83BF063E0&gt;
+
+    def test_maintenance_takeover_rejects_old_callback_and_preserves_snapshot(run_dir, tmp_path, record_property):
+        import tomllib
+        from dfsha.common import node_rpc
+        from dfsha.v1 import nodes_pb2 as n, nodes_pb2_grpc as ng
+        from measure_stage6 import full
+        with HACluster(run_dir/('maintenance7-'+str(uuid.uuid4()))) as lab:
+            client = lab.client()
+            store = lab.metadata()
+            source = tmp_path/'maintenance'
+            source.write_bytes(b'maintenance snapshot'*1000)
+            try:
+                markers = [p.directory/'faults'/('hold-copy-'+node_id) for p in lab.controls for node_id in lab.node_ids]
+                for marker in markers:
+                    marker.touch()
+                def pending():
+                    with store.transaction() as tx:
+                        tasks = [t for t in tx.all('task') if t['kind'] == 'copy' and t['status']['state'] == 'ACCEPTED']
+                        leader = tx.get('settings', 'maintenance')
+                        return (tasks[0], leader) if tasks and leader else None
+                with ThreadPoolExecutor(1) as pool:
+                    upload = pool.submit(client.send, source, '/maintenance')
+                    old_task, old_leader = wait_until(pending, seconds=60)
+                    index = lab.control_ids.index(old_leader['control_id'])
+                    lab.controls[index].stop()
+                    for marker in markers:
+                        marker.unlink(missing_ok=True)
+&gt;                   result = upload.result(timeout=240)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:368: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Tommysepf\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\Tommysepf\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\Tommysepf\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py:59: in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\sdk.py:304: in send
+    self.wait_durable(plan.operation.operation_id)
+src\dfsha\client\sdk.py:71: in wait_durable
+    status = self.protection(operation_id=operation_id, cursor=cursor)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\sdk.py:60: in protection
+    return self.call(self.cluster.GetProtection, nodes.ProtectionRequest(path=self.path(path) if path else None,
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001F83C039FA0&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001F83C344340&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.CANCELLED
+E       	details = "CANCELLED"
+E       	debug_error_string = "CANCELLED:CANCELLED"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase><testcase classname="tests.test_stage7_metadata" name="test_paged_atomic_metadata_and_quorum" file="tests\test_stage7_metadata.py" line="22" time="13.141"><properties><property name="membership" value="[{'member': 17116650692954175042, 'cluster': 7001434801330852325, 'leader': 17116650692954175042, 'revision': 8, 'members': [4426833510646423799, 16786566762850732764, 17116650692954175042], 'endpoint': '127.0.0.1:64257', 'pid': 28828}, {'member': 16786566762850732764, 'cluster': 7001434801330852325, 'leader': 17116650692954175042, 'revision': 8, 'members': [4426833510646423799, 16786566762850732764, 17116650692954175042], 'endpoint': '127.0.0.1:64258', 'pid': 36052}, {'member': 4426833510646423799, 'cluster': 7001434801330852325, 'leader': 17116650692954175042, 'revision': 8, 'members': [4426833510646423799, 16786566762850732764, 17116650692954175042], 'endpoint': '127.0.0.1:64259', 'pid': 33772}]" /></properties></testcase><testcase classname="tests.test_stage7_metadata" name="test_shared_lease_expiry_and_publication_fence" file="tests\test_stage7_metadata.py" line="61" time="11.929" /><testcase classname="tests.test_stage7_metadata" name="test_watch_disconnect_and_compaction_rebuild" file="tests\test_stage7_metadata.py" line="88" time="7.741" /><testcase classname="tests.test_stage7_metadata" name="test_partition_one_authority_client_without_stopping_etcd" file="tests\test_stage7_metadata.py" line="115" time="6.625"><properties><property name="partition_error_seconds" value="0.0" /><property name="transport_bytes" value="[(5056, 5682), (3799, 5991), (0, 0)]" /></properties></testcase><testcase classname="tests.test_stage7_metadata" name="test_etcd_snapshot_restore_new_cluster" file="tests\test_stage7_metadata.py" line="154" time="10.903"><properties><property name="snapshot_status" value="{'hash': 1824910092, 'revision': 4, 'totalKey': 5, 'totalSize': 28672, 'version': '3.6.0'}" /><property name="restored_membership" value="[{'member': 7051380224529715372, 'cluster': 16569311318750300682, 'leader': 7051380224529715372, 'revision': 1000000004, 'members': [7051380224529715372, 8908862106482218122, 9072173799643115789], 'endpoint': '127.0.0.1:64809', 'pid': 30944}, {'member': 8908862106482218122, 'cluster': 16569311318750300682, 'leader': 7051380224529715372, 'revision': 1000000004, 'members': [7051380224529715372, 8908862106482218122, 9072173799643115789], 'endpoint': '127.0.0.1:64810', 'pid': 26180}, {'member': 9072173799643115789, 'cluster': 16569311318750300682, 'leader': 7051380224529715372, 'revision': 1000000004, 'members': [7051380224529715372, 8908862106482218122, 9072173799643115789], 'endpoint': '127.0.0.1:64811', 'pid': 19224}]" /></properties></testcase><testcase classname="tests.test_stage7_metadata" name="test_etcd_application_identity_is_prefix_restricted" file="tests\test_stage7_metadata.py" line="183" time="5.476" /><testcase classname="tests.test_transport" name="test_separate_client_process_tls_and_bounded_stream[False]" file="tests\test_transport.py" line="23" time="0.783"><properties><property name="diagnostic" value="{&quot;status&quot;: &quot;EJECUTADO&quot;, &quot;version&quot;: &quot;0.3.0&quot;, &quot;listener&quot;: &quot;public&quot;, &quot;diagnostic_ready&quot;: true, &quot;filesystem_implemented&quot;: false, &quot;uploaded_bytes&quot;: 8388625, &quot;downloaded_bytes&quot;: 8388625, &quot;sha256&quot;: &quot;e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc&quot;, &quot;chunks&quot;: 33, &quot;max_chunk_bytes&quot;: 262144}" /></properties></testcase><testcase classname="tests.test_transport" name="test_separate_client_process_tls_and_bounded_stream[True]" file="tests\test_transport.py" line="23" time="0.540"><properties><property name="diagnostic" value="{&quot;status&quot;: &quot;EJECUTADO&quot;, &quot;version&quot;: &quot;0.3.0&quot;, &quot;listener&quot;: &quot;internal&quot;, &quot;diagnostic_ready&quot;: true, &quot;filesystem_implemented&quot;: false, &quot;uploaded_bytes&quot;: 8388625, &quot;downloaded_bytes&quot;: 8388625, &quot;sha256&quot;: &quot;e31b61e09bc1fc5a20361509e968a8fb77f2f4b299a2abc3e40b881b5e889ffc&quot;, &quot;chunks&quot;: 33, &quot;max_chunk_bytes&quot;: 262144}" /></properties></testcase><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[public_target-None-rogue-ca]" file="tests\test_transport.py" line="42" time="0.004" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-None-ca]" file="tests\test_transport.py" line="42" time="0.004" /><testcase classname="tests.test_transport" name="test_tls_rejects_untrusted_or_missing_certificate[internal_target-rogue-client-ca]" file="tests\test_transport.py" line="42" time="0.006" /><testcase classname="tests.test_transport" name="test_tls_rejects_wrong_server_san" file="tests\test_transport.py" line="55" time="0.020" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[missing_header-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.257" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[offset-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.257" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[oversized-StatusCode.RESOURCE_EXHAUSTED-LIMIT_EXCEEDED]" file="tests\test_transport.py" line="72" time="0.259" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[checksum-StatusCode.DATA_LOSS-CHECKSUM_MISMATCH]" file="tests\test_transport.py" line="72" time="0.258" /><testcase classname="tests.test_transport" name="test_stream_rejects_invalid_input[short-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]" file="tests\test_transport.py" line="72" time="0.258" /><testcase classname="tests.test_transport" name="test_transport_message_limit" file="tests\test_transport.py" line="92" time="0.257" /><testcase classname="tests.test_transport" name="test_client_deadline_interrupts_stream" file="tests\test_transport.py" line="99" time="0.103" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.Login]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.Logout]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[AuthenticationService.RefreshSession]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.CreateUser]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetUser]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.CreateGroup]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetGroupMembers]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.GetAcl]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[IdentityService.SetAcl]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.List]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Stat]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Mkdir]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Rmdir]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NamespaceService.Remove]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.BeginUpload]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.AllocateBlocks]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.StageManifestPage]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.SealManifest]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.CommitUpload]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.AbortUpload]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.GetOperation]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[UploadService.RenewUpload]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Open]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Close]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.RenewHandle]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.BeginWrite]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.CommitWrite]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.AbortWrite]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Lock]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.Unlock]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.RenewLock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.ResolveBlocks]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.BeginRead]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[FileAccessService.EndRead]" file="tests\test_transport.py" line="115" time="0.255" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.PutBlock]" file="tests\test_transport.py" line="115" time="0.255" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.PatchBlock]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[BlockService.GetBlock]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.ListNodes]" file="tests\test_transport.py" line="115" time="0.256" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.CopyBlock]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.CopyStatus]" file="tests\test_transport.py" line="115" time="0.257" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.GetProtection]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.PromoteProtection]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.RegisterNode]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.Heartbeat]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.BlockReport]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportDurable]" file="tests\test_transport.py" line="115" time="0.261" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportTask]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeBlock]" file="tests\test_transport.py" line="115" time="0.261" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeInternal]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.VerifyReceipt]" file="tests\test_transport.py" line="115" time="0.258" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.ReplicateBlock]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.GetTask]" file="tests\test_transport.py" line="115" time="0.260" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[StorageAdministrationService.DeleteRetiredBlock]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ReplicaService.StoreReplica]" file="tests\test_transport.py" line="115" time="0.259" /><testcase classname="tests.test_transport" name="test_all_future_rpcs_are_unimplemented[ReplicaService.GetReplica]" file="tests\test_transport.py" line="115" time="0.284" /></testsuite></testsuites>

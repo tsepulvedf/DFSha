@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="73.375" timestamp="2026-09-12T19:54:00.665623-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\8af04909-897e-40af-a7d3-706d0ef68de7" /></properties><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="6" time="73.107"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.UNKNOWN&#10;&#09;details = &quot;Exception calling application: 'NoneType' object has no attribute 'encode'&quot;&#10;&#09;debug_error_string = &quot;UNKNOWN:Exception calling application: 'NoneType' object has no attribute 'encode'&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/8af04909-897e-40af-a7d3-706d0ef68de7')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-35/test_cross_control_session_han0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000001FE76539DA0&gt;
+
+    def test_cross_control_session_handle_and_data(run_dir, tmp_path, record_property):
+        with HACluster(run_dir/('ha7-'+str(uuid.uuid4()))) as lab:
+            a = lab.client(0)
+            b = lab.client(1, a.session)
+            try:
+                a.mkdir('/shared')
+                assert b.stat('/shared').object_id == a.stat('/shared').object_id
+                local = tmp_path/'source'
+                local.write_bytes(b'A'*5000000)
+                result = a.send(local, '/shared/file')
+                h = a.open('/shared/file', 'r+')
+                assert b.read(h, 0, 8) == b'A'*8
+&gt;               b.renew_handle(h)
+
+tests\test_stage7_control.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\access.py:20: in renew_handle
+    updated = self.call(self.files.RenewHandle, ctl.HandleRequest(handle_id=handle.handle_id,
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001FE765A0590&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001FE76592040&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.UNKNOWN
+E       	details = "Exception calling application: 'NoneType' object has no attribute 'encode'"
+E       	debug_error_string = "UNKNOWN:Exception calling application: 'NoneType' object has no attribute 'encode'"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase></testsuite></testsuites>

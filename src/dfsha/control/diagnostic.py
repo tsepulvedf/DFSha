@@ -13,18 +13,22 @@ from dfsha.v1 import diagnostic_pb2_grpc as rpc
 
 
 class Diagnostic(rpc.DiagnosticServiceServicer):
-    def __init__(self, listener: str, filesystem_implemented=False):
+    def __init__(self, listener: str, filesystem_implemented=False, metadata_probe=None):
         self.listener = listener
         self.filesystem_implemented = filesystem_implemented
+        self.metadata_probe = metadata_probe
 
     def Health(self, request, context):
         self.require_deadline(context)
         require_uuid(context, request.request_id)
         event("health", listener=self.listener, request_id=request.request_id)
+        metadata = self.metadata_probe() if self.metadata_probe else dict(
+            metadata_backend='sqlite' if self.filesystem_implemented else 'sqlite-planned',
+            metadata_available=self.filesystem_implemented)
         return pb.HealthResponse(request_id=request.request_id, version=__version__,
                                  listener=self.listener, diagnostic_ready=True,
                                  filesystem_implemented=self.filesystem_implemented,
-                                 metadata_backend="sqlite" if self.filesystem_implemented else "sqlite-planned")
+                                 **metadata)
 
     def StreamDigest(self, request_iterator, context):
         self.require_deadline(context)

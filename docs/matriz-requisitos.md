@@ -1,6 +1,18 @@
 # DFSha — Matriz de requisitos y trazabilidad
 
-## Seguimiento activo E6 (no sustituye fuentes originales)
+## Seguimiento activo E7
+
+| Requisitos / decisiones | Implementación | Evidencia / aceptación | Estado |
+| --- | --- | --- | --- |
+| RNF2, COM-03 / D51–D54 | Tres CN, autoridad etcd y failover de SDK/DataNodes | Namespace, sesión, handle y parche compartidos; caída, partición TCP y pérdida de mayoría | EJECUTADO en procesos de un host; Q05 docente y hosts independientes pendientes |
+| RNF3, RF1–RF3 / D52–D53/D58 | Páginas inmutables, CAS de raíz y guardas de leases; sin fallback | Mezcla A1/B1 preparada en paralelo, fencing, resultado perdido; reservas y usuario ordinario entre CN | EJECUTADO; cobertura final de 152 casos distintos, con repeticiones identificadas |
+| RNF2 / D55–D56 | Mantenimiento con lease; backup/migración/restauración | Archivo E6 y snapshot retenido; relevo rechaza callbacks antiguos; reinicio conserva handle vigente | EJECUTADO; nueva membresía/época al restaurar; liberación administrativa de pins pendiente |
+| RNF4–RNF7, INF | Datos directos y claves autorizadas; tres CN/etcd en un host | 512 MiB, delta 4 KiB, R3/W2, tablas de tráfico y memoria E7 | EJECUTADO; RNF6 integral, Linux, hosts/cloud/Internet pendientes |
+| RF2, RNF6 / D57 | Contención física con equivalencia de prefijos Windows después de resolver enlaces | Carrera real de creación de padre y negativa de junction fuera del almacén | EJECUTADO; mediciones corregida/final y regresión conservadas |
+
+Detalle y resultados fallidos conservados: [inventario E7](evidencias/etapa7/README.md).
+
+## Seguimiento histórico E6 (no sustituye fuentes originales)
 
 | ID / decisión | Diseño e implementación | Criterio observable / evidencia | Estado |
 | --- | --- | --- | --- |

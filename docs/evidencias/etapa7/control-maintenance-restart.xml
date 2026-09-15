@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="385.522" timestamp="2026-09-13T13:27:09.598198-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\48282711-7960-4806-8168-59bcf039a7ee" /></properties><testcase classname="tests.test_stage7_control" name="test_restart_entire_lab_preserves_epoch_and_unexpired_handle" file="tests\test_stage7_control.py" line="271" time="113.964"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.DEADLINE_EXCEEDED&#10;&#09;details = &quot;Stream removed (Deadline Exceeded)&quot;&#10;&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/48282711-7960-4806-8168-59bcf039a7ee')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-42/test_restart_entire_lab_preser0')
+
+    def test_restart_entire_lab_preserves_epoch_and_unexpired_handle(run_dir, tmp_path):
+        from run_ha_lab import save, ExistingHACluster
+        root = run_dir/('restart7-'+str(uuid.uuid4()))
+        source = tmp_path/'persistent'
+        source.write_bytes(b'persistent bytes'*100)
+        with HACluster(root) as lab:
+&gt;           client = lab.client()
+                     ^^^^^^^^^^^^
+
+tests\test_stage7_control.py:278: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\ha_runtime.py:193: in client
+    client.login('admin', 'development-password')
+src\dfsha\client\sdk.py:130: in login
+    self.session = self.authentication.Login(ident.LoginRequest(request_id=str(uuid.uuid4()),
+src\dfsha\common\failover.py:45: in invoke
+    raise error
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001DB4F93EDE0&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001DB4F925A40&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Stream removed (Deadline Exceeded)"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase><testcase classname="tests.test_stage7_control" name="test_maintenance_takeover_rejects_old_callback_and_preserves_snapshot" file="tests\test_stage7_control.py" line="297" time="271.050"><properties><property name="maintenance_generations" value="(1, 2)" /></properties></testcase></testsuite></testsuites>

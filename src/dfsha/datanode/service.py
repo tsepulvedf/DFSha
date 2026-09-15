@@ -60,7 +60,11 @@ class DataNode:
         self.reserved = 0
         self.pool = ThreadPoolExecutor(max_workers=2)
         self.jobs = set()
-        self.channel = node_rpc.channel(cfg['control_internal_target'], cfg)
+        if cfg.get('control_internal_targets'):
+            from dfsha.common.failover import FailoverChannel
+            self.channel = FailoverChannel([node_rpc.channel(x, cfg) for x in cfg['control_internal_targets']])
+        else:
+            self.channel = node_rpc.channel(cfg['control_internal_target'], cfg)
         self.registry = ng.NodeRegistryServiceStub(self.channel)
         self.authorization = ng.InternalAuthorizationServiceStub(self.channel)
         self.stop_event = threading.Event()
@@ -136,8 +140,10 @@ class DataNode:
             tx.put('settings', record)
 
     def register_inventory(self):
-        self.registry.RegisterNode(n.RegisterNodeRequest(context=self.context(), node=self.location(),
-            capacity_bytes=self.cfg['capacity_bytes'], free_bytes=self.metrics()['free_bytes'], inventory_id=self.inventory_id), timeout=5)
+        if self.cfg.get('control_internal_targets'):
+            self.inventory_id = uid()  # New scan, same authenticated boot generation.
+        registration = self.registry.RegisterNode(n.RegisterNodeRequest(context=self.context(), node=self.location(),
+            capacity_bytes=self.cfg['capacity_bytes'], free_bytes=self.metrics()['free_bytes'], inventory_id=self.inventory_id), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         # Verify local content before reporting persistent receipts as ready after a restart.
         with self.store.transaction() as tx:
             records = tx.all('block')
@@ -152,8 +158,8 @@ class DataNode:
         for page in range(max(1, (len(receipts) + 63) // 64)):
             self.registry.BlockReport(n.BlockReportRequest(context=self.context(), node_id=self.node_id,
                 boot_generation=self.generation, report_id=self.inventory_id, page_index=page,
-                receipts=receipts[page*64:(page+1)*64], last_page=(page+1)*64 >= len(receipts)), timeout=5)
-        self.sequence = 0
+                receipts=receipts[page*64:(page+1)*64], last_page=(page+1)*64 >= len(receipts)), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
+        self.sequence = registration.revision
 
     def maintain(self):
         registered = False
@@ -164,7 +170,7 @@ class DataNode:
                     registered = True
                 self.sequence += 1
                 self.registry.Heartbeat(n.HeartbeatRequest(context=self.context(), node_id=self.node_id,
-                    boot_generation=self.generation, sequence=self.sequence, observed_at_unix_ms=now(), **self.metrics()), timeout=2)
+                    boot_generation=self.generation, sequence=self.sequence, observed_at_unix_ms=now(), **self.metrics()), timeout=self.cfg.get('control_rpc_timeout_seconds', 2))
                 with self.store.transaction() as tx:
                     finished = [t for t in tx.all('task') if t['status']['state'] in ('FINISHED', 'FAILED') and not t.get('reported')]
             except Exception as exc:
@@ -210,7 +216,7 @@ class DataNode:
             request.offset = header.offset if header.HasField('offset') else 0
             request.length = header.length if header.HasField('length') else header.block.size_bytes - request.offset
             need(request.offset <= header.block.size_bytes and 0 < request.length <= header.block.size_bytes - request.offset)
-        decision = self.authorization.AuthorizeBlock(request, timeout=5)
+        decision = self.authorization.AuthorizeBlock(request, timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         if not decision.HasField('replay_receipt'):
             need(ctx.time_remaining() <= DEADLINES[decision.block_size_bytes] + 2 and decision.valid_until_unix_ms > now())
         return decision
@@ -226,7 +232,16 @@ class DataNode:
         first = next(requests, None)
         need(first is not None and first.WhichOneof('frame') == 'header')
         header = first.header
+        if self.cfg.get('control_internal_targets'):
+            import json
+            from dfsha.common.telemetry import event
+            event('put_started', code=json.dumps(dict(operation=header.operation.operation_id,
+                block=header.block.block_version_id, node=self.node_id, generation=self.generation)))
         decision = self.authorize(header, ctx, True)
+        if self.cfg.get('control_internal_targets'):
+            event('put_authorized', code=json.dumps(dict(operation=header.operation.operation_id,
+                block=header.block.block_version_id, control_endpoint=self.cfg['control_internal_targets'][self.channel.index],
+                valid_until=decision.valid_until_unix_ms, observed=now())))
         if decision.HasField('replay_receipt'):
             return decision.replay_receipt
         key = header.context.user_id + ':' + header.context.request_id
@@ -263,7 +278,7 @@ class DataNode:
                     with self.guard:
                         self.reserved -= amount
         self.registry.ReportDurable(n.ReportDurableRequest(context=self.context(), receipt=receipt,
-            client_context=header.context, operation=header.operation, fence=header.fence), timeout=5)
+            client_context=header.context, operation=header.operation, fence=header.fence), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         return receipt
 
     def PatchBlock(self, requests, ctx):
@@ -306,7 +321,8 @@ class DataNode:
             self.count('client_read_bytes', total)
 
     def control_peer(self, ctx, req):
-        need(node_rpc.peer(ctx) == self.cfg['control_identity'] and req.context.user_id == self.cfg['control_identity'] and
+        identity = node_rpc.peer(ctx)
+        need(identity in self.cfg.get('control_identities', [self.cfg['control_identity']]) and req.context.user_id == identity and
              req.context.service_epoch == self.cfg['service_epoch'], 'PERMISSION_DENIED')
 
     def VerifyReceipt(self, req, ctx):
@@ -326,7 +342,7 @@ class DataNode:
     def internal_authorize(self, task, action):
         return self.authorization.AuthorizeInternal(n.AuthorizeInternalRequest(context=self.context(),
             task_id=task.task_id, task_capability=task.task_capability, block=task.block, action=action,
-            source_node_id=task.source.node_id, destination_node_id=task.destination.node_id, fence=task.fence), timeout=5)
+            source_node_id=task.source.node_id, destination_node_id=task.destination.node_id, fence=task.fence), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
 
     def ReplicateBlock(self, req, ctx):
         self.control_peer(ctx, req)
@@ -420,7 +436,7 @@ class DataNode:
         need(node_rpc.peer(ctx) == req.destination_node_id and req.context.user_id == req.destination_node_id, 'PERMISSION_DENIED')
         decision = self.authorization.AuthorizeInternal(n.AuthorizeInternalRequest(context=self.context(),
             task_id=req.task_id, task_capability=req.task_capability, action=c.READ_REPLICA,
-            source_node_id=self.node_id, destination_node_id=req.destination_node_id, block=req.block, fence=req.task_fence), timeout=5)
+            source_node_id=self.node_id, destination_node_id=req.destination_node_id, block=req.block, fence=req.task_fence), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         with self.store.transaction() as tx:
             record = tx.get('block', req.block.block_version_id)
         need(record and record['ref'] == asdict(req.block), 'NOT_FOUND')
@@ -441,7 +457,7 @@ class DataNode:
     def report_task(self, task):
         self.registry.ReportTask(n.ReportTaskRequest(context=self.context(), node_id=self.node_id,
             boot_generation=self.generation, task=proto(n.TaskStatus, task['status']),
-            fence=proto(c.Fence, task['request']['fence']) if self.cfg.get('replication_enabled') else None), timeout=5)
+            fence=proto(c.Fence, task['request']['fence']) if self.cfg.get('replication_enabled') else None), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         with self.store.transaction(True) as tx:
             task['reported'] = True
             tx.put('task', task)
@@ -462,7 +478,7 @@ class DataNode:
             return proto(n.TaskStatus, old['status'])
         self.authorization.AuthorizeInternal(n.AuthorizeInternalRequest(context=self.context(), task_id=req.task_id,
             task_capability=req.task_capability, action=c.DELETE_RETIRED, destination_node_id=self.node_id,
-            block=req.block, fence=req.fence), timeout=5)
+            block=req.block, fence=req.fence), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
         with self.blocks.pin(req.block.block_version_id, exclusive=True):
             if self.cfg.get('replication_enabled'):
                 with self.store.transaction() as tx:
@@ -470,7 +486,7 @@ class DataNode:
                 need(not current or current['receipt']['receipt_id'] == req.expected_receipt_id, 'VERSION_CONFLICT')
                 self.authorization.AuthorizeInternal(n.AuthorizeInternalRequest(context=self.context(), task_id=req.task_id,
                     task_capability=req.task_capability, action=c.DELETE_RETIRED, destination_node_id=self.node_id,
-                    block=req.block, fence=req.fence), timeout=5)
+                    block=req.block, fence=req.fence), timeout=self.cfg.get('control_rpc_timeout_seconds', 5))
             self.blocks.path(req.block.file_id, req.block.block_version_id).unlink(missing_ok=True)
             status = n.TaskStatus(task_id=req.task_id, state=n.FINISHED)
             task = dict(id=req.task_id, request=asdict(req), status=asdict(status))

@@ -1,0 +1,11 @@
+{
+    "status":  "PENDIENTE",
+    "outcome":  "INTERRUMPIDO_SIN_RESULTADO_FINAL",
+    "command":  ".\\.venv-win\\Scripts\\python.exe scripts/verify_stage7.py",
+    "session":  95657,
+    "runtime":  "F:\\DFSha\\.runtime\\tests\\1542a29e-c1bd-437c-b854-34488897dee9",
+    "observed_utc":  "2026-09-14T18:34:33.5245126Z",
+    "active_processes":  0,
+    "junit_present":  false,
+    "note":  "Supervisor session unavailable, no remaining test processes and no final XML. Runtime logs preserved; no test count claimed."
+}

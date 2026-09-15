@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="209.627" timestamp="2026-09-13T01:01:10.432521-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\15481650-5378-432d-9f06-4fb4fc55ade8" /></properties><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="6" time="209.313"><failure message="dfsha.common.domain.Fault: OUTCOME_UNKNOWN">self = &lt;dfsha.client.sdk.Client object at 0x000001A7EA707230&gt;
+handle = handle_id: "36ad4abd-9ca0-46fd-987d-245f5faee278"
+snapshot {
+  file_id: "a6051453-e2f3-4d43-8c4a-6ba51d91a2a2"
+  conte...22\265\211\364bNJ\\g\243\205"
+  block_size_bytes: 4194304
+}
+mode: R_PLUS
+expires_at_unix_ms: 1789279562088
+revision: 1
+
+plan = operation {
+  operation_id: "53959846-163e-4b5d-828b-4e62c3b584a5"
+  request_id: "3ca3ae21-017b-4805-94da-caf4778bac13...1FV\215q\341\206\230\005\341\032x#\017\022\265\211\364bNJ\\g\243\205"
+  block_size_bytes: 4194304
+}
+minimum_durable: 2
+
+payload = b'XY'
+
+    def _finish_write(self, handle, plan, payload):
+        self.last_operation = plan.operation
+        if not payload:
+            return self.operation(plan.operation.operation_id).result.accepted_bytes
+        with self.write_keepalive(handle, plan):
+            try:
+                changes = self.prepare_blocks(handle, plan, payload)
+&gt;               return self.commit_write(handle, plan, changes).accepted_bytes
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\dfsha\client\access.py:245: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\access.py:166: in commit_write
+    self.wait_durable(plan.operation.operation_id)
+src\dfsha\client\sdk.py:71: in wait_durable
+    status = self.protection(operation_id=operation_id, cursor=cursor)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\sdk.py:60: in protection
+    return self.call(self.cluster.GetProtection, nodes.ProtectionRequest(path=self.path(path) if path else None,
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\common\failover.py:45: in invoke
+    raise error
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001A7EA71B620&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000001A7EA6F5300&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Deadline Exceeded"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Deadline Exceeded"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError
+
+The above exception was the direct cause of the following exception:
+
+run_dir = WindowsPath('F:/DFSha/.runtime/tests/15481650-5378-432d-9f06-4fb4fc55ade8')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-36/test_cross_control_session_han0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000001A7EA699DA0&gt;
+
+    def test_cross_control_session_handle_and_data(run_dir, tmp_path, record_property):
+        with HACluster(run_dir/('ha7-'+str(uuid.uuid4()))) as lab:
+            a = lab.client(0)
+            b = lab.client(1, a.session)
+            try:
+                a.mkdir('/shared')
+                assert b.stat('/shared').object_id == a.stat('/shared').object_id
+                local = tmp_path/'source'
+                local.write_bytes(b'A'*5000000)
+                result = a.send(local, '/shared/file')
+                h = a.open('/shared/file', 'r+')
+                assert b.read(h, 0, 8) == b'A'*8
+                b.renew_handle(h)
+&gt;               assert b.write(h, 4194303, b'XY') == 2
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\access.py:213: in write
+    return self._write_serialized(handle, offset, payload, fences=fences, request_id=request_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\access.py:236: in _write_serialized
+    return self._finish_write(handle, plan, payload)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;dfsha.client.sdk.Client object at 0x000001A7EA707230&gt;
+handle = handle_id: "36ad4abd-9ca0-46fd-987d-245f5faee278"
+snapshot {
+  file_id: "a6051453-e2f3-4d43-8c4a-6ba51d91a2a2"
+  conte...22\265\211\364bNJ\\g\243\205"
+  block_size_bytes: 4194304
+}
+mode: R_PLUS
+expires_at_unix_ms: 1789279562088
+revision: 1
+
+plan = operation {
+  operation_id: "53959846-163e-4b5d-828b-4e62c3b584a5"
+  request_id: "3ca3ae21-017b-4805-94da-caf4778bac13...1FV\215q\341\206\230\005\341\032x#\017\022\265\211\364bNJ\\g\243\205"
+  block_size_bytes: 4194304
+}
+minimum_durable: 2
+
+payload = b'XY'
+
+    def _finish_write(self, handle, plan, payload):
+        self.last_operation = plan.operation
+        if not payload:
+            return self.operation(plan.operation.operation_id).result.accepted_bytes
+        with self.write_keepalive(handle, plan):
+            try:
+                changes = self.prepare_blocks(handle, plan, payload)
+                return self.commit_write(handle, plan, changes).accepted_bytes
+            except Exception as exc:
+                # A failed status query does not authorize claiming that a commit was aborted.
+                try:
+                    status = self.operation(plan.operation.operation_id)
+                    if status.state == c.COMMITTED:
+                        handle.snapshot.CopyFrom(status.result.snapshot)
+                        return status.result.accepted_bytes
+                    if status.state == c.PREPARING:
+                        self.call(self.files.AbortWrite, ctl.OperationRequest(operation=plan.operation), retries=0)
+                except grpc.RpcError:
+&gt;                   raise Fault('OUTCOME_UNKNOWN') from exc
+E                   dfsha.common.domain.Fault: OUTCOME_UNKNOWN
+
+src\dfsha\client\access.py:256: Fault</failure></testcase></testsuite></testsuites>

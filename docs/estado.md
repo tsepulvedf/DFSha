@@ -1,5 +1,55 @@
 # DFSha — Estado del proyecto y continuidad
 
+**2026-09-14 · E7 COMPLETA en el laboratorio Windows de fallos de procesos.**
+Tres ControlNodes activos comparten un clúster etcd de tres miembros; tres
+DataNodes, R=3/W=2 y transferencias directas. Sin fallback SQLite en HA.
+H1/H2/E5/E6 conservan sus perfiles y datos aislados. E8 no se ejecutó.
+
+[Diseño, límites y reproducción](etapa7-ha-control.md),
+[aceptación por criterio](evidencias/etapa7/aceptacion.md) e
+[inventario final](evidencias/etapa7/verificacion-final.json).
+La regresión conjunta terminó con **144 aprobadas y 4 fallidas**, 2246,477 s.
+Tras corregir sus causas, **8 comprobaciones aprobadas**, 391,233 s:
+los cuatro casos repetidos y cuatro nuevos de transporte. La cobertura resultante
+es de **152 casos distintos aprobados**, sin omisiones; no fue una única suite
+verde de 152. Los fallos originales y la ejecución interrumpida se conservan.
+Wheel reconstruido, importación de 34 módulos y prueba HA desde site-packages
+aprobados. [Evidencias y comandos](evidencias/etapa7/README.md).
+
+Correcciones: equivalencia DOS/UNC después de resolver rutas Windows, sin
+permitir escape por junction; segunda descarga con overwrite=True; expectativa
+OUTCOME_UNKNOWN en H1/H2 ante commit incierto; Lock usa 15 s en HA, conservando
+leases; solo GetProtection puede conmutar ante cancelación de transporte sin
+detalle de aplicación. Denegaciones y mutaciones no reciben ese reintento.
+
+Medición final: **512 MiB**, bloques de 64 MiB, ambos hashes correctos, tres copias
+verificadas por versión y delta de **4096 bytes**; S/S del parche **134228790 bytes**
+cifrados y **cero contenido por controles**. Subida 157,500 s, parche 27,703 s,
+parada/conmutación/lectura del mismo handle 21,157 s. Picos residentes observados:
+cliente/supervisor 65,42 MiB, control máximo 65,61 MiB y DataNode máximo 56,96 MiB.
+[Tablas completas y límites de medición](evidencias/etapa7/medicion.md).
+El informe terminal final y el cierre del laboratorio están verificados; el código
+de salida de su sesión 16476 no fue recuperable tras interrupción. La medición
+corregida anterior sí terminó con código 0 observado. No se infiere éxito por la
+mera existencia del archivo: se verificaron campos finales, hashes, recibos,
+procesos terminados y el flujo que escribe el informe tras cerrar el laboratorio.
+
+Failover, partición TCP, pérdida de líder/mayoría, reservas compartidas, fencing,
+concurrencia, mantenimiento/GC, Watch/compactación, migración y restauración
+aprobados. El reinicio conserva recursos todavía vigentes, no leases vencidos.
+Migración desactiva la autoridad SQLite antigua; restauración usa nueva membresía,
+revisión y época, conservando contenido, identidad y resultados respaldados.
+
+Git: main/origin/main partían de 0100928; fetch e identidad existentes comprobados.
+El cierre está preparado; commit y sincronización E7 se registrarán al publicarlo.
+
+Pendientes reales: Linux/WSL, hosts/VMs independientes, cloud/Internet, seguridad
+integral E8 y Q01–Q07 (incluida Q05). Liberación administrativa de pins de migración
+y GC física de páginas etcd huérfanas pendientes; retención conservadora y cuota
+activas. No se acredita pérdida de host ni se cierra todo el hito 3.
+Siguiente etapa: **E8**, únicamente cuando se solicite.
+Los cierres E1–E6 siguientes son antecedentes históricos.
+
 **2026-09-12 · ETAPA 6 COMPLETA en su perfil Windows local de fallos de procesos.**
 R=3 objetivo / W=2 por versión nueva; un ControlNode SQLite, tres DataNodes y
 cuarto nodo incorporado dinámicamente. Replicación S/S automática, tareas

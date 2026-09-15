@@ -11,7 +11,7 @@ import uuid
 import unicodedata
 
 import grpc
-from dfsha.common.domain import CHUNK, DEADLINES, intent, manifest_hash, need
+from dfsha.common.domain import CHUNK, DEADLINES, intent, manifest_hash, need, Fault
 from dfsha.common.rpc import channel
 from dfsha.v1 import (common_pb2 as c, identity_pb2 as ident, identity_pb2_grpc as ig,
                      namespace_pb2 as ns, namespace_pb2_grpc as ng,
@@ -24,7 +24,12 @@ from dfsha.client.access import AccessClient
 class Client(AccessClient):
     def __init__(self, target, cert_dir, session=None):
         self.target, self.cert_dir = target, Path(cert_dir)
-        self.channel = channel(target, self.cert_dir)
+        self.control_timeout = 15 if isinstance(target, (tuple, list)) else 5
+        if isinstance(target, (tuple, list)):
+            from dfsha.common.failover import FailoverChannel
+            self.channel = FailoverChannel([channel(x, self.cert_dir) for x in target])
+        else:
+            self.channel = channel(target, self.cert_dir)
         self.authentication = ig.AuthenticationServiceStub(self.channel)
         self.identity = ig.IdentityServiceStub(self.channel)
         self.namespace = ng.NamespaceServiceStub(self.channel)
@@ -104,13 +109,16 @@ class Client(AccessClient):
         return request
 
     def call(self, rpc, request, deadline=5, retries=2):
+        if deadline == 5:
+            deadline = self.control_timeout
         if not request.context.request_id:
             self.prepare(request)
         for attempt in range(retries + 1):
             try:
                 return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
             except grpc.RpcError as exc:
-                if exc.code() != grpc.StatusCode.UNAVAILABLE or attempt == retries:
+                recoverable = (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED) if isinstance(self.target, (list, tuple)) else (grpc.StatusCode.UNAVAILABLE,)
+                if exc.code() not in recoverable or attempt == retries:
                     raise
                 time.sleep(0.1 * (attempt + 1))
 
@@ -120,7 +128,7 @@ class Client(AccessClient):
         diagnostic_rpc.DiagnosticServiceStub(self.channel).Health(
             diagnostic.HealthRequest(request_id=str(uuid.uuid4())), timeout=10, wait_for_ready=True)
         self.session = self.authentication.Login(ident.LoginRequest(request_id=str(uuid.uuid4()),
-            username=username, password=password), timeout=5)
+            username=username, password=password), timeout=self.control_timeout)
         self.cwd, self.cwd_id = '/', self.stat('/').object_id
         return self.session
 
@@ -295,8 +303,23 @@ class Client(AccessClient):
                     if plan.minimum_durable > 1:
                         self.wait_durable(plan.operation.operation_id)
                     self.last_commit_request = request
-                    return self.call(self.uploads.CommitUpload, request)
-            except BaseException:
+                    try:
+                        return self.call(self.uploads.CommitUpload, request)
+                    except grpc.RpcError as exc:
+                        if exc.code() not in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED):
+                            raise
+                        try:
+                            status = self.operation(plan.operation.operation_id)
+                        except grpc.RpcError:
+                            raise Fault('OUTCOME_UNKNOWN') from exc
+                        if status.state == c.COMMITTED:
+                            return status.result
+                        # A still-preparing result does not prove that an
+                        # in-flight commit cannot finish after this observation.
+                        raise Fault('OUTCOME_UNKNOWN') from exc
+            except BaseException as failure:
+                if isinstance(failure, Fault) and failure.reason == 'OUTCOME_UNKNOWN':
+                    raise
                 try:
                     self.call(self.uploads.AbortUpload, ctl.OperationRequest(operation=plan.operation), retries=0)
                 except Exception:

@@ -1,5 +1,14 @@
 # DFSha — Especificación formal del servicio
 
+Actualización del usuario para E7: las reglas RF1/RF2/RF3 se conservan sobre una
+autoridad de metadatos compartida en etcd. Un reinicio individual del ControlNode
+no cambia la época del servicio; sesiones, snapshots, handles y locks vigentes
+pertenecen al servicio y pueden continuar en otro control. Migración/restauración
+sí cambian explícitamente la época. Sin mayoría no se autoriza ni publica desde
+caché o SQLite. R3/W2 de datos continúa siendo independiente de mayoría 2/3 etcd.
+[Diseño, pruebas ejecutadas y pendientes E7](etapa7-ha-control.md).
+Son decisiones de implementación solicitadas por el usuario, no nuevas cláusulas del PDF.
+
 **Actualización E6 del usuario, decisiones D45–D50:** la política persistida por
 archivo exige W=2 copias durables en dominios administrativos distintos para
 cada versión nueva; R=3 es el objetivo de copias, no quórum de lectura. Basta una

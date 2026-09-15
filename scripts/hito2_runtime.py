@@ -57,7 +57,7 @@ class Process:
 
 
 class Cluster:
-    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30, replication=False, default_replicas=3):
+    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30, replication=False, default_replicas=3, extra_controls=0):
         rf3 = rf3 or replication
         self.directory = Path(directory).resolve()
         if self.directory.exists() and any(self.directory.iterdir()):
@@ -66,8 +66,9 @@ class Cluster:
         protect(self.directory)
         self.certs = self.directory / 'certificates'
         self.control_id = str(uuid4())
+        self.control_ids = [self.control_id] + [str(uuid4()) for _ in range(extra_controls)]
         self.node_ids = [str(uuid4()) for _ in range(4)]
-        generate(self.certs, [self.control_id] + self.node_ids)
+        generate(self.certs, self.control_ids + self.node_ids)
         # Provision only the authorized identity to each process; never expose the CA key to a server.
         import shutil
         authority = self.certs
@@ -76,7 +77,7 @@ class Cluster:
         shutil.copyfile(authority / 'ca.crt', trust / 'ca.crt')
         self.authority, self.certs = authority, trust
         identity_dirs = {}
-        for identity in [self.control_id] + self.node_ids:
+        for identity in self.control_ids + self.node_ids:
             target = self.directory / 'identities' / identity
             target.mkdir(parents=True)
             protect(target)

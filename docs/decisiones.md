@@ -1,5 +1,20 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
+D58: deadline de Lock coherente con HA y conmutación acotada de GetProtection
+ante cancelación de transporte, sin reintentar mutaciones ni denegaciones.
+[Motivo y alcance](etapa7-ha-control.md); conserva leases y fencing.
+
+Actualización E7 verificada en Windows local: [D51–D58](etapa7-ha-control.md) definen autoridad etcd
+compartida, páginas/CAS, leases, failover, mantenimiento y transición administrativa.
+Se reutiliza el dominio E6 y se conserva SQLite para sus perfiles aislados.
+Las decisiones de diseño no equivalen a pruebas aprobadas; consultar
+[el inventario E7](evidencias/etapa7/README.md). Dependencias sin cambios.
+
+D57 conserva el confinamiento físico al comparar prefijos Windows equivalentes
+después de resolver enlaces; corrige la carrera reproducida de Python 3.12.
+La negativa de junction sigue comprobada. El verificador solicita explícitamente
+overwrite en su segunda descarga. [Diagnóstico](evidencias/etapa7/diagnostico-putblock.md).
+
 Actualización 2026-09-12: **[D45–D50](etapa6-replicacion.md#decisiones-d45d50)**
 adoptadas en E6: política persistida R3/W2, dominios administrativos explícitos,
 commit por bloque, tareas con época y reconciliación, salud/cuarentena/GC y

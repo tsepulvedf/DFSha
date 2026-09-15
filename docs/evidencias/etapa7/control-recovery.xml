@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="163.131" timestamp="2026-09-13T01:19:18.181503-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\cdc11d45-09ab-4f1e-97c9-6210f6bdbf3d" /></properties><testcase classname="tests.test_stage7_control" name="test_e6_migration_and_full_backup_restore" file="tests\test_stage7_control.py" line="112" time="81.690"><properties><property name="backup" value="{'status': 'EJECUTADO', 'files': 101, 'snapshot': {'hash': 2624280731, 'revision': 121, 'totalKey': 219, 'totalSize': 499712, 'version': '3.6.0'}, 'offline': True, 'block_objects': 6}" /><property name="migration" value="{'status': 'EJECUTADO', 'records': 55, 'original_sha256': '8da1d9ea7755f2c80e17e8d0ca607b79a0b50d799cabd87742d18ef7a303c392', 'imported_sha256': 'fdbbbbaf0017a7956bb6cc07cfc2c81350bbce74edfe12d2e88ad52abbe25c0f', 'epoch': '74cac067-ef05-41f1-81f6-40b0c113d123', 'retained_snapshots': 1, 'sqlite_disabled': True, 'backup': 'F:\\DFSha\\.runtime\\tests\\cdc11d45-09ab-4f1e-97c9-6210f6bdbf3d\\migration7-8b655f97-69ca-4947-bcc1-9ab9de578b7c\\migration\\sqlite-backup.sqlite3', 'root': 'c1c3b9300ae7c5a2fd556aa554eba931011b4a75e79904e722f9bc9607fcc98a'}" /><property name="sha256" value="ef383a6fa2d1eb530d473bfdbb0d67884a2b5fe9bbd7241e1256496b665b3697" /></properties></testcase><testcase classname="tests.test_stage7_control" name="test_control_failover_network_partition_and_quorum" file="tests\test_stage7_control.py" line="168" time="81.122"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.DEADLINE_EXCEEDED&#10;&#09;details = &quot;Stream removed (Deadline Exceeded)&quot;&#10;&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/cdc11d45-09ab-4f1e-97c9-6210f6bdbf3d')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-40/test_control_failover_network_0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x0000017216B959E0&gt;
+
+    def test_control_failover_network_partition_and_quorum(run_dir, tmp_path, record_property):
+        from dfsha.v1 import namespace_pb2 as ns
+        with HACluster(run_dir/('failover7-'+str(uuid.uuid4()))) as lab:
+            client = lab.client()
+            source = tmp_path/'failover'
+            source.write_bytes(b'failover-data'*1000)
+            try:
+                # Actual process exit immediately before CommitUpload; the SDK must
+                # keep the same operation and finish via another active control.
+                (lab.controls[0].directory/'faults'/'before_publish').touch()
+&gt;               result = client.send(source, '/survives')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\client\sdk.py:305: in send
+    return self.call(self.uploads.CommitUpload, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\client\sdk.py:118: in call
+    return rpc(request, metadata=self.metadata, timeout=deadline, wait_for_ready=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\dfsha\common\failover.py:45: in invoke
+    raise error
+src\dfsha\common\failover.py:35: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000001721633C050&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x0000017215B91BC0&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Stream removed (Deadline Exceeded)"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase></testsuite></testsuites>

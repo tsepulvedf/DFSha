@@ -31,3 +31,4 @@ htmlcov/
 .DS_Store
 Thumbs.db
 # Evidencias publicables: JSON/XML/Markdown curados, nunca logs crudos ni secretos.
+docs/evidencias/etapa7/**/command-*.txt

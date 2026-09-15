@@ -17,6 +17,22 @@ from dfsha.common.domain import CHUNK, Fault, canonical, need, uid, uuid
 MAGIC = b'DFSHAB01'
 
 
+def containment_path(path):
+    r"""Compare equivalent Windows namespaces after resolving filesystem links.
+
+    Python realpath may retain \\?\ when a missing parent appears during its
+    non-strict resolution. Only DOS-drive and UNC prefixes are equivalent here;
+    this does not normalize away a junction's resolved destination.
+    """
+    text = str(path)
+    if os.name == 'nt':
+        if text.startswith('\\\\?\\UNC\\'):
+            return Path('\\\\'+text[8:])
+        if text.startswith('\\\\?\\') and len(text) >= 7 and text[4].isalpha() and text[5:7] == ':\\':
+            return Path(text[4:])
+    return Path(path)
+
+
 class EncryptedBlockStore:
     def __init__(self, root, key):
         self.root = Path(root).resolve()
@@ -29,7 +45,12 @@ class EncryptedBlockStore:
 
     def path(self, file_id, block_id):
         path = self.root / uuid(file_id) / (uuid(block_id) + '.blk')
-        need(path.resolve().is_relative_to(self.root), 'PERMISSION_DENIED')
+        resolved = path.resolve()
+        inside = containment_path(resolved).is_relative_to(containment_path(self.root))
+        if not inside:
+            from dfsha.common.telemetry import event
+            event('block_path_rejected', code=json.dumps(dict(root=str(self.root), path=str(path), resolved=str(resolved))))
+        need(inside, 'PERMISSION_DENIED')
         need(not path.is_symlink() and not path.parent.is_symlink(), 'PERMISSION_DENIED')
         return path
 
@@ -100,7 +121,7 @@ class EncryptedBlockStore:
         """Verify the ENTIRE object before releasing any plaintext; then verify each record again."""
         try:
             path = staged_path or self.path(block.file_id, block.block_version_id)
-            need(path.resolve().is_relative_to(self.root), 'PERMISSION_DENIED')
+            need(containment_path(path.resolve()).is_relative_to(containment_path(self.root)), 'PERMISSION_DENIED')
             with path.open('rb') as stream:
                 need(stream.read(8) == MAGIC, 'DATA_LOSS')
                 size_raw = stream.read(4)

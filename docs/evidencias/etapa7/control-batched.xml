@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="48.864" timestamp="2026-09-12T19:43:30.123210-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\ceaf6982-284b-4f22-9456-bb34468ffd34" /></properties><testcase classname="tests.test_stage7_control" name="test_cross_control_session_handle_and_data" file="tests\test_stage7_control.py" line="6" time="48.592"><failure message="grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:&#10;&#09;status = StatusCode.DEADLINE_EXCEEDED&#10;&#09;details = &quot;Stream removed (Deadline Exceeded)&quot;&#10;&#09;debug_error_string = &quot;DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)&quot;&#10;&gt;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/ceaf6982-284b-4f22-9456-bb34468ffd34')
+tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-32/test_cross_control_session_han0')
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x000002541AEE9DA0&gt;
+
+    def test_cross_control_session_handle_and_data(run_dir, tmp_path, record_property):
+&gt;       with HACluster(run_dir/('ha7-'+str(uuid.uuid4()))) as lab:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_control.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\ha_runtime.py:195: in __enter__
+    client = self.client()
+             ^^^^^^^^^^^^^
+scripts\ha_runtime.py:184: in client
+    client.login('admin', 'development-password')
+src\dfsha\client\sdk.py:126: in login
+    self.session = self.authentication.Login(ident.LoginRequest(request_id=str(uuid.uuid4()),
+src\dfsha\common\failover.py:43: in invoke
+    raise error
+src\dfsha\common\failover.py:33: in invoke
+    response = calls[index](request, timeout=budget, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-win\Lib\site-packages\grpc\_channel.py:1168: in __call__
+    return _end_unary_response_blocking(state, call, False, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+state = &lt;grpc._channel._RPCState object at 0x000002541AF53E30&gt;
+call = &lt;grpc._cython.cygrpc.SegregatedCall object at 0x000002541AB4B180&gt;
+with_call = False, deadline = None
+
+    def _end_unary_response_blocking(
+        state: _RPCState,
+        call: cygrpc.SegregatedCall,
+        with_call: bool,
+        deadline: Optional[float],
+    ) -&gt; Union[ResponseType, Tuple[ResponseType, grpc.Call]]:
+        if state.code is grpc.StatusCode.OK:
+            if with_call:
+                rendezvous = _MultiThreadedRendezvous(state, call, None, deadline)
+                return state.response, rendezvous
+            return state.response
+&gt;       raise _InactiveRpcError(state)  # pytype: disable=not-instantiable
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       grpc._channel._InactiveRpcError: &lt;_InactiveRpcError of RPC that terminated with:
+E       	status = StatusCode.DEADLINE_EXCEEDED
+E       	details = "Stream removed (Deadline Exceeded)"
+E       	debug_error_string = "DEADLINE_EXCEEDED:Stream removed (Deadline Exceeded)"
+E       &gt;
+
+.venv-win\Lib\site-packages\grpc\_channel.py:999: _InactiveRpcError</failure></testcase></testsuite></testsuites>

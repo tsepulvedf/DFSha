@@ -1,5 +1,31 @@
 # DFSha — Arquitectura y evolución
 
+**E7 verificada en Windows local:** `HAControl` reutiliza `ReplicatedControl` y CQRS. La
+autoridad completa se selecciona mediante `metadata_backend="etcd"`; las raíces
+SQLite de H1/H2/E5/E6 continúan aisladas. Los tres controles comparten el mismo
+clúster; sus cachés contienen páginas inmutables verificadas y son reconstruibles.
+[Modelo de claves, barrera de publicación y evidencia](etapa7-ha-control.md).
+
+```mermaid
+flowchart LR
+  SDK[CLI / SDK] --> C1[Control 1]
+  SDK --> C2[Control 2]
+  SDK --> C3[Control 3]
+  C1 <-->|Range / Txn / Lease / Watch mTLS| E[etcd: tres miembros, mayoría 2/3]
+  C2 <--> E
+  C3 <--> E
+  SDK <-->|contenido TLS| D[DataNodes 1 / 2 / 3, cuarto opcional]
+  D <-->|autorización y registro mTLS| C1
+  D <--> C2
+  D <--> C3
+  D <-->|réplicas ciphertext S/S| D
+```
+
+La mediación CN→etcd→CN ya tiene una prueba integrada de namespace/handle/parche
+compartidos. No se presume que esto responda Q05: sigue pendiente la interpretación
+docente sobre comunicación directa. La restauración y los fallos adicionales
+solo se consideran acreditados cuando figuren aprobados en el inventario E7.
+
 **E6:** [D45–D50 y secuencia de publicación](etapa6-replicacion.md) extienden
 la misma SQLite autoritativa con política/revisión, tareas, reservas, historial
 de recibos y salud de copias. El ControlNode conserva el papel de namespace y

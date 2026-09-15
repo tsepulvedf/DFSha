@@ -12,6 +12,7 @@ message HealthResponse {
   string request_id = 1; string version = 2; string listener = 3;
   bool diagnostic_ready = 4; bool filesystem_implemented = 5;
   string metadata_backend = 6;
+  bool metadata_available = 7; string control_instance = 8; uint64 metadata_revision = 9;
 }
 message DiagnosticHeader { string request_id = 1; uint64 total_bytes = 2; bytes sha256 = 3; }
 message DiagnosticChunk { uint64 offset = 1; bytes data = 2; } // data 1..256 KiB.

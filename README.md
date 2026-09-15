@@ -1,5 +1,19 @@
 # DFSha
 
+**E7 completa en el laboratorio Windows de fallos de procesos:** tres ControlNodes activos, tres miembros
+etcd con mTLS y DataNodes separados. [Diseño y comandos E7](docs/etapa7-ha-control.md),
+[evidencias reales](docs/evidencias/etapa7/README.md). Cobertura final: 152 casos
+distintos aprobados mediante regresión y repeticiones identificadas; wheel instalado
+verificado. 512 MiB con hashes correctos, R3/W2 y parche de 4096 bytes.
+Los perfiles SQLite anteriores se conservan. E8, Linux, hosts independientes y cloud
+permanecen pendientes; no se acredita tolerancia a pérdida del host del laboratorio.
+
+```powershell
+.\.venv-win\Scripts\python.exe scripts/verify_stage7.py --ha-only
+```
+
+El resto de esta introducción conserva el cierre histórico de E6.
+
 **Etapa 6: replicación y recuperación de datos en Windows local.** Perfil
 `--replication`: R=3 objetivo, W=2 por bloque nuevo, copias S/S automáticas,
 reparación y promoción administrativa de archivos R1. Un ControlNode SQLite y

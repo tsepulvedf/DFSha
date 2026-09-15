@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="12.134" timestamp="2026-09-12T19:32:47.916788-05:00" hostname="DESKTOP-S2N4JO9"><properties><property name="runtime_directory" value="F:\DFSha\.runtime\tests\38c4fee5-4a68-42e3-986c-84a1de4400a8" /></properties><testcase classname="tests.test_stage7_metadata" name="test_paged_atomic_metadata_and_quorum" file="tests\test_stage7_metadata.py" line="22" time="6.368"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'str' and 'str'&quot;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/38c4fee5-4a68-42e3-986c-84a1de4400a8')
+
+    @pytest.fixture
+    def shared(run_dir):
+        with EtcdCluster(run_dir/('etcd7-'+str(uuid.uuid4()))) as cluster:
+&gt;           a, b = EtcdMetadataStore(cluster.config()), EtcdMetadataStore(cluster.config())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_metadata.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\control\etcd_metadata.py:35: in __init__
+    self.channel = FailoverChannel([channel(x, cfg['etcd_certificate_dir'], cfg['etcd_identity'])
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+target = '127.0.0.1:51535'
+cert_dir = 'F:\\DFSha\\.runtime\\tests\\38c4fee5-4a68-42e3-986c-84a1de4400a8\\etcd7-1546b8f3-7496-4c1f-85f5-2c85b74fa139\\certificates'
+identity = 'etcd-probe', ca_name = 'ca'
+
+    def channel(target: str, cert_dir: Path, identity: str | None = None,
+                ca_name: str = "ca") -&gt; grpc.Channel:
+        credentials = grpc.ssl_channel_credentials(
+&gt;           root_certificates=(cert_dir / f"{ca_name}.crt").read_bytes(),
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            private_key=(cert_dir / f"{identity}.key").read_bytes() if identity else None,
+            certificate_chain=(cert_dir / f"{identity}.crt").read_bytes() if identity else None,
+        )
+E       TypeError: unsupported operand type(s) for /: 'str' and 'str'
+
+src\dfsha\common\rpc.py:28: TypeError</error></testcase><testcase classname="tests.test_stage7_metadata" name="test_shared_lease_expiry_and_publication_fence" file="tests\test_stage7_metadata.py" line="61" time="5.511"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'str' and 'str'&quot;">run_dir = WindowsPath('F:/DFSha/.runtime/tests/38c4fee5-4a68-42e3-986c-84a1de4400a8')
+
+    @pytest.fixture
+    def shared(run_dir):
+        with EtcdCluster(run_dir/('etcd7-'+str(uuid.uuid4()))) as cluster:
+&gt;           a, b = EtcdMetadataStore(cluster.config()), EtcdMetadataStore(cluster.config())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_stage7_metadata.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\control\etcd_metadata.py:35: in __init__
+    self.channel = FailoverChannel([channel(x, cfg['etcd_certificate_dir'], cfg['etcd_identity'])
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+target = '127.0.0.1:51575'
+cert_dir = 'F:\\DFSha\\.runtime\\tests\\38c4fee5-4a68-42e3-986c-84a1de4400a8\\etcd7-3f5b7efc-d0bb-4051-a04c-50a6d405aa28\\certificates'
+identity = 'etcd-probe', ca_name = 'ca'
+
+    def channel(target: str, cert_dir: Path, identity: str | None = None,
+                ca_name: str = "ca") -&gt; grpc.Channel:
+        credentials = grpc.ssl_channel_credentials(
+&gt;           root_certificates=(cert_dir / f"{ca_name}.crt").read_bytes(),
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            private_key=(cert_dir / f"{identity}.key").read_bytes() if identity else None,
+            certificate_chain=(cert_dir / f"{identity}.crt").read_bytes() if identity else None,
+        )
+E       TypeError: unsupported operand type(s) for /: 'str' and 'str'
+
+src\dfsha\common\rpc.py:28: TypeError</error></testcase></testsuite></testsuites>

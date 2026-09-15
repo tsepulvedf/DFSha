@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="0.490" timestamp="2026-09-13T18:49:39.506016-05:00" hostname="DESKTOP-S2N4JO9"><testcase classname="tests.test_block_path_race" name="test_new_file_directory_created_during_resolution" file="tests\test_block_path_race.py" line="9" time="0.007"><properties><property name="real_windows_errors" value="[3, 2, 2]" /><property name="root" value="C:\Users\Tommysepf\AppData\Local\Temp\pytest-of-Tommysepf\pytest-44\test_new_file_directory_create0\blocks" /></properties><failure message="dfsha.common.domain.Fault: PERMISSION_DENIED">tmp_path = WindowsPath('C:/Users/Tommysepf/AppData/Local/Temp/pytest-of-Tommysepf/pytest-44/test_new_file_directory_create0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000177FB5F4B30&gt;
+record_property = &lt;function record_property.&lt;locals&gt;.append_property at 0x00000177FB5F96C0&gt;
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Specific Windows realpath namespace race')
+    def test_new_file_directory_created_during_resolution(tmp_path, monkeypatch, record_property):
+        import ntpath
+        store = EncryptedBlockStore(tmp_path/'blocks', os.urandom(32))
+        file_id, block_id = str(uuid4()), str(uuid4())
+        target = store.root/file_id/(block_id+'.blk')
+        original = ntpath._getfinalpathname
+        missing, created = threading.Event(), threading.Event()
+        observed = []
+        def creator():
+            assert missing.wait(5)
+            target.parent.mkdir()
+            created.set()
+        worker = threading.Thread(target=creator)
+        worker.start()
+        def resolve(path):
+            try:
+                return original(path)
+            except OSError as exc:
+                if str(path) == str(target):
+                    observed.append(exc.winerror)
+                    if not missing.is_set():
+                        missing.set()
+                        assert created.wait(5)
+                raise
+        monkeypatch.setattr(ntpath, '_getfinalpathname', resolve)
+        try:
+&gt;           actual = store.path(file_id, block_id)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_block_path_race.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\dfsha\datanode\blocks.py:36: in path
+    need(resolved.is_relative_to(self.root), 'PERMISSION_DENIED')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+condition = False, reason = 'PERMISSION_DENIED'
+
+    def need(condition, reason='INVALID_ARGUMENT'):
+        if not condition:
+&gt;           raise Fault(reason)
+E           dfsha.common.domain.Fault: PERMISSION_DENIED
+
+src\dfsha\common\domain.py:48: Fault</failure></testcase><testcase classname="tests.test_block_path_race" name="test_junction_outside_block_root_is_denied" file="tests\test_block_path_race.py" line="44" time="0.003" /></testsuite></testsuites>

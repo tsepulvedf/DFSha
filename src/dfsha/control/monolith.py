@@ -28,14 +28,17 @@ class Monolith:
     def __init__(self, cfg):
         self.cfg = cfg
         need(cfg['block_size_bytes'] in PROFILES)
-        need(Path(cfg['sqlite_path']).is_file(), 'NOT_FOUND')
+        if cfg.get('metadata_backend') != 'etcd':
+            need(Path(cfg['sqlite_path']).is_file(), 'NOT_FOUND')
         key_path = Path(cfg['key_path'])
         if not key_path.is_file() or len(key_path.read_bytes()) != 32:
             raise RuntimeError('MASTER_KEY_MISSING_OR_INVALID: restaure la clave original; no se regenera')
         key = key_path.read_bytes()
-        self.store = SQLiteMetadataStore(cfg['sqlite_path'])
+        self.store = self.make_metadata(cfg)
         with self.store.transaction() as tx:
             self.system = tx.get('settings', 'system')
+            if self.system and self.system.get('authority_migrated'):
+                raise RuntimeError('AUTHORITY_MIGRATED: el backend SQLite anterior está desactivado')
             if not cfg.get('replication_enabled') and any(p.get('r', 1) > 1 for p in tx.all('policy')):
                 raise RuntimeError('PROTECTED_STORE_REQUIRES_REPLICATION_PROFILE')
         if not self.system or hashlib.sha256(key).hexdigest() != self.system['key_sha256']:
@@ -65,6 +68,9 @@ class Monolith:
             self.owner_lock.close()
             raise RuntimeError('STORAGE_ALREADY_OPEN: un único monolito puede poseer esta raíz') from None
         self.collect(restart=True)
+
+    def make_metadata(self, cfg):
+        return SQLiteMetadataStore(cfg['sqlite_path'])
 
     def credentials(self, context):
         values = [v for k, v in context.invocation_metadata() if k == 'authorization']
@@ -350,6 +356,8 @@ class Monolith:
                 pins = {h['snapshot'] for h in tx.all('handle') if not h['closed'] and
                         (self.leases.live(h) if hasattr(self, 'leases') else h['expires'] > now())}
                 pins.update(n['snapshot'] for n in tx.all('node') if n['alive'] and n['snapshot'])
+                if hasattr(self, 'retained_snapshots'):
+                    pins.update(self.retained_snapshots(tx))
                 retained = set()
                 # S/S tasks pin their source even if the logical name is removed meanwhile.
                 retained.update(t['block']['block_version_id'] for t in tx.all('task') if
@@ -393,7 +401,8 @@ class Monolith:
                             # gRPC rounds timeout encoding upward (observed 300.999...s
                             # for a 300s caller deadline). Allow rounding plus clock
                             # conversion jitter, without accepting unbounded calls.
-                            need(remaining is not None and remaining <= (302 if name == 'SealManifest' else 7))
+                            need(remaining is not None and remaining <= (302 if name == 'SealManifest' else
+                                self.cfg.get('control_rpc_timeout_seconds', 5)+2))
                             return self.unary(name, response_type, req, context)
                         except Fault as exc:
                             import traceback

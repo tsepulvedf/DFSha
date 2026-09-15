@@ -1,0 +1,35 @@
+{
+  "status": "EJECUTADO",
+  "rpcs": 58,
+  "future_unimplemented": 28,
+  "semantic_rows": 58,
+  "existing_local_links": 372,
+  "original_sha256": {
+    "docs/enunciado/SI3007-262-proyecto1-dfs.docx.pdf": "0ec8cc4cf92f9cf9345d5cf147d096a9cc74f78146aabce823d3890a31b446bf",
+    "docs/propuesta/Prompts_Codex_DFSha_Opcion1_CS.md": "755d2bebc288133e54e4f3161a433c35e6d08a9f0a7c8dce9b9b031e41c902b3"
+  },
+  "document_sha256": {
+    "README.md": "cbca4f1dc611eaaaf1b5b148df8f444286522fd471d7c0d80a35c5cabe3613c9",
+    "docs/estado.md": "3c8ea5ae06f54ebb4d52f0c2791d19f7517b2240175b6fcc4a311826ec31c457",
+    "docs/especificacion.md": "f0168c1b716d19f796c76f93f6ceab2a73103ec61ca165e5e450bf5e5106834c",
+    "docs/arquitectura.md": "ddada4c853eae3ecc61122662f60185007cde7ee6ea1f4fb0b3e5ff80e145731",
+    "docs/decisiones.md": "81c98ff529167b8800c1a0ef1a6c9fe4ebf8ea1de1a70327d739313e4c3276b3",
+    "docs/matriz-requisitos.md": "61882a6c05c87f2aa7b5da6ff4cbc203d4e425e457578b6f4e7a1b8cde47f446",
+    "docs/protocolos.md": "4ea013443526118871d99fcc1e0a7cdf3f4ef6b59a8c29f14a629f0e3e8873c1",
+    "docs/entorno.md": "40872947d9593de08e74eaa57f28cdae30d3d99b1973bf33e153f673540ba21c",
+    "docs/hito1.md": "0f24029c5218a5084c41ac15d3cd31a24ef81699623739bb83db50387d80a60d",
+    "docs/protocolos-hito1.md": "7dbd4467a97c820d3ef6e30991448cfc19c966cc90a913440a6a5a58e4732f20",
+    "docs/etapa3-diseno.md": "ebb71f54d608a62fc7b3f89511c4d72b8b4873da03c202d550023b8ced4f9230",
+    "docs/evidencias/etapa2/README.md": "f92b2226a673fd11272f22b8387fb5b63a402a1c43f7c750b3c2f930145a72da",
+    "docs/evidencias/etapa3/README.md": "dfd8bb8c8e7537b1652b171a1eb2a1a4c4964444cd771ff2fe1f63c35c6eef25",
+    "docs/hito2.md": "bdcc7a34868e27ace85b4ce62b73c0534a8720a21b850a9c70dc461b546cc615",
+    "docs/protocolos-hito2.md": "822a810a8f48fefbfd6a34b6b9c8d092b0b799d4f2e20b81843a9c4a9fa64f3d",
+    "docs/etapa5-rf3.md": "30a700d1c113a3930de9aa256eaae6bb58a58e745b02d44709408126bbde480d",
+    "docs/evidencias/etapa5/README.md": "595baf5666df6f26df948edabc72265d5dc181e904ebadfdfbba13c0dad2022f",
+    "docs/etapa6-replicacion.md": "38fa650d64445d004bfc89b06384247cccb62fd9bf01efd25041f0b21dabda97",
+    "docs/evidencias/etapa6/README.md": "7a69490e76810e5547d5a1e062b44211b65427592d509a16a84d1bdcb2db6714",
+    "docs/etapa7-ha-control.md": "784150c20f8f4d8fde6ad09e38d344afa676c96476b653a5b549b6bf141a8c07",
+    "docs/evidencias/etapa7/README.md": "a59017cd15157a20b646de5ef93fbba2431b97814a65795125f8ade2183cf7a1"
+  },
+  "scope": "auditor\u00eda documental, no prueba RF/RNF"
+}

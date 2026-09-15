@@ -34,6 +34,9 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
         if configuration['distributed'].get('replication_enabled'):
             from dfsha.control.replication import ReplicatedControl
             control_class = ReplicatedControl
+        if cfg.get('metadata_backend') == 'etcd':
+            from dfsha.control.ha import HAControl
+            control_class = HAControl
         app = control_class({**cfg, **configuration['distributed']})
     certs = Path(cfg["certificate_dir"])
     stop = threading.Event()
@@ -63,7 +66,7 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             if app is not None and internal and hasattr(app, 'register_internal'):
                 implemented = app.register_internal(server)
             register(server, internal, implemented)
-            add_DiagnosticServiceServicer_to_server(Diagnostic(listener, app is not None), server)
+            add_DiagnosticServiceServicer_to_server(Diagnostic(listener, app is not None, getattr(app, 'health', None)), server)
             server.start()
             servers.append(server)
             ready[f"{listener}_target"] = f"localhost:{port}"
@@ -77,7 +80,15 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             if stop_file and stop_file.exists():
                 stop.set()
             if app is not None and time.monotonic() - maintenance_at > (1 if hasattr(app, 'tick') else 10):
-                app.tick() if hasattr(app, 'tick') else app.collect()
+                try:
+                    app.tick() if hasattr(app, 'tick') else app.collect()
+                except Exception as exc:
+                    if cfg.get('metadata_backend') != 'etcd':
+                        raise
+                    import traceback
+                    location = traceback.extract_tb(exc.__traceback__)[-1]
+                    reason = getattr(exc, 'reason', type(exc).__name__)
+                    event('metadata_unavailable', code=f'{reason}:{Path(location.filename).name}:{location.lineno}')
                 maintenance_at = time.monotonic()
     finally:
         for server in servers:
@@ -86,6 +97,8 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             pool.shutdown(wait=True, cancel_futures=True)
         if app is not None:
             app.owner_lock.close()
+            if hasattr(app, 'stop_ha'):
+                app.stop_ha()
         if ready_file:
             ready_file.unlink(missing_ok=True)
         event("stopped", pid=os.getpid())

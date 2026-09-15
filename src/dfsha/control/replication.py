@@ -136,7 +136,7 @@ class ReplicatedControl(DistributedControl):
                 history = tx.get('durability', loc['block']) or dict(id=loc['block'], receipts={})
                 history['receipts'].setdefault(loc['node'], loc['receipt'])
                 tx.put('durability', history)
-            for task in tx.all('task'):
+            for task in ([] if cfg.get('metadata_backend') == 'etcd' else tx.all('task')):
                 if task['status']['state'] in ACTIVE:
                     task['expires'] = 0
                     task['status']['state'] = 'FAILED'
@@ -327,7 +327,13 @@ class ReplicatedControl(DistributedControl):
         with self.store.transaction(True) as tx:
             node = tx.get('datanode', req.node_id)
             need(node and int(node['location']['boot_generation']) == req.boot_generation and
-                req.report_id == node['inventory_id'] and req.page_index == node['page'], 'VERSION_CONFLICT')
+                req.report_id == node['inventory_id'], 'VERSION_CONFLICT')
+            from dfsha.common.domain import intent
+            digest = intent(req).hex()
+            if req.page_index < node['page']:
+                need(node.get('report_pages', {}).get(str(req.page_index)) == digest, 'VERSION_CONFLICT')
+                return c.MutationResult(request_id=req.context.request_id, revision=req.page_index+1)
+            need(req.page_index == node['page'], 'VERSION_CONFLICT')
             for receipt in req.receipts:
                 need(receipt.node_id == req.node_id and len(receipt.ciphertext_sha256) == 32)
                 old = self.location(tx, receipt.block.block_version_id, req.node_id)
@@ -346,6 +352,7 @@ class ReplicatedControl(DistributedControl):
                     deletion['expected_receipt_id'] = receipt.receipt_id
                     tx.put('task', deletion)
             node.update(page=node['page']+1, seen=now(), reconciled=req.last_page)
+            node.setdefault('report_pages', {})[str(req.page_index)] = digest
             if req.last_page:
                 for loc in tx.all('location'):
                     if loc['node'] == req.node_id and loc.get('inventory') != req.report_id:
@@ -497,6 +504,12 @@ class ReplicatedControl(DistributedControl):
             copies = [t for t in active if t['kind'] == 'copy' and not (self.cfg.get('test_fault_dir') and
                 ((Path(self.cfg['test_fault_dir']) / ('hold-copy-'+t['dest'])).exists() or
                  (Path(self.cfg['test_fault_dir']) / ('hold-block-'+t['block']['block_version_id'])).exists()))]
+            if self.cfg.get('metadata_backend') == 'etcd':
+                # First satisfy per-block W for pending publications; third-copy
+                # work must not monopolize the bounded maintenance slot.
+                copies.sort(key=lambda task: (
+                    len(self.eligible(tx, task['block']['block_version_id'])) >=
+                    self.policy(tx, task['block']['file_id'])['w'], task['id']))
             running = [t for t in copies if t.get('dispatched')]
             tasks = (running or copies)[:1] + [t for t in active if t['kind'] == 'delete'][:1]
         for task in tasks:

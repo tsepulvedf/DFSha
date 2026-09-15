@@ -1,0 +1,796 @@
+{
+  "status": "EJECUTADO",
+  "aggregate_not_single_run": true,
+  "distinct_cases": 152,
+  "runs": [
+    {
+      "file": "20260914T183439Z/pytest.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "4",
+      "skipped": "0",
+      "tests": "148",
+      "time": "2246.477",
+      "timestamp": "2026-09-14T13:34:43.744602-05:00",
+      "hostname": "DESKTOP-S2N4JO9"
+    },
+    {
+      "file": "final-corrections.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "8",
+      "time": "391.233",
+      "timestamp": "2026-09-14T14:13:45.297351-05:00",
+      "hostname": "DESKTOP-S2N4JO9"
+    }
+  ],
+  "cases": {
+    "tests.test_block_path_race::test_new_file_directory_created_during_resolution": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.008
+    },
+    "tests.test_block_path_race::test_junction_outside_block_root_is_denied": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.004
+    },
+    "tests.test_contract_limits::test_manifest_page_and_maximum_write_fit_transport_budget": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.001
+    },
+    "tests.test_etcd::test_put_get_and_conditional_transactions": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.303
+    },
+    "tests.test_etcd::test_lease_creation_and_real_expiry": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 2.44
+    },
+    "tests.test_etcd::test_lock_unlock_and_obsolete_ownership_rejected": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.435
+    },
+    "tests.test_etcd::test_watch_receives_real_event": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.058
+    },
+    "tests.test_etcd::test_mtls_identity_and_rbac_are_enforced": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.386
+    },
+    "tests.test_etcd::test_unavailable_service_has_controlled_error": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.741
+    },
+    "tests.test_hito1::test_rf1_paths_permissions_pagination_cwd": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.295
+    },
+    "tests.test_hito1::test_binary_boundaries[0]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 2.1
+    },
+    "tests.test_hito1::test_binary_boundaries[17]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 2.901
+    },
+    "tests.test_hito1::test_binary_boundaries[4194303]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.5
+    },
+    "tests.test_hito1::test_binary_boundaries[4194304]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 4.071
+    },
+    "tests.test_hito1::test_binary_boundaries[4194305]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 4.456
+    },
+    "tests.test_hito1::test_overwrite_snapshot_delete_idempotency": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 6.152
+    },
+    "tests.test_hito1::test_corruption_block_auth_and_credentials": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.841
+    },
+    "tests.test_hito1::test_restart_profile_preservation_and_missing_key": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 11.863
+    },
+    "tests.test_hito1::test_fault_recovery_and_lost_commit_response": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 26.047
+    },
+    "tests.test_hito1::test_interrupted_upload_space_and_future": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.026
+    },
+    "tests.test_hito1::test_large_profiles_boundaries[67108864]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 14.664
+    },
+    "tests.test_hito1::test_large_profiles_boundaries[134217728]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 23.131
+    },
+    "tests.test_hito1::test_reservations_remove_no_resurrection_and_revocation": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 5.976
+    },
+    "tests.test_hito1::test_cli_process_and_interactive_shell": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 7.781
+    },
+    "tests.test_hito1::test_renewals_long_name_and_parallel_snapshot_readers": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 7.601
+    },
+    "tests.test_hito2::test_distribution_roundtrip_copy_restart": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 30.521
+    },
+    "tests.test_hito2::test_cli_process_and_unindexed_crash_recovery": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 15.744
+    },
+    "tests.test_hito2::test_namespace_snapshot_lost_commit_and_control_restart": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 20.286
+    },
+    "tests.test_hito2::test_profiles_boundaries_and_coexistence[4194304]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 30.774
+    },
+    "tests.test_hito2::test_profiles_boundaries_and_coexistence[67108864]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 40.809
+    },
+    "tests.test_hito2::test_profiles_boundaries_and_coexistence[134217728]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 53.704
+    },
+    "tests.test_hito2::test_dynamic_fourth_node_reservations_and_unavailable": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 22.581
+    },
+    "tests.test_hito2::test_block_authentication_corruption_and_internal_roles": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 12.938
+    },
+    "tests.test_hito2::test_interruption_expiry_restart_and_late_receipts": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 25.734
+    },
+    "tests.test_hito2::test_control_outage_node_space_keys_and_forged_receipts": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 16.403
+    },
+    "tests.test_local_storage::test_sqlite_persistence_and_rollback_without_etcd": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.02
+    },
+    "tests.test_security::test_authenticated_encryption_and_tamper_rejection": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.001
+    },
+    "tests.test_security::test_argon2id_password_verification": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.058
+    },
+    "tests.test_stage5::test_modes_ranges_and_atomic_patch": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 24.746
+    },
+    "tests.test_stage5::test_parallel_disjoint_merge_and_conflict": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 20.387
+    },
+    "tests.test_stage5::test_multiblock_atomic_abort_and_idempotency": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 14.647
+    },
+    "tests.test_stage5::test_fencing_successor_restart_and_persistent_result": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 21.737
+    },
+    "tests.test_stage5::test_growth_read_serialization_tombstone_and_permissions": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 28.727
+    },
+    "tests.test_stage5::test_profile_boundary_small_delta[4194304]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 17.043
+    },
+    "tests.test_stage5::test_profile_boundary_small_delta[67108864]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 17.633
+    },
+    "tests.test_stage5::test_profile_boundary_small_delta[134217728]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 25.573
+    },
+    "tests.test_stage5::test_remote_base_copy_capacity_and_partial_authorization": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 13.16
+    },
+    "tests.test_stage5::test_patch_failures_and_restart_before_publication": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 28.516
+    },
+    "tests.test_stage5::test_full_locks_overwrite_and_cli": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 24.951
+    },
+    "tests.test_stage5::test_monotonic_gc_and_reservation_ignore_wall_hints": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 3.068
+    },
+    "tests.test_stage6::test_late_delete_physical_generation_guard": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.038
+    },
+    "tests.test_stage6::test_third_delayed_w2_and_empty": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 19.237
+    },
+    "tests.test_stage6::test_two_nodes_degraded_one_rejects_and_fourth_repairs": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 51.383
+    },
+    "tests.test_stage6::test_multiblock_insufficient_atomic_and_stale_fencing": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 23.461
+    },
+    "tests.test_stage6::test_disjoint_concurrent_and_lost_commit": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 25.943
+    },
+    "tests.test_stage6::test_profiles_patch_delta[4194304]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 29.556
+    },
+    "tests.test_stage6::test_profiles_patch_delta[67108864]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 42.02
+    },
+    "tests.test_stage6::test_profiles_patch_delta[134217728]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 50.184
+    },
+    "tests.test_stage6::test_corrupt_copy_repair_and_interrupted_read": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 45.719
+    },
+    "tests.test_stage6::test_restart_pending_and_gc_tombstone": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 34.3
+    },
+    "tests.test_stage6::test_promotion_r1_retained_snapshot": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 35.41
+    },
+    "tests.test_stage6::test_volume_loss_keys_and_recovery": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 23.983
+    },
+    "tests.test_stage6::test_old_maintenance_callback_and_duplicate_receipt": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 22.395
+    },
+    "tests.test_stage6::test_expired_writer_with_two_copies": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 35.56
+    },
+    "tests.test_stage6::test_commit_without_original_primary_and_permissions": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 25.62
+    },
+    "tests.test_stage7_authorization::test_shared_user_revocation_and_open_truncate_gc": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 112.164
+    },
+    "tests.test_stage7_control::test_cross_control_session_handle_and_data": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 148.647
+    },
+    "tests.test_stage7_control::test_cross_control_parallel_publication_and_lost_reply": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 243.099
+    },
+    "tests.test_stage7_control::test_e6_migration_and_full_backup_restore": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 112.679
+    },
+    "tests.test_stage7_control::test_control_failover_network_partition_and_quorum": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 119.998
+    },
+    "tests.test_stage7_control::test_expired_writer_with_two_copies_cannot_publish": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 173.527
+    },
+    "tests.test_stage7_control::test_cross_control_capacity_reservations_are_atomic": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 45.295
+    },
+    "tests.test_stage7_control::test_restart_entire_lab_preserves_epoch_and_unexpired_handle": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 91.836
+    },
+    "tests.test_stage7_control::test_maintenance_takeover_rejects_old_callback_and_preserves_snapshot": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 94.291
+    },
+    "tests.test_stage7_metadata::test_paged_atomic_metadata_and_quorum": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 13.141
+    },
+    "tests.test_stage7_metadata::test_shared_lease_expiry_and_publication_fence": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 11.929
+    },
+    "tests.test_stage7_metadata::test_watch_disconnect_and_compaction_rebuild": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 7.741
+    },
+    "tests.test_stage7_metadata::test_partition_one_authority_client_without_stopping_etcd": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 6.625
+    },
+    "tests.test_stage7_metadata::test_etcd_snapshot_restore_new_cluster": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 10.903
+    },
+    "tests.test_stage7_metadata::test_etcd_application_identity_is_prefix_restricted": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 5.476
+    },
+    "tests.test_transport::test_separate_client_process_tls_and_bounded_stream[False]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.783
+    },
+    "tests.test_transport::test_separate_client_process_tls_and_bounded_stream[True]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.54
+    },
+    "tests.test_transport::test_tls_rejects_untrusted_or_missing_certificate[public_target-None-rogue-ca]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.004
+    },
+    "tests.test_transport::test_tls_rejects_untrusted_or_missing_certificate[internal_target-None-ca]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.004
+    },
+    "tests.test_transport::test_tls_rejects_untrusted_or_missing_certificate[internal_target-rogue-client-ca]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.006
+    },
+    "tests.test_transport::test_tls_rejects_wrong_server_san": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.02
+    },
+    "tests.test_transport::test_stream_rejects_invalid_input[missing_header-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_stream_rejects_invalid_input[offset-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_stream_rejects_invalid_input[oversized-StatusCode.RESOURCE_EXHAUSTED-LIMIT_EXCEEDED]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_stream_rejects_invalid_input[checksum-StatusCode.DATA_LOSS-CHECKSUM_MISMATCH]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_stream_rejects_invalid_input[short-StatusCode.INVALID_ARGUMENT-INVALID_ARGUMENT]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_transport_message_limit": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_client_deadline_interrupts_stream": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.103
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[AuthenticationService.Login]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[AuthenticationService.Logout]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[AuthenticationService.RefreshSession]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.CreateUser]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.SetUser]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.CreateGroup]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.SetGroupMembers]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.GetAcl]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[IdentityService.SetAcl]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NamespaceService.List]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NamespaceService.Stat]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NamespaceService.Mkdir]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NamespaceService.Rmdir]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NamespaceService.Remove]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.BeginUpload]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.AllocateBlocks]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.StageManifestPage]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.SealManifest]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.CommitUpload]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.AbortUpload]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.GetOperation]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[UploadService.RenewUpload]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.Open]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.Close]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.RenewHandle]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.BeginWrite]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.CommitWrite]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.AbortWrite]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.Lock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.Unlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.RenewLock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.ResolveBlocks]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.BeginRead]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[FileAccessService.EndRead]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.255
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[BlockService.PutBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.255
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[BlockService.PatchBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[BlockService.GetBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.ListNodes]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.256
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.CopyBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.CopyStatus]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.257
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.GetProtection]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ClusterAdministrationService.PromoteProtection]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NodeRegistryService.RegisterNode]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NodeRegistryService.Heartbeat]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NodeRegistryService.BlockReport]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportDurable]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.261
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[NodeRegistryService.ReportTask]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.261
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[InternalAuthorizationService.AuthorizeInternal]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.26
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[StorageAdministrationService.VerifyReceipt]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.258
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[StorageAdministrationService.ReplicateBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[StorageAdministrationService.GetTask]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.26
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[StorageAdministrationService.DeleteRetiredBlock]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ReplicaService.StoreReplica]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.259
+    },
+    "tests.test_transport::test_all_future_rpcs_are_unimplemented[ReplicaService.GetReplica]": {
+      "status": "EJECUTADO",
+      "evidence": "20260914T183439Z/pytest.xml",
+      "seconds": 0.284
+    },
+    "tests.test_control_failover_transport::test_cancelled_query_failover_is_scoped[GetProtection-StatusCode.CANCELLED-False-True]": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 0.921
+    },
+    "tests.test_control_failover_transport::test_cancelled_query_failover_is_scoped[GetProtection-StatusCode.PERMISSION_DENIED-False-False]": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 0.262
+    },
+    "tests.test_control_failover_transport::test_cancelled_query_failover_is_scoped[GetProtection-StatusCode.CANCELLED-True-False]": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 0.265
+    },
+    "tests.test_control_failover_transport::test_cancelled_query_failover_is_scoped[PromoteProtection-StatusCode.CANCELLED-False-False]": {
+      "status": "EJECUTADO",
+      "evidence": "final-corrections.xml",
+      "seconds": 0.262
+    }
+  },
+  "measurement": "measurement-final.json",
+  "measurement_exit_code": null,
+  "measurement_exit_note": "Terminal complete report and stopped processes verified; supervisor exit code unavailable after session interruption",
+  "package": "package-final.json",
+  "installed": "installed-smoke.json"
+}

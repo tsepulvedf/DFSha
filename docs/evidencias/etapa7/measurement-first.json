@@ -1,0 +1,14 @@
+{
+  "status": "FALLIDO",
+  "timestamp": "2026-09-13T18:20:03.472949+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e7\\bc61887c-c507-4452-bb89-d9ecb42705c7",
+  "file_bytes": 536870912,
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "target_replicas": 3,
+  "minimum_durable": 2,
+  "metadata_majority": 2,
+  "failure_profile": "process-simulation",
+  "scope": "Un host Windows. Cliente y supervisor de proxies comparten proceso; no tolerancia de host.",
+  "error": "INSUFFICIENT_REPLICAS"
+}

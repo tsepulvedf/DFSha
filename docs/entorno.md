@@ -1,4 +1,13 @@
-# DFSha — Entorno reproducible de etapas 2–6
+# DFSha — Entorno reproducible de etapas 2–7
+
+E7 agrega el laboratorio `scripts/ha_runtime.py`, con tres procesos etcd 3.6.14
+del mismo clúster (membresía consultada), TLS en peers y clientes, y rol limitado
+al prefijo DFSha. Windows nativo y `.venv-win` siguen siendo la ruta probada.
+`scripts/fetch_etcd.py --platform windows-amd64 --tools` extrae también etcdctl
+y etcdutl del mismo archivo cuyo SHA-256 está fijado; no cambia dependencias.
+Los datos, certificados, backups y claves permanecen en raíces privadas `.runtime`.
+E7 no instala WSL ni acredita Linux, cloud o dominios físicos independientes.
+[Comandos, estado y límites de E7](etapa7-ha-control.md).
 
 **E6, Windows nativo:** Python 3.12.10, SQLite 3.49.1, grpcio/grpcio-tools
 1.83.1, protobuf 7.36.1, cryptography 50.0.1, argon2-cffi 25.1.0, pytest 9.1.1.

@@ -1,0 +1,14 @@
+{
+  "status": "FALLIDO",
+  "timestamp": "2026-09-13T18:36:03.873459+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e7\\753bb8fa-193f-4ee5-a269-2397cf1994bc",
+  "file_bytes": 536870912,
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "target_replicas": 3,
+  "minimum_durable": 2,
+  "metadata_majority": 2,
+  "failure_profile": "process-simulation",
+  "scope": "Un host Windows. Cliente y supervisor de proxies comparten proceso; no tolerancia de host.",
+  "error": "<_InactiveRpcError of RPC that terminated with:\n\tstatus = StatusCode.PERMISSION_DENIED\n\tdetails = \"PERMISSION_DENIED\"\n\tdebug_error_string = \"PERMISSION_DENIED:PERMISSION_DENIED\"\n>"
+}

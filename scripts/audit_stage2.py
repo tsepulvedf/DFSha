@@ -69,6 +69,8 @@ def main():
     documents += [ROOT / path for path in ('docs/hito2.md', 'docs/protocolos-hito2.md',
         'docs/etapa5-rf3.md', 'docs/evidencias/etapa5/README.md',
         'docs/etapa6-replicacion.md', 'docs/evidencias/etapa6/README.md')]
+    documents += [ROOT / path for path in ('docs/etapa7-ha-control.md',
+        'docs/evidencias/etapa7/README.md') if (ROOT / path).exists()]
     links = 0
     for document in documents:
         content = document.read_text(encoding="utf-8")

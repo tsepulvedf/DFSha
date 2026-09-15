@@ -187,7 +187,10 @@ def test_fault_recovery_and_lost_commit_response(admin, h1):
     source.write_bytes(b'new')
     for point in ('after_block_persist', 'before_publish'):
         (h1.faults / point).touch()
-        with pytest.raises(grpc.RpcError):
+        # Losing the control during CommitUpload is an unknown outcome, not
+        # proof of abort. Recovery below still verifies the old durable version.
+        expected = pytest.raises(Fault, match='OUTCOME_UNKNOWN') if point == 'before_publish' else pytest.raises(grpc.RpcError)
+        with expected:
             admin.send(source, '/file', overwrite=True)
         assert h1.process.wait(timeout=10) == 93
         h1.stop()

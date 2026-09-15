@@ -23,7 +23,7 @@ def main():
     report = dict(status='PENDIENTE', python=sys.version, platform=platform.platform(), sqlite=sqlite3.sqlite_version,
         packages={x.metadata['Name']: x.version for x in importlib.metadata.distributions()}, commands=[], replication_only=args.replication_only)
     commands = [[sys.executable, '-m', 'pip', 'check'], [sys.executable, 'scripts/generate_proto.py', '--check'],
-        [sys.executable, '-m', 'pytest', '-q', 'tests/test_stage6.py' if args.replication_only else 'tests', '--junitxml=' + str(directory / 'pytest.xml')],
+        [sys.executable, '-m', 'pytest', '-q', '--ignore-glob=tests/test_stage7*.py', 'tests/test_stage6.py' if args.replication_only else 'tests', '--junitxml=' + str(directory / 'pytest.xml')],
         [sys.executable, 'scripts/audit_stage2.py', '--evidence', str(directory / 'audit.json')]]
     if args.measure:
         commands.append([sys.executable, 'scripts/measure_stage6.py', '--evidence', str(directory / 'measurement.json')])

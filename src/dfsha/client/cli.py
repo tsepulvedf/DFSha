@@ -162,7 +162,7 @@ def main():
     args = root.parse_args()
     cfg = read_config(args.config)
     state = json.loads(args.session_file.read_text(encoding='utf-8')) if args.session_file.exists() else {}
-    client = Client(cfg['client']['public_target'], cfg['client'].get('certificate_dir') or cfg['server']['certificate_dir'],
+    client = Client(cfg['client'].get('public_targets') or cfg['client']['public_target'], cfg['client'].get('certificate_dir') or cfg['server']['certificate_dir'],
                     proto(Session, state['session']) if state.get('session') else None)
     client.cwd, client.cwd_id = state.get('cwd', '/'), state.get('cwd_id', '')
     client.handles = {k: proto(Handle, v) for k, v in state.get('handles', {}).items()}

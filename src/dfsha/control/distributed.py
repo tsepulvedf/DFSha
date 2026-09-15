@@ -92,13 +92,13 @@ class DistributedControl(Monolith):
         if cfg.get('rf3_enabled', False):
             from dfsha.control.leases import SQLiteLeaseAuthority
             from dfsha.control.access import AccessQueries, AccessCommands
-            self.leases = SQLiteLeaseAuthority(self)
+            self.leases = getattr(self, 'lease_authority_class', SQLiteLeaseAuthority)(self)
             self.queries = AccessQueries(self)
             self.commands = AccessCommands(self)
         self.cfg['service_epoch'] = self.system['epoch']
         self.dispatch_lock = threading.Lock()
         with self.store.transaction(True) as tx:
-            for node in tx.all('datanode'):
+            for node in ([] if cfg.get('metadata_backend') == 'etcd' else tx.all('datanode')):
                 node.update(seen=0, reconciled=False)
                 tx.put('datanode', node)
 
@@ -167,6 +167,11 @@ class DistributedControl(Monolith):
                 tx.put('assignment', assignment)
             nodes = [tx.get('datanode', assignment['node'])]
             need(self.state(nodes[0]) in ('READY', 'SUSPECT') and int(nodes[0]['location']['boot_generation']) == assignment['generation'], 'DATA_UNAVAILABLE')
+        if self.cfg.get('metadata_backend') == 'etcd' and not read:
+            from dfsha.common.telemetry import event
+            event('block_grant_issued', code=json.dumps(dict(operation=binding['id'], block=block.block_version_id,
+                control=self.cfg['certificate_identity'], node=nodes[0]['id'],
+                generation=nodes[0]['location']['boot_generation'], expires=binding['expires'], observed=now())))
         return c.PlannedBlock(block=block, locations=[proto(c.BlockLocation, x['location']) for x in nodes],
             grants=[c.BlockGrant(block=block, node_id=x['id'], length=block.size_bytes,
                 action=c.READ_DATA if read else c.WRITE_DATA, expires_at_unix_ms=binding['expires'],
@@ -195,7 +200,14 @@ class DistributedControl(Monolith):
             if old:
                 need(req.node.boot_generation >= int(old['location']['boot_generation']), 'VERSION_CONFLICT')
                 if req.node.boot_generation == int(old['location']['boot_generation']):
-                    need(old['location'] == asdict(req.node) and old['inventory_id'] == req.inventory_id, 'VERSION_CONFLICT')
+                    need(old['location'] == asdict(req.node), 'VERSION_CONFLICT')
+                    if self.cfg.get('metadata_backend') == 'etcd':
+                        if old['inventory_id'] == req.inventory_id:
+                            old['seen'] = now()
+                            tx.put('datanode', old)
+                            return self.lease(old)
+                    else:
+                        need(old['inventory_id'] == req.inventory_id, 'VERSION_CONFLICT')
                 else:
                     for a in tx.all('assignment'):
                         if a['node'] == req.node.node_id:
@@ -214,8 +226,13 @@ class DistributedControl(Monolith):
         with self.store.transaction(True) as tx:
             node = tx.get('datanode', req.node_id)
             need(node and node['reconciled'] and int(node['location']['boot_generation']) == req.boot_generation and
-                 req.sequence > node['sequence'], 'VERSION_CONFLICT')
+                 req.sequence >= node['sequence'], 'VERSION_CONFLICT')
+            if req.sequence == node['sequence']:
+                # An identical heartbeat may be replayed after response loss.
+                need(node.get('heartbeat_digest') == intent(req).hex(), 'VERSION_CONFLICT')
+                return self.lease(node)
             node.update(seen=now(), sequence=req.sequence, free=req.free_bytes, used=req.used_bytes, active=req.active_streams)
+            node['heartbeat_digest'] = intent(req).hex()
             node.update({key: getattr(req, key) for key in self.counters})
             tx.put('datanode', node)
             return self.lease(node)

@@ -28,7 +28,8 @@ class AccessClient:
             checked_range(offset, length, MAX_DELTA)
             need(length > 0)
         return self.call(self.files.Lock, ctl.LockRequest(handle_id=handle.handle_id,
-            whole_file=whole_file, offset=offset, length=length, wait_timeout_ms=wait_ms), deadline=6, retries=0)
+            whole_file=whole_file, offset=offset, length=length, wait_timeout_ms=wait_ms),
+            deadline=max(6, self.control_timeout), retries=0)
 
     def unlock(self, fence):
         return self.call(self.files.Unlock, ctl.FenceRequest(fence=fence))
