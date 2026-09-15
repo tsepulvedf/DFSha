@@ -41,7 +41,10 @@ Migración desactiva la autoridad SQLite antigua; restauración usa nueva membre
 revisión y época, conservando contenido, identidad y resultados respaldados.
 
 Git: main/origin/main partían de 0100928; fetch e identidad existentes comprobados.
-El cierre está preparado; commit y sincronización E7 se registrarán al publicarlo.
+Implementación E7 publicada como **101e534f4118b727624e895f3e3799fa5981707d** mediante
+push normal; hash remoto idéntico y árbol limpio comprobados. [Registro de
+publicación](evidencias/etapa7/git-publicacion.json). Este registro se incorpora
+en un commit documental posterior, sin modificar código ni resultados.
 
 Pendientes reales: Linux/WSL, hosts/VMs independientes, cloud/Internet, seguridad
 integral E8 y Q01–Q07 (incluida Q05). Liberación administrativa de pins de migración

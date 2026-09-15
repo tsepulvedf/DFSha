@@ -5,6 +5,7 @@ E6 se conservan como antecedentes. [Inventario final verificable](verificacion-f
 144 aprobadas/4 fallidas en la suite conjunta y ocho aprobadas en la repetición
 de cuatro casos corregidos más cuatro nuevos; **152 casos distintos aprobados**,
 sin omisiones. No se presenta como una única ejecución verde de 152.
+[Implementación publicada y hash remoto comprobado](git-publicacion.json).
 La [correspondencia de aceptación](aceptacion.md) relaciona cada criterio con
 su caso concreto; el cierre depende de sus resultados, no de la cantidad de tests.
 
