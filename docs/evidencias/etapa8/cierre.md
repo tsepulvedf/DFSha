@@ -6,6 +6,11 @@ R=3/W=2, TLS/mTLS, metadatos autoritativos compartidos, cifrado aplicativo de
 datos/metadatos/inventarios/backups y autorización por usuario/grupo. Los bytes
 siguen viajando directamente con los DataNodes. No se ejecutó E9.
 
+Implementación, pruebas y evidencias: commit `b1c57b5`, publicado sin force push.
+Fetch posterior confirmó HEAD y origin/main en
+`b1c57b5f4109674b8bc186f62c0d55f81e003c24`, sin cambios pendientes antes de añadir
+este registro documental de publicación. No se modificó la toolchain fijada.
+
 ## Ejecuciones y cobertura
 
 | Ejecución | Resultado | Interpretación |

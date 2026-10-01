@@ -21,8 +21,10 @@ Se conserva R3/W2, tres CN/tres etcd/tres DN, usuario ordinario, hashes correcto
 4096 bytes de delta y cero contenido por control. RNF6 queda verificado dentro
 del modelo y rutas de [seguridad](seguridad.md), con límites explícitos de host,
 volcados/paginación, custodia física y consultas Q03/Q05. E9 es el siguiente
-trabajo y no se ejecutó. Publicación Git del cierre: pendiente en este registro
-hasta comprobar commit y sincronización. El historial siguiente es histórico.
+trabajo y no se ejecutó. Implementación/evidencias en `b1c57b5`, publicado en
+`origin/main` sin force push. Fetch posterior confirmó HEAD y origin en
+`b1c57b5f4109674b8bc186f62c0d55f81e003c24`, árbol limpio antes de este registro
+documental de publicación. El historial siguiente es histórico.
 
 **2026-09-30, 22:44 Colombia · E8 sigue en verificación, sin commit/push.**
 La continuación anterior terminó: 114 aprobados y dos fallidos en 2817,20 s.
