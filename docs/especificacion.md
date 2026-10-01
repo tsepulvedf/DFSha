@@ -1,5 +1,11 @@
 # DFSha — Especificación formal del servicio
 
+Concreción E8 del usuario, sin atribuirla al PDF: cambio de contraseña y
+deshabilitación revocan sesiones compartidas; rehabilitar una cuenta exige nuevo
+login. En el perfil protegido, administrar políticas no concede acceso implícito
+al contenido. Los snapshots conservan versiones pero quedan sujetos a permisos
+vigentes. [Implementación, comprobaciones y límites pendientes](seguridad.md).
+
 Actualización del usuario para E7: las reglas RF1/RF2/RF3 se conservan sobre una
 autoridad de metadatos compartida en etcd. Un reinicio individual del ControlNode
 no cambia la época del servicio; sesiones, snapshots, handles y locks vigentes

@@ -14,6 +14,7 @@ from measure_hito1 import memory
 from measure_stage5 import counters
 from measure_stage6 import full
 from dfsha.common.domain import CHUNK
+from verify_stage8 import atomic_json
 
 
 def digest(path):
@@ -26,16 +27,24 @@ def main():
     parser.add_argument('--bytes', type=int, default=536870912)
     parser.add_argument('--block-size', type=int, default=67108864, choices=(4194304, 67108864, 134217728))
     parser.add_argument('--evidence', type=Path, required=True)
+    parser.add_argument('--protected', action='store_true', help='E8: encrypted metadata/inventories and ordinary client')
     args = parser.parse_args()
     if args.bytes < 536870912:
         parser.error('La medición de aceptación requiere al menos 512 MiB')
-    root = ROOT/'.runtime/measure-e7'/str(uuid4())
+    root = ROOT/('.runtime/measure-e8' if args.protected else '.runtime/measure-e7')/str(uuid4())
     report = dict(status='PENDIENTE', timestamp=datetime.now(timezone.utc).isoformat(), runtime=str(root),
         file_bytes=args.bytes, block_size_bytes=args.block_size, chunk_bytes=CHUNK, target_replicas=3,
         minimum_durable=2, metadata_majority=2, failure_profile='process-simulation',
         scope='Un host Windows. Cliente y supervisor de proxies comparten proceso; no tolerancia de host.')
+    args.evidence.parent.mkdir(parents=True, exist_ok=True)
+    def checkpoint(phase):
+        report.update(phase=phase, updated=datetime.now(timezone.utc).isoformat())
+        atomic_json(args.evidence, report)
+        print(json.dumps(dict(phase=phase, runtime=str(root))), flush=True)
+    report['status'] = 'EN_CURSO'
+    checkpoint('starting')
     try:
-        with HACluster(root, block_size=args.block_size) as lab:
+        with HACluster(root, block_size=args.block_size, protected=args.protected) as lab:
             source, output = root/'source.bin', root/'download.bin'
             pattern = bytes(range(256))*(CHUNK//256)
             with source.open('wb') as out:
@@ -45,22 +54,40 @@ def main():
                     out.write(value)
                     left -= len(value)
             expected = digest(source)
+            checkpoint('source_ready')
             client = lab.client()
+            remote = '/large'
+            if args.protected:
+                from dfsha.client.sdk import Client
+                client.create_user('measure', 'measurement-password')
+                client.logout()
+                client.shutdown()
+                client = Client(lab.public_targets, lab.certs)
+                client.login('measure', 'measurement-password')
+                remote = '/home/measure/large'
+                report['protected'] = True
+                report['client_role'] = 'ordinary-user'
             try:
                 start = time.monotonic()
-                client.send(source, '/large')
+                client.send(source, remote)
                 report['upload_seconds'] = time.monotonic()-start
-                report['copies_before'] = full(client, '/large')
-                client.receive('/large', output)
+                checkpoint('upload_committed')
+                report['copies_before'] = full(client, remote)
+                checkpoint('initial_R3')
+                start = time.monotonic()
+                client.receive(remote, output)
                 assert digest(output) == expected
+                report['download_seconds'] = time.monotonic()-start
                 report['initial_sha256'] = expected
+                checkpoint('initial_hash_verified')
                 report['transfer_client_traffic'] = deepcopy(client.traffic)
-                handle = client.open('/large', 'r+')
+                handle = client.open(remote, 'r+')
                 before = counters(lab)
                 start = time.monotonic()
                 assert client.write(handle, args.block_size//2, b'P'*4096) == 4096
                 report['patch_commit_seconds'] = time.monotonic()-start
-                report['copies_after_patch'] = full(client, '/large')
+                report['copies_after_patch'] = full(client, remote)
+                checkpoint('patch_R3')
                 after = counters(lab)
                 report['patch_traffic'] = {node: {key: values.get(key, 0)-before[node].get(key, 0)
                     for key in set(values)|set(before[node])} for node, values in after.items()}
@@ -78,9 +105,10 @@ def main():
                 assert client.read(handle, args.block_size//2, 4096) == b'P'*4096
                 report['failover_read_seconds_from_stop_request'] = time.monotonic()-start
                 client.close(handle)
-                client.receive('/large', output, overwrite=True)
+                client.receive(remote, output, overwrite=True)
                 assert digest(output) == expected
                 report['patched_sha256'] = expected
+                checkpoint('failover_and_patched_hash_verified')
                 report['datanode_memory'] = {str(i): memory(p.info['pid']) for i,p in enumerate(lab.nodes[:3])}
                 report['client_and_proxy_supervisor_memory'] = memory(os.getpid())
                 report['metadata_tls_bytes_by_control'] = {str(i): dict(to_etcd=sum(p.up_bytes for p in group),
@@ -105,8 +133,7 @@ def main():
                     continue
                 if row.get('event') in selected:
                     report['traces'].append(dict(process=logfile.parent.name, **row))
-        args.evidence.parent.mkdir(parents=True, exist_ok=True)
-        args.evidence.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
+        checkpoint('finished')
     print(json.dumps(dict(status=report['status'], evidence=str(args.evidence))))
     return int(report['status'] != 'EJECUTADO')
 

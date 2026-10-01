@@ -34,14 +34,26 @@ def containment_path(path):
 
 
 class EncryptedBlockStore:
-    def __init__(self, root, key):
+    def __init__(self, root, key, read_keys=()):
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
         self.key = key
         self.key_id = hashlib.sha256(key).hexdigest()
+        self.keys = {hashlib.sha256(k).hexdigest(): k for k in (key, *read_keys)}
+        need(all(len(k) == 32 for k in self.keys.values()), 'INVALID_ARGUMENT')
         self.active = {}
         self.writers = set()
         self.guard = threading.RLock()
+
+    def object_key_id(self, block):
+        # This header is authenticated by read_verified/import_ciphertext.
+        with self.path(block.file_id, block.block_version_id).open('rb') as stream:
+            need(stream.read(8) == MAGIC, 'DATA_LOSS')
+            raw = stream.read(4)
+            need(len(raw) == 4, 'DATA_LOSS')
+            length = struct.unpack('>I', raw)[0]
+            need(0 < length <= 4096, 'DATA_LOSS')
+            return json.loads(stream.read(length))['key_id']
 
     def path(self, file_id, block_id):
         path = self.root / uuid(file_id) / (uuid(block_id) + '.blk')
@@ -133,8 +145,8 @@ class EncryptedBlockStore:
                 need(obj['version'] == 1 and obj['file_id'] == block.file_id and
                      obj['block_id'] == block.block_version_id and obj['size'] == block.size_bytes and
                      obj.get('block_index', block.block_index) == block.block_index and
-                     obj['sha256'] == block.plaintext_sha256.hex() and obj['key_id'] == self.key_id, 'DATA_LOSS')
-                dek = aes_key_unwrap(self.key, base64.b64decode(obj['wrapped_dek']))
+                     obj['sha256'] == block.plaintext_sha256.hex() and obj['key_id'] in self.keys, 'DATA_LOSS')
+                dek = aes_key_unwrap(self.keys[obj['key_id']], base64.b64decode(obj['wrapped_dek']))
                 prefix = base64.b64decode(obj['nonce_prefix'])
                 need(len(prefix) == 8, 'DATA_LOSS')
                 start = stream.tell()
@@ -195,12 +207,16 @@ class EncryptedBlockStore:
             for folder in self.root.iterdir():
                 if not folder.is_dir() or folder.is_symlink():
                     continue
+                if not containment_path(folder.resolve()).is_relative_to(containment_path(self.root)):
+                    continue  # Includes Windows junctions (is_symlink() alone does not).
                 try:
                     uuid(folder.name)
                 except Fault:
                     continue
                 for path in folder.iterdir():
                     if path.suffix not in ('.blk', '.staging') or path.is_symlink():
+                        continue
+                    if not containment_path(path.resolve()).is_relative_to(containment_path(self.root)):
                         continue
                     if path.suffix == '.staging' and self.active:
                         continue

@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
 
 
-def generate(directory: Path, identities=()) -> dict:
+def generate(directory: Path, identities=(), peer_certificates=False) -> dict:
     directory.mkdir(parents=True, exist_ok=True)
     # No sobreescribir una CA existente: rompería clientes que ya la confían.
     if any(directory.iterdir()):
@@ -69,6 +69,9 @@ def generate(directory: Path, identities=()) -> dict:
     issue("client", "dfsha-diagnostic", ca, client=True)
     issue("rogue-client", "dfsha-diagnostic", rogue, client=True)
     issue("etcd-server", "localhost", ca, server=True, client=True, san=local_san)
+    if peer_certificates:
+        for index in range(3):
+            issue(f'etcd-member-{index}', f'dfsha-etcd-member-{index}', ca, server=True, client=True, san=local_san)
     for identity, common_name in (("etcd-root", "root"), ("etcd-probe", "dfsha-probe"),
                                   ("etcd-denied", "dfsha-denied")):
         issue(identity, common_name, ca, client=True)
@@ -77,7 +80,7 @@ def generate(directory: Path, identities=()) -> dict:
         if str(UUID(identity)) != identity:
             raise ValueError('Identidad de nodo debe ser UUID')
         issue(identity, identity, ca, server=True, client=True, san=local_san)
-    return {"status": "EJECUTADO", "certificates": 10 + len(identities), "valid_days": 7,
+    return {"status": "EJECUTADO", "certificates": 10 + len(identities) + (3 if peer_certificates else 0), "valid_days": 7,
             "private_material": "excluded from Git; local ACL/permissions"}
 
 

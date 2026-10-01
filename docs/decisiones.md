@@ -1,5 +1,23 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
+E8 verificada en laboratorio: [D59–D64](seguridad.md) definen cifrado de metadatos,
+custodia por propósito, administración/revocación y evidencia recuperable.
+Se conserva la toolchain fijada. La evidencia de RNF6 y sus límites están en
+el [cierre E8](evidencias/etapa8/cierre.md); las decisiones por sí solas no son pruebas.
+
+**D64 — Liberación incierta de la barrera de metadatos:** descartar el lease
+reutilizable del hilo si la operación no terminó confirmada o su renovación falló.
+No renovar una adquisición abandonada mientras se espera adquirir otra. Se conserva
+la comparación de propietario, la expiración etcd y los resultados persistentes.
+[Diagnóstico y regresión real](evidencias/etapa8/diagnostico-regresion.md).
+
+**D63 — Retención administrativa E8:** mantenimiento offline supervisado y respaldo
+cifrado previo; recorrido de páginas alcanzables y eliminación acotada con
+comparaciones de raíz/barrera etcd. Liberación explícita de pins de migración con
+digest y resultado persistente. No expirar idempotencia por edad ni borrar claves
+requeridas por snapshots/backups. Implementación y comprobaciones en
+[seguridad](seguridad.md); no se atribuye al PDF este algoritmo.
+
 D58: deadline de Lock coherente con HA y conmutación acotada de GetProtection
 ante cancelación de transporte, sin reintentar mutaciones ni denegaciones.
 [Motivo y alcance](etapa7-ha-control.md); conserva leases y fencing.

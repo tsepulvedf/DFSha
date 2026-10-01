@@ -79,8 +79,27 @@ class Commands:
         need(not target['admin'], 'PERMISSION_DENIED')
         need(target['revision'] == req.expected_revision, 'VERSION_CONFLICT')
         target.update(disabled=req.disabled, revision=target['revision'] + 1)
+        if req.disabled:
+            self.revoke_sessions(tx, target['id'])
         tx.put('user', target)
         return ident.User(user_id=target['id'], username=target['username'], disabled=target['disabled'], revision=target['revision'])
+
+    def revoke_sessions(self, tx, identity):
+        for session in tx.all('session'):
+            if session['user'] == identity and not session['revoked']:
+                session['revoked'] = True
+                tx.put('session', session)
+
+    def ChangePassword(self, tx, user, session, req):
+        need(user['admin'] or user['id'] == req.user_id, 'PERMISSION_DENIED')
+        target = tx.get('user', req.user_id)
+        need(target, 'NOT_FOUND')
+        need(target['revision'] == req.expected_revision, 'VERSION_CONFLICT')
+        target.update(password=password_hash(req.password), revision=target['revision']+1)
+        tx.put('user', target)
+        self.revoke_sessions(tx, target['id'])
+        return ident.User(user_id=target['id'], username=target['username'],
+                          disabled=target['disabled'], revision=target['revision'])
 
     def CreateGroup(self, tx, user, session, req):
         need(user['admin'], 'PERMISSION_DENIED')
@@ -125,6 +144,9 @@ class Commands:
         return self.result(req)
 
     def BeginUpload(self, tx, user, session, req):
+        if self.app.cfg.get('metadata_key_path'):
+            active = [o for o in tx.all('upload') if o['state'] == c.PREPARING and o['expires'] > now()]
+            need(len(active) < 64 and sum(o['user'] == user['id'] for o in active) < 16, 'LIMIT_EXCEEDED')
         need(len(req.file_sha256) == 32 and req.total_bytes <= self.app.cfg['max_file_bytes'])
         parent, name = self.q.parent(tx, user, req.path)
         existing = next((n for n in tx.children(parent['id']) if n['name'] == name), None)

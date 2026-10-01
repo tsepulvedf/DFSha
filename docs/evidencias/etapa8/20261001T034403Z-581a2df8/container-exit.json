@@ -1,0 +1,34 @@
+{
+  "container": "/dfsha-e8-linux-closure-20260930",
+  "id": "5334c784390ad1b2a56994485332b6feb3591394614762101d3caa15c5946beb",
+  "image": "sha256:8efcc1569048f018aaa15e40b4e602675194461551a2249119718dd095d49698",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-01T03:44:03.222543521Z",
+    "FinishedAt": "2026-10-01T03:51:25.070916279Z"
+  },
+  "network": "none",
+  "memory_bytes": 3221225472,
+  "nano_cpus": 2000000000,
+  "pids_limit": 512,
+  "mounts": [
+    {
+      "Type": "volume",
+      "Name": "dfsha-e8-linux-runtime-closure-20260930",
+      "Source": "/var/lib/docker/volumes/dfsha-e8-linux-runtime-closure-20260930/_data",
+      "Destination": "/workspace/.runtime",
+      "Driver": "local",
+      "Mode": "z",
+      "RW": true,
+      "Propagation": ""
+    }
+  ]
+}

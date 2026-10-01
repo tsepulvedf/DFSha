@@ -60,7 +60,7 @@ def main():
         if f"| {short} " not in protocols:
             raise RuntimeError(f"RPC sin fila semántica: {short}")
     future = sum(r["implementation"] == "UNIMPLEMENTED" for r in records)
-    if len(records) != 58 or future != 28:
+    if len(records) != 61 or future != 30:
         raise RuntimeError("Revisar número de RPC y evidencia")
     documents = [ROOT / "README.md"] + [ROOT / "docs" / name for name in (
         "estado.md", "especificacion.md", "arquitectura.md", "decisiones.md", "matriz-requisitos.md",

@@ -1,5 +1,32 @@
 # DFSha — Arquitectura y evolución
 
+E8 añade un perfil protegido opcional conservando la misma autoridad y CQRS:
+`MetadataCipher` cifra las páginas antes de persistir en etcd y los cuerpos del
+adaptador SQLite. El HMAC de contenido mantiene páginas direccionables sin
+publicar hashes calculables de sus valores. La raíz y las comparaciones/leases
+siguen en etcd; no hay fallback ni contenido de archivos en el control.
+Claves de inventario independientes por DN; [cobertura y pendientes](seguridad.md).
+
+```mermaid
+flowchart LR
+  C[CLI: cache de sesión AEAD] -->|TLS: metadatos y administración| CN[Tres ControlNodes]
+  C <-->|TLS: bloques y delta autorizado| DN[Tres DataNodes]
+  CN <-->|mTLS y RBAC de prefijo| E[etcd: páginas AEAD, WAL y snapshot]
+  DN <-->|mTLS: autorización online| CN
+  DN <-->|mTLS: tarea y objeto cifrado| DN2[Otro DataNode]
+  DN --> I[Inventario AEAD y bloques AES-GCM]
+  E --> B[Backup consistente en ventana offline]
+  I --> B
+  K[Custodia externa al archivo de backup] -->|Clave para archivo AEAD| B
+```
+
+Cada proceso recibe su identidad; el cliente no recibe claves de contenido ni
+credenciales etcd. La CA de emisión permanece en el área administrativa. El
+archivo de respaldo incluye material operativo cifrado y depende de su clave
+externa; copiarlo sin esa clave no recupera datos. Los permisos de filesystem
+limitan acceso local a claves/logs, pero no protegen frente al administrador del
+host. La rotación conserva key_id y objetos antiguos mientras tengan referencias.
+
 **E7 verificada en Windows local:** `HAControl` reutiliza `ReplicatedControl` y CQRS. La
 autoridad completa se selecciona mediante `metadata_backend="etcd"`; las raíces
 SQLite de H1/H2/E5/E6 continúan aisladas. Los tres controles comparten el mismo

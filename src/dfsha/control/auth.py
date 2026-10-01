@@ -5,6 +5,7 @@ import hmac
 import os
 import re
 import threading
+from contextlib import contextmanager
 from pathlib import Path
 from argon2 import PasswordHasher, Type
 from argon2.exceptions import VerificationError
@@ -16,9 +17,18 @@ PASSWORDS = PasswordHasher(time_cost=2, memory_cost=19456, parallelism=1, type=T
 AUTH_SLOTS = threading.BoundedSemaphore(2)
 
 
+@contextmanager
+def auth_slot():
+    need(AUTH_SLOTS.acquire(timeout=.1), 'LIMIT_EXCEEDED')
+    try:
+        yield
+    finally:
+        AUTH_SLOTS.release()
+
+
 def password_hash(password):
     need(12 <= len(password.encode()) <= 1024)
-    with AUTH_SLOTS:
+    with auth_slot():
         return PASSWORDS.hash(password)
 
 
@@ -26,7 +36,7 @@ def matches(encoded, password):
     if len(password.encode()) > 1024:
         return False
     try:
-        with AUTH_SLOTS:
+        with auth_slot():
             return PASSWORDS.verify(encoded, password)
     except VerificationError:
         return False
@@ -56,6 +66,17 @@ def new_node(name, parent, owner, directory=True, mode=0o700):
 def initialize(cfg, username, password):
     need(re.fullmatch(r'[a-zA-Z0-9_-]{1,64}', username) is not None)
     dbpath, keypath = Path(cfg['sqlite_path']), Path(cfg['key_path'])
+    if cfg.get('metadata_key_path') and dbpath.is_file() and keypath.is_file():
+        from dfsha.common.protected import MetadataCipher
+        store = SQLiteMetadataStore(dbpath, MetadataCipher.configured(cfg))
+        with store.transaction() as tx:
+            system = tx.get('settings', 'system')
+            need(system and not system.get('authority_migrated'), 'ALREADY_EXISTS')
+            need(hashlib.sha256(keypath.read_bytes()).hexdigest() == system['key_sha256'], 'DATA_LOSS')
+            user = next((u for u in tx.all('user') if u['username'] == username), None)
+            need(user and user['admin'] and not user['disabled'] and matches(user['password'], password),
+                 'ALREADY_EXISTS')
+        return  # Explicit idempotent bootstrap; no reset, account recreation or grants.
     need(not dbpath.exists() and not keypath.exists(), 'ALREADY_EXISTS')
     root = Path(cfg['block_path'])
     need(not root.exists() or not any(root.iterdir()), 'ALREADY_EXISTS')
@@ -67,13 +88,15 @@ def initialize(cfg, username, password):
         out.flush()
         os.fsync(out.fileno())
     protect(keypath)
-    store = SQLiteMetadataStore(dbpath)
+    from dfsha.common.protected import MetadataCipher
+    store = SQLiteMetadataStore(dbpath, MetadataCipher.configured(cfg))
     store.initialize()
     identity = uid()
     rootnode = new_node('', None, identity, mode=0o755)
     with store.transaction(True) as tx:
         tx.put('settings', dict(id='system', epoch=uid(), root=rootnode['id'], node=uid(),
-                               key_sha256=hashlib.sha256(keypath.read_bytes()).hexdigest()))
+                               key_sha256=hashlib.sha256(keypath.read_bytes()).hexdigest(),
+                               strict_content_permissions=bool(cfg.get('metadata_key_path'))))
         tx.put('user', dict(id=identity, username=username, password=encoded, disabled=False, admin=True, revision=1))
         tx.put('group', dict(id=identity, name=username, members=[identity], revision=1))
         tx.put('node', rootnode)
@@ -99,7 +122,8 @@ class Authorizer:
         return user, session
 
     def require(self, tx, user, node, bits):
-        if user['admin']:
+        if user['admin'] and (not self.system.get('strict_content_permissions') or
+                              node['kind'] == 'directory' and bits == 1):
             return
         groups = {g['id'] for g in tx.all('group') if user['id'] in g['members']}
         shift = 6 if node['owner'] == user['id'] else 3 if node['group'] in groups else 0

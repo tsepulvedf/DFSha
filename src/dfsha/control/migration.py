@@ -10,7 +10,7 @@ from dfsha.control.etcd_metadata import encode
 from dfsha.v1 import common_pb2 as c
 
 
-def migrate(source, backup, destination):
+def migrate(source, backup, destination, source_cipher=None):
     source, backup = Path(source), Path(backup)
     if backup.exists() or destination.range(destination.root_key):
         raise ValueError('Backup y espacio etcd deben estar vacíos; no sobrescribir una autoridad')
@@ -30,7 +30,7 @@ def migrate(source, backup, destination):
         backup.parent.mkdir(parents=True, exist_ok=True)
         with sqlite3.connect(source) as src, sqlite3.connect(backup) as out:
             src.backup(out)
-        original = SQLiteMetadataStore(source)
+        original = SQLiteMetadataStore(source, source_cipher)
         with original.transaction(True) as tx:
             system = tx.get('settings', 'system')
             if system.get('authority_migrated'):
@@ -38,7 +38,9 @@ def migrate(source, backup, destination):
             system['authority_migrated'] = destination.prefix.decode()
             tx.put('settings', system)
         with sqlite3.connect(backup) as db:
-            records = [(kind, json.loads(body)) for kind, body in db.execute('SELECT kind,body FROM objects ORDER BY kind,id')]
+            kinds = [r[0] for r in db.execute('SELECT DISTINCT kind FROM objects ORDER BY kind')]
+        with SQLiteMetadataStore(backup, source_cipher).transaction() as tx:
+            records = [(kind, value) for kind in kinds for value in tx.all(kind)]
         original_digest = hashlib.sha256(encode(records)).hexdigest()
         retained = []
         epoch = str(uuid4())

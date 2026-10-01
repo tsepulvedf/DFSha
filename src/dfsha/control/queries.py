@@ -98,7 +98,8 @@ class Queries:
 
     def GetAcl(self, tx, user, session, req):
         node = self.resolve(tx, user, req.path)
-        self.app.auth.require(tx, user, node, 4)
+        if not (user['admin'] or node['owner'] == user['id']):
+            self.app.auth.require(tx, user, node, 4)
         return c.Acl(owner_id=node['owner'], group_id=node['group'], owner_permissions=node['mode'] >> 6,
                      group_permissions=(node['mode'] >> 3) & 7, other_permissions=node['mode'] & 7,
                      entries=[proto(c.AclEntry, a) for a in node['acl']], authz_revision=node['revision'])

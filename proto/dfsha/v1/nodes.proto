@@ -19,7 +19,10 @@ service StorageAdministrationService {
   rpc ReplicateBlock(ReplicateBlockRequest) returns (TaskStatus);
   rpc GetTask(GetTaskRequest) returns (TaskStatus);
   rpc DeleteRetiredBlock(DeleteRetiredBlockRequest) returns (TaskStatus);
+  rpc GetKeyStatus(KeyStatusRequest) returns (KeyStatus);
 }
+message KeyStatusRequest { RequestContext context = 1; }
+message KeyStatus { string node_id = 1; uint64 boot_generation = 2; string active_key_id = 3; repeated string readable_key_ids = 4; }
 message RegisterNodeRequest { RequestContext context = 1; BlockLocation node = 2; uint64 capacity_bytes = 3; uint64 free_bytes = 4; string inventory_id = 5; }
 message NodeLease { string node_id = 1; uint64 boot_generation = 2; uint64 expires_at_unix_ms = 3; uint64 revision = 4; }
 message HeartbeatRequest { RequestContext context = 1; string node_id = 2; uint64 boot_generation = 3; uint64 sequence = 4; uint64 free_bytes = 5; uint32 active_streams = 6; uint64 used_bytes = 7; uint64 reserved_bytes = 8; uint64 observed_at_unix_ms = 9; uint64 client_write_bytes = 10; uint64 client_read_bytes = 11; uint64 replica_write_bytes = 12; uint64 replica_read_bytes = 13; }
@@ -51,7 +54,9 @@ service ClusterAdministrationService {
   rpc CopyStatus(GetTaskRequest) returns (TaskStatus);
   rpc GetProtection(ProtectionRequest) returns (ProtectionStatus);
   rpc PromoteProtection(PromoteProtectionRequest) returns (MutationResult);
+  rpc SetNodeAuthorization(SetNodeAuthorizationRequest) returns (MutationResult);
 }
+message SetNodeAuthorizationRequest { RequestContext context = 1; string node_id = 2; bool enabled = 3; uint64 expected_revision = 4; }
 message ProtectionRequest { RequestContext context = 1; PathRef path = 2; string operation_id = 3; string snapshot_id = 4; PageRequest page = 5; }
 message PromoteProtectionRequest { RequestContext context = 1; PathRef path = 2; uint64 expected_policy_revision = 3; }
 message CopyProtection { BlockLocation node = 1; DurableReceipt receipt = 2; string health = 3; bool eligible = 4; }

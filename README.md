@@ -1,12 +1,24 @@
 # DFSha
 
+**E8 completa en el perfil protegido de laboratorio (cierre: 2026-10-01).**
+[Cobertura y límites](docs/seguridad.md), [estado recuperable](docs/estado.md) y
+[relación de evidencias del hito 3](docs/hito3.md). Verificar con
+`.\.venv-win\Scripts\python.exe scripts/verify_stage8.py --measure`.
+RNF6 se acredita para las superficies y amenazas declaradas: cifrado aplicativo,
+TLS/mTLS, identidades/grupos, revocación, custodia y restauración. Windows reúne
+177 casos distintos aprobados en ejecuciones identificadas, no en una única suite
+íntegra; la repetición final aprobó 36 casos E7/E8 y 512 MiB. Linux aprobó esos
+36 casos desde el paquete instalado. [Resultados de cierre](docs/evidencias/etapa8/cierre.md).
+No acredita cifrado integral del host, hosts independientes ni Internet; E9 no se ejecutó.
+
 **E7 completa en el laboratorio Windows de fallos de procesos:** tres ControlNodes activos, tres miembros
 etcd con mTLS y DataNodes separados. [Diseño y comandos E7](docs/etapa7-ha-control.md),
 [evidencias reales](docs/evidencias/etapa7/README.md). Cobertura final: 152 casos
 distintos aprobados mediante regresión y repeticiones identificadas; wheel instalado
 verificado. 512 MiB con hashes correctos, R3/W2 y parche de 4096 bytes.
-Los perfiles SQLite anteriores se conservan. E8, Linux, hosts independientes y cloud
-permanecen pendientes; no se acredita tolerancia a pérdida del host del laboratorio.
+Los perfiles SQLite anteriores se conservan. Al cerrar E7, E8 y Linux estaban
+pendientes. E8 ya tiene pruebas Linux aisladas; hosts independientes y cloud
+siguen pendientes. No se acredita tolerancia a pérdida del host del laboratorio.
 
 ```powershell
 .\.venv-win\Scripts\python.exe scripts/verify_stage7.py --ha-only

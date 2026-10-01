@@ -1,0 +1,14 @@
+{
+  "observed": "2026-10-01T16:37:24.087642+00:00",
+  "terminal_report_status": "APROBADO",
+  "child_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "source_unchanged": true,
+  "external_session_exit_code": null,
+  "reason": "Execution session 20933 unavailable after interruption; supervisor persisted terminal report and actual child exit codes. No external exit code inferred."
+}

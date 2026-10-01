@@ -1,6 +1,21 @@
 # DFSha — Matriz de requisitos y trazabilidad
 
-## Seguimiento activo E7
+## Cierre E8 — perfil protegido de laboratorio
+
+| Requisito | Mecanismo/implementación | Evidencia | Límite pendiente |
+| --- | --- | --- | --- |
+| RNF6, cifrado persistente | MetadataCipher, páginas etcd AEAD, SQLite/inventarios AEAD e índices HMAC; archivo de backup AEAD | Pruebas de clave incorrecta/corrupción, WAL y restauración HA; [criterios E8](evidencias/etapa8/aceptacion.md) | Estructura opaca visible; no cifrado integral del host |
+| RNF6, identidades y grupos | ChangePassword/SetUser, grupos/ACL SDK/CLI, revocación compartida, cache CLI cifrado | Pruebas de usuarios, grupos, revocación tras W2 y datos ajenos; bootstrap privado y reanudación tras cambiar contraseña | Q03 pendiente; streams ya autorizados limitados por plazo |
+| RNF6, custodia | Varias claves de lectura DFSHAB01 y clave activa; hojas TLS por identidad | Rotación cargada por mTLS, snapshots antiguos, recuperación sin origen y retirada requerida rechazada | Guard conservador; retiro físico automatizado y custodia en medio independiente no acreditados |
+| RNF2/RNF3/RNF5 | HA, R3/W2, fencing, snapshots y CQRS; D64 corrige lease abandonado | 36 casos E7/E8 repetidos en Windows/Linux y [medición protegida](evidencias/etapa8/medicion-protegida.md) | Procesos de un host; dominios físicos pendientes |
+| Evidencia reproducible | verify_stage8 y stage8_journal | JSON atómico, huellas iniciales, códigos observados y fases pytest | Una ejecución fallida/interrumpida nunca se cuenta aprobada |
+
+La [matriz de seguridad](seguridad.md) detalla amenazas y superficies persistentes.
+RNF6 se acredita para el perfil y superficies declaradas, según el
+[cierre E8](evidencias/etapa8/cierre.md). H3 reúne evidencias de E5–E8;
+no se acredita todavía infraestructura independiente ni acceso desde Internet.
+
+## Seguimiento histórico al cierre E7
 
 | Requisitos / decisiones | Implementación | Evidencia / aceptación | Estado |
 | --- | --- | --- | --- |

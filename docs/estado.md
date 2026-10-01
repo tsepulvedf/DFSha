@@ -1,5 +1,128 @@
 # DFSha — Estado del proyecto y continuidad
 
+**2026-10-01 · E8 completa en el perfil protegido del laboratorio.**
+La ejecución Windows `20261001T034229Z-9d313040` terminó con 36 casos aprobados
+en 2299,16 s y medición protegida de 512 MiB. El supervisor persistió APROBADO,
+fuentes sin cambios y exit 0 real de sus cinco comandos. La sesión externa 20933
+ya no existe: su exit code queda desconocido, sin afectar los códigos hijos
+registrados. Linux `20261001T034403Z-581a2df8`: 36 aprobados en 439,88 s,
+verificador y contenedor con exit 0. No queda una medición en curso.
+
+La cobertura Windows reúne 177 casos distintos con setup/call/teardown completos,
+mediante tres ejecuciones identificadas; no es una única suite íntegra aprobada.
+Los dos fallos previos se corrigieron y repitieron: lease de barrera incierto y
+prueba de respuesta perdida. Se repitieron todos los casos E7/E8 afectados y la
+medición; bootstrap privado y reanudación también están comprobados.
+[Cierre y reproducción](evidencias/etapa8/cierre.md),
+[cobertura por caso](evidencias/etapa8/final-coverage.json),
+[medición](evidencias/etapa8/medicion-protegida.md).
+
+Se conserva R3/W2, tres CN/tres etcd/tres DN, usuario ordinario, hashes correctos,
+4096 bytes de delta y cero contenido por control. RNF6 queda verificado dentro
+del modelo y rutas de [seguridad](seguridad.md), con límites explícitos de host,
+volcados/paginación, custodia física y consultas Q03/Q05. E9 es el siguiente
+trabajo y no se ejecutó. Publicación Git del cierre: pendiente en este registro
+hasta comprobar commit y sincronización. El historial siguiente es histórico.
+
+**2026-09-30, 22:44 Colombia · E8 sigue en verificación, sin commit/push.**
+La continuación anterior terminó: 114 aprobados y dos fallidos en 2817,20 s.
+Se preservaron XML/log privados y resultados; diagnóstico en
+[regresión E8](evidencias/etapa8/diagnostico-regresion.md). Se corrigió la reutilización
+de un lease de barrera cuya liberación era incierta y se hizo explícita la
+condición observable de la prueba de respuesta perdida. No cambian TTL ni fencing.
+El arranque manual protegido ahora solicita la contraseña y permite reanudar
+después de cambiarla; no la guarda en configuración. Las dos nuevas pruebas
+pasaron en `20261001T034010Z-c326ea4d`, 65,18 s, exit 0 observado.
+
+**Ejecución vigente:** Windows `20261001T034229Z-9d313040`, sesión 20933,
+36 casos E7/E8 y después medición protegida de 512 MiB. No duplicar mientras siga
+activo; consultar result.json y `.runtime/verification-e8/<run_id>/command-3.log`.
+Linux usa el contenedor `dfsha-e8-linux-closure-20260930`, imagen
+`dfsha-e8-validation:closure`, volumen propio y la misma selección de 36 casos.
+El wheel actualizado pasó `installed-package-gate-fix.json`. Los IDs de run son
+UTC y pueden indicar 1 de octubre aunque la fecha local sea 30 de septiembre.
+El historial siguiente conserva las observaciones previas, no el estado vigente.
+
+**2026-09-30 · Recuperación de E8: verificación final en curso.**
+La ejecución Windows del 16 de septiembre fue interrumpida: no existen sus
+procesos y no se recuperó un exit code. `recovery-observation.json` conserva
+59 casos con setup/call/teardown aprobados, uno sin teardown y la comparación
+de fuentes sin cambios. La continuación `20260930T231040Z-3b63eca4` ejecuta los
+116 casos restantes, incluido el incompleto. Sesión de ejecución 75444; no
+duplicarla mientras su proceso/log avance. Los comandos y selección exacta
+están en `evidencias/etapa8/final-regression-selection.json`.
+La medición protegida de 512 MiB y el paquete instalado tienen resultados
+concluyentes previos. Se corrigió Dockerfile/.dockerignore para incluir documentos
+necesarios para la auditoría; imagen `dfsha-e8-validation:final`, contenedor
+`dfsha-e8-linux-final-20260930`, volumen propio, sin red externa ni puertos publicados.
+Fetch de origin confirmado: `8ac3a0b`, 0/0; E8 todavía sin commit/push.
+El historial siguiente no sustituye este punto de recuperación.
+
+**2026-09-15, 19:30 Colombia · E8 EN VERIFICACIÓN FINAL, sin commit E8 todavía.**
+La medición `20260915T185856Z-525dabf5` terminó APROBADA con exit 0 real:
+512 MiB, hashes antes/después correctos, R=3/W=2, delta de 4096 bytes y cero
+contenido por los controles. [Resultados y memoria](evidencias/etapa8/medicion-protegida.md).
+La regresión Windows `20260916T001737Z-8b37116e` sigue activa (sesión 87614,
+pytest PID 25608): 175 casos recopilados; consultar result.json/cases.jsonl antes
+de repetir. La recopilación no equivale a aprobación. Linux aprobó 19 casos y
+el verificador completo con exit 0 en `20260916T002301Z-f5084da3`; el intento previo
+aprobó esos casos pero falló la auditoría por documentación omitida de la imagen.
+Se incorporó la documentación y se repitió sobre el mismo contenedor aislado.
+El Dockerfile aún debe incorporar esa corrección al terminar la regresión activa.
+El paquete instalado pasó siete comprobaciones y dos pruebas de CLI/HA con
+cache cifrado. Los logs privados están en `.runtime/verification-e8/`.
+Git: fetch comprobado, HEAD/origin/main en `8ac3a0b`, diferencias 0/0; E8 local.
+No se ejecuta E9. El historial siguiente conserva los intentos y su contexto.
+
+**Registro anterior de implementación E8:**
+El checkout conserva `8ac3a0b` y `101e534`; los cambios E8 son locales.
+Se añadió el perfil `HACluster(..., protected=True)` con páginas etcd y cuerpos
+SQLite cifrados; cada inventario DN tiene clave propia. ChangePassword es una
+adición compatible; el catálogo actual contiene 61 RPC, con administración SDK/CLI
+y revocación compartida. La ejecución `20260915T102901Z-14ee6862` terminó APROBADA:
+cuatro casos, pytest y supervisor con código 0 observado, fuentes sin cambios.
+Incluye restauración HA cifrada, claves antiguas/nuevas y snapshots, renovación de
+un certificado de control y rechazo de un DN revocado en un canal mTLS existente.
+[Diseño y cobertura pendiente](seguridad.md).
+
+Verificación: siete casos iniciales en `evidencias/etapa8/baseline.xml` (sin código
+de salida recuperado); tres casos de almacenamiento en `storage.xml`, 81,71 s,
+código de salida 0 observado. La ejecución `20260915T052544Z-6d500e30` terminó
+con 3 aprobados/1 fallido por deadline de Login durante arranque. La siguiente,
+`20260915T052855Z-10b19c88`, terminó con 2 aprobados/2 fallidos porque el servidor
+todavía rechazaba el deadline ampliado. Ambas se conservan con exit code 1.
+Se corrigieron juntos SDK/servidor: Login HA acotado a 30 s para las dos UoW de
+admisión/sesión; leases sin cambios y resultado Login idempotente compartido.
+La repetición `20260915T053056Z-5ba7edd9` falló por una aserción de prueba que no
+consumía el iterador de ls. Corregida, la prueba de autorización pasó en
+`20260915T053444Z-3a21c8f3`; su supervisor señaló cambios de fuentes durante esa
+ejecución. `20260915T054248Z-87e6bd4a` falló al restaurar un inventario cifrado con
+un adaptador sin clave; se corrigió y verificó en la ejecución aprobada anterior.
+
+`20260915T103652Z-bbd837f8` aprobó 11 casos E8 en 586,27 s y los pasos pip,
+contratos y catálogo, todos con exit 0 capturado. La interrupción terminó el
+supervisor 31924 y la medición 35832 durante el arranque: su exit es desconocido.
+Se conserva el informe original y `recovery-observation.json` aclara la interrupción.
+No quedaron procesos de ese laboratorio; no se tocaron procesos de otro checkout.
+
+**Ejecución finalizada:** `20260915T185856Z-525dabf5`, comando
+`.\.venv-win\Scripts\python.exe scripts/verify_stage8.py --test tests/test_stage8_bootstrap.py --test tests/test_stage8_limits.py --test tests/test_block_path_race.py --test tests/test_stage8_retention.py --test tests/test_stage8_certificates.py --measure`.
+Incluyó nuevas regresiones de limpieza/junction, bootstrap sin restablecer cuentas,
+retención offline y renovación de certificados; después completó 512 MiB.
+Consultar `result.json`, `cases.jsonl` y logs privados antes de repetir.
+La medición publica puntos de avance atómicos; `--measure-only` permite repetir
+solo ese paso si se interrumpe, conservando la evidencia de las pruebas anteriores.
+
+Comando de continuación: `.\.venv-win\Scripts\python.exe scripts/verify_stage8.py`.
+`--test tests/test_stage8_authorization.py` selecciona la comprobación afectada;
+`--regression` incluye perfiles anteriores. Antes de repetir, comprobar PID/log
+del result.json. Registra huellas del código, resultados por fase y exit codes
+observados; logs completos privados en `.runtime/verification-e8/<run_id>/`.
+Pendiente de cierre: resultado de la regresión final y consolidación documental,
+corrección reproducible de la imagen Linux, revisión de cambios/secretos y Git.
+No marcar RNF6 ni H3 como completos antes de concluir esas comprobaciones.
+E9 no está autorizada en este turno. Los apartados siguientes conservan historia.
+
 **2026-09-14 · E7 COMPLETA en el laboratorio Windows de fallos de procesos.**
 Tres ControlNodes activos comparten un clúster etcd de tres miembros; tres
 DataNodes, R=3/W=2 y transferencias directas. Sin fallback SQLite en HA.

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "F:\\DFSha\\.venv-verify-20260908T212227145653Z\\Scripts\\python.exe",
+    "-I",
+    "-m",
+    "pytest",
+    "-v",
+    "tests/test_stage8_client_state.py"
+  ],
+  "start": "2026-09-16T00:23:48.166866+00:00",
+  "status": "APROBADO",
+  "end": "2026-09-16T00:25:20.608045+00:00",
+  "exit_code": 0,
+  "log": "F:\\DFSha\\.runtime\\verification-e8\\installed-ha-final.log"
+}

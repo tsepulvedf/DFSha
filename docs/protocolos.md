@@ -1,5 +1,20 @@
 # DFSha — Contratos de comunicación v1
 
+Adición E8 compatible: 61 RPC, incluyendo contraseña, autorización administrativa de DataNodes y disponibilidad de claves.
+
+Login HA usa un deadline finito de 30 s para admisión compartida y publicación de
+sesión; el servidor permite hasta 32 s para conversión/redondeo. Los límites de
+streams/perfiles grandes y los leases se conservan. Reintentar Login mantiene
+request_id y recupera la sesión aún vigente; logout, deshabilitación o cambio de
+contraseña no permiten revivirla. Los rechazos de autorización no se reintentan
+como si fueran un fallo de transporte. [Cobertura de seguridad](seguridad.md).
+
+| RPC | Origen/destino | Solicitud y validación | Seguridad/errores | Confirmación/deadline/reintento |
+| --- | --- | --- | --- | --- |
+| StorageAdministrationService.GetKeyStatus | Control/custodio autorizado → DataNode, unary mTLS | Context de identidad de control autorizada y época vigente | Clave privada propia de CN; PERMISSION_DENIED/UNAUTHENTICATED; nunca devuelve material secreto | KeyStatus con IDs derivados de claves cargadas, generación y clave activa; deadline 15 s; consulta reintentable; no constituye recibo de durabilidad |
+| ClusterAdministrationService.SetNodeAuthorization | Cliente administrador → ControlNode, unary | Context, node_id administrativo existente, enabled, expected_revision (0 inicial) | TLS + sesión admin; PERMISSION_DENIED, NOT_FOUND, VERSION_CONFLICT | MutationResult y revisión; 15 s HA; mismo request_id/intención. Revocación compartida, exclusión de colocación y cancelación de tareas pendientes. No revoca criptográficamente el certificado ni borra las claves que ese nodo ya tuvo. |
+| IdentityService.ChangePassword | Cliente → ControlNode, unary | ChangePasswordRequest: context, user_id, password 12–1024 bytes UTF-8, expected_revision | TLS + sesión; propietario o administrador. UNAUTHENTICATED, PERMISSION_DENIED, VERSION_CONFLICT, IDEMPOTENCY_MISMATCH | User; contraseña Argon2id y revocación de todas las sesiones del sujeto en una transacción. Deadline de control 15 s en HA; misma intención/request_id. Tras revocación exige autenticarse de nuevo para consultar/reintentar. El ledger conserva un verificador Argon2, nunca la contraseña. |
+
 **Perfil E7 verificado en Windows local:** [contratos y configuración HA](etapa7-ha-control.md).
 Se conservan RPC v1 y numeración. Health añade disponibilidad de metadatos,
 instancia y revisión; estar vivo no equivale a tener mayoría disponible.

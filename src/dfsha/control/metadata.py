@@ -15,36 +15,48 @@ class UnitOfWork(Protocol):
 
 
 class SQLiteUnit:
-    def __init__(self, connection):
-        self.connection = connection
+    def __init__(self, connection, cipher=None):
+        self.connection, self.cipher = connection, cipher
+
+    def decode(self, kind, identity, body):
+        from dfsha.common.domain import need
+        from dfsha.common.protected import MAGIC
+        need(self.cipher is not None or not isinstance(body, bytes) or not body.startswith(MAGIC), 'DATA_LOSS')
+        if self.cipher:
+            body = self.cipher.open(body, (kind+'\0'+identity).encode())
+        return json.loads(body)
 
     def get(self, kind, identity):
         row = self.connection.execute('SELECT body FROM objects WHERE kind=? AND id=?',
                                       (kind, identity)).fetchone()
-        return json.loads(row[0]) if row else None
+        return self.decode(kind, identity, row[0]) if row else None
 
     def all(self, kind):
-        return [json.loads(r[0]) for r in self.connection.execute(
-            'SELECT body FROM objects WHERE kind=? ORDER BY id', (kind,))]
+        return [self.decode(kind, r[0], r[1]) for r in self.connection.execute(
+            'SELECT id,body FROM objects WHERE kind=? ORDER BY id', (kind,))]
 
     def children(self, parent):
-        return [json.loads(r[0]) for r in self.connection.execute(
-            "SELECT body FROM objects WHERE kind='node' AND parent=? AND live=1 ORDER BY name", (parent,))]
+        return sorted([self.decode('node', r[0], r[1]) for r in self.connection.execute(
+            "SELECT id,body FROM objects WHERE kind='node' AND parent=? AND live=1", (parent,))], key=lambda v: v['name'])
 
     def put(self, kind, value):
+        body = json.dumps(value, separators=(',', ':'))
+        name = value.get('name')
+        if self.cipher:
+            body = self.cipher.seal(body.encode(), (kind+'\0'+value['id']).encode())
+            name = self.cipher.address(('name\0'+name).encode()) if name is not None else None
         self.connection.execute('INSERT INTO objects(kind,id,body,parent,name,live) VALUES(?,?,?,?,?,?) '
             'ON CONFLICT(kind,id) DO UPDATE SET body=excluded.body,parent=excluded.parent,'
             'name=excluded.name,live=excluded.live',
-            (kind, value['id'], json.dumps(value, separators=(',', ':')), value.get('parent'),
-             value.get('name'), int(value.get('alive', False))))
+            (kind, value['id'], body, value.get('parent'), name, int(value.get('alive', False))))
 
     def delete(self, kind, identity):
         self.connection.execute('DELETE FROM objects WHERE kind=? AND id=?', (kind, identity))
 
 
 class SQLiteMetadataStore:
-    def __init__(self, path):
-        self.path = Path(path)
+    def __init__(self, path, cipher=None):
+        self.path, self.cipher = Path(path), cipher
 
     def initialize(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -66,7 +78,7 @@ class SQLiteMetadataStore:
         db = self.connect()
         try:
             db.execute('BEGIN IMMEDIATE' if write else 'BEGIN')
-            yield SQLiteUnit(db)
+            yield SQLiteUnit(db, self.cipher)
             db.commit()
         except BaseException:
             db.rollback()

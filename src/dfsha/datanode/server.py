@@ -18,6 +18,8 @@ from dfsha.datanode.service import DataNode
 
 def serve(path, ready_file, stop_file):
     cfg = tomllib.loads(path.read_text(encoding='utf-8'))['datanode']
+    if cfg.get('metadata_key_path'):
+        configure(Path(cfg['sqlite_path']).parent/'audit'/'events.jsonl')
     app = DataNode(cfg)
     stop = threading.Event()
     for sig in (signal.SIGINT, signal.SIGTERM):

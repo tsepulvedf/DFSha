@@ -1,0 +1,3 @@
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "setup", "outcome": "passed", "duration_seconds": 0.003911699997843243, "time": "2026-10-01T03:38:00.975025+00:00"}
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "call", "outcome": "failed", "duration_seconds": 5.707578199999261, "time": "2026-10-01T03:38:06.791989+00:00"}
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.00032909999936237, "time": "2026-10-01T03:38:06.828589+00:00"}

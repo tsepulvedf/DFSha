@@ -20,13 +20,36 @@ def parser():
     root = argparse.ArgumentParser(description=__doc__)
     root.add_argument('--config', type=Path, default=Path('deploy/monolith.example.toml'))
     root.add_argument('--session-file', type=Path, default=Path('.runtime/client/session.json'))
+    root.add_argument('--session-key-file', type=Path, help='External 32-byte key for encrypted CLI state')
     sub = root.add_subparsers(dest='command', required=True)
+    sub.add_parser('init-session-key')
     for name in ('login', 'useradd'):
         cmd = sub.add_parser(name)
         cmd.add_argument('username')
         cmd.add_argument('--password-stdin', action='store_true')
     for name in ('pwd', 'logout', 'shell', 'nodes'):
         sub.add_parser(name)
+    cmd = sub.add_parser('user-set')
+    cmd.add_argument('user_id')
+    cmd.add_argument('revision', type=int)
+    cmd.add_argument('--disabled', action=argparse.BooleanOptionalAction, required=True)
+    cmd = sub.add_parser('node-authorize')
+    cmd.add_argument('node_id')
+    cmd.add_argument('revision', type=int)
+    cmd.add_argument('--enabled', action=argparse.BooleanOptionalAction, required=True)
+    cmd = sub.add_parser('passwd')
+    cmd.add_argument('user_id')
+    cmd.add_argument('revision', type=int)
+    cmd.add_argument('--password-stdin', action='store_true')
+    sub.add_parser('groupadd').add_argument('name')
+    cmd = sub.add_parser('group-members')
+    cmd.add_argument('group_id')
+    cmd.add_argument('revision', type=int)
+    cmd.add_argument('user_ids', nargs='*')
+    sub.add_parser('getacl').add_argument('path')
+    cmd = sub.add_parser('setacl')
+    cmd.add_argument('path')
+    cmd.add_argument('acl_file', type=Path)
     copy = sub.add_parser('copy-block')
     copy.add_argument('path')
     copy.add_argument('index', type=int)
@@ -81,6 +104,24 @@ def parser():
 
 def execute(client, args):
     command = args.command
+    if command == 'init-session-key':
+        raise ValueError('Inicialice la clave antes de abrir la shell')
+    if command == 'user-set':
+        return client.set_user(args.user_id, args.revision, args.disabled)
+    if command == 'node-authorize':
+        return client.set_node_authorization(args.node_id, args.revision, args.enabled)
+    if command == 'passwd':
+        password = sys.stdin.readline().rstrip('\r\n') if args.password_stdin else getpass.getpass('Nueva contraseña: ')
+        return client.change_password(args.user_id, args.revision, password)
+    if command == 'groupadd':
+        return client.create_group(args.name)
+    if command == 'group-members':
+        return client.set_group_members(args.group_id, args.revision, args.user_ids)
+    if command == 'getacl':
+        return client.get_acl(args.path)
+    if command == 'setacl':
+        from dfsha.v1.common_pb2 import Acl
+        return client.set_acl(args.path, proto(Acl, json.loads(args.acl_file.read_text(encoding='utf-8'))))
     if command == 'protection':
         return client.protection(args.path, cursor=args.cursor)
     if command == 'promote':
@@ -161,7 +202,19 @@ def main():
     root = parser()
     args = root.parse_args()
     cfg = read_config(args.config)
-    state = json.loads(args.session_file.read_text(encoding='utf-8')) if args.session_file.exists() else {}
+    from dfsha.client import state as local_state
+    required = cfg['client'].get('require_encrypted_session', False)
+    try:
+        if args.command == 'init-session-key':
+            if args.session_key_file is None:
+                root.error('init-session-key requires --session-key-file')
+            local_state.initialize_key(args.session_key_file, args.session_file)
+            print(json.dumps({'status': 'EJECUTADO', 'key_material_displayed': False}))
+            return
+        state = local_state.load(args.session_file, args.session_key_file, required)
+    except (Fault, ValueError, OSError, RuntimeError):
+        print('No se pudo abrir el estado local: compruebe perfil, archivo y clave de sesion.', file=sys.stderr)
+        raise SystemExit(1)
     client = Client(cfg['client'].get('public_targets') or cfg['client']['public_target'], cfg['client'].get('certificate_dir') or cfg['server']['certificate_dir'],
                     proto(Session, state['session']) if state.get('session') else None)
     client.cwd, client.cwd_id = state.get('cwd', '/'), state.get('cwd_id', '')
@@ -170,13 +223,9 @@ def main():
 
     def save():
         if client.session:
-            args.session_file.parent.mkdir(parents=True, exist_ok=True)
-            protect(args.session_file.parent)
-            args.session_file.write_text(json.dumps(dict(session=asdict(client.session), cwd=client.cwd,
-                                                        cwd_id=client.cwd_id,
-                                                        handles={k: asdict(v) for k, v in client.handles.items()},
-                                                        locks={k: asdict(v) for k, v in client.fences.items()})), encoding='utf-8')
-            protect(args.session_file)
+            local_state.save(args.session_file, dict(session=asdict(client.session), cwd=client.cwd,
+                cwd_id=client.cwd_id, handles={k: asdict(v) for k, v in client.handles.items()},
+                locks={k: asdict(v) for k, v in client.fences.items()}), args.session_key_file, required)
         else:
             args.session_file.unlink(missing_ok=True)
 

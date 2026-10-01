@@ -1,0 +1,9 @@
+{"test": "tests/test_stage8_recovery.py::test_protected_ha_backup_and_restore", "phase": "setup", "outcome": "passed", "duration_seconds": 0.011200799999642186, "time": "2026-09-15T05:42:51.360078+00:00"}
+{"test": "tests/test_stage8_recovery.py::test_protected_ha_backup_and_restore", "phase": "call", "outcome": "failed", "duration_seconds": 93.42468230000304, "time": "2026-09-15T05:44:24.979962+00:00"}
+{"test": "tests/test_stage8_recovery.py::test_protected_ha_backup_and_restore", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.0003279999982623849, "time": "2026-09-15T05:44:25.017455+00:00"}
+{"test": "tests/test_stage8_keys.py::test_old_key_reads_new_active_key_and_ciphertext_copy", "phase": "setup", "outcome": "passed", "duration_seconds": 0.0016996999984257855, "time": "2026-09-15T05:44:25.045480+00:00"}
+{"test": "tests/test_stage8_keys.py::test_old_key_reads_new_active_key_and_ciphertext_copy", "phase": "call", "outcome": "passed", "duration_seconds": 0.03533459999744082, "time": "2026-09-15T05:44:25.097535+00:00"}
+{"test": "tests/test_stage8_keys.py::test_old_key_reads_new_active_key_and_ciphertext_copy", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.0002781000002869405, "time": "2026-09-15T05:44:25.116896+00:00"}
+{"test": "tests/test_stage8_keys.py::test_backup_requires_key_and_recovers_independent_environment", "phase": "setup", "outcome": "passed", "duration_seconds": 0.002579400003014598, "time": "2026-09-15T05:44:25.156927+00:00"}
+{"test": "tests/test_stage8_keys.py::test_backup_requires_key_and_recovers_independent_environment", "phase": "call", "outcome": "passed", "duration_seconds": 0.3718506000004709, "time": "2026-09-15T05:44:25.622935+00:00"}
+{"test": "tests/test_stage8_keys.py::test_backup_requires_key_and_recovers_independent_environment", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.00026839999918593094, "time": "2026-09-15T05:44:25.642153+00:00"}

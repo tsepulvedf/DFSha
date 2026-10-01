@@ -55,19 +55,71 @@ def backup_lab(lab, destination):
         block_objects=sum(name.endswith('.blk') for name in files))
 
 
+def backup_protected_lab(lab, destination, archive_key):
+    """Encrypted backup without staging plaintext copies of credentials or keys."""
+    from dfsha.common.backup_archive import create_archive
+    if not getattr(lab, 'protected', False):
+        raise ValueError('PROTECTED_PROFILE_REQUIRED')
+    for process in lab.controls+lab.nodes:
+        config = tomllib.loads(process.config.read_text(encoding='utf-8'))
+        for section in config.values():
+            if not isinstance(section, dict):
+                continue
+            locations = [section[name] for name in ('certificate_dir', 'etcd_certificate_dir', 'key_path',
+                'metadata_key_path', 'content_active_key_path') if section.get(name)]
+            locations.extend(section.get('content_read_key_paths', []))
+            if any(not Path(location).resolve().is_relative_to(lab.directory.resolve()) for location in locations):
+                raise ValueError('BACKUP_EXTERNAL_KEY_MATERIAL: provision rotated keys/certificates inside the lab secret directories')
+    for process in reversed(lab.controls+lab.nodes):
+        process.stop()
+    if any(p.process and p.process.poll() is None for p in lab.controls+lab.nodes):
+        raise RuntimeError('MAINTENANCE_NOT_QUIESCENT')
+    # This snapshot already contains encrypted metadata pages. It contains no
+    # application encryption key; the service identity records remain visible.
+    temporary = lab.directory/('snapshot-'+str(uuid4())+'.db')
+    status = snapshot(lab.etcd, temporary)
+    names = ['certificates', 'client-trust', 'identities', 'secrets', 'authorized-nodes.json']
+    names += [p.directory.name for p in lab.controls+lab.nodes]
+    files = []
+    for name in names:
+        source = lab.directory/name
+        for path in sorted(source.rglob('*')) if source.is_dir() else [source]:
+            if path.is_file():
+                if not path.resolve().is_relative_to(lab.directory):
+                    raise ValueError('BACKUP_PATH_ESCAPE')
+                files.append((path.relative_to(lab.directory).as_posix(), path))
+    files.append(('snapshot.db', temporary))
+    record = dict(schema=2, protected=True, source_root=lab.directory.as_posix(), prefix=lab.etcd.prefix,
+        control_ids=lab.control_ids, node_ids=lab.node_ids, public_targets=lab.public_targets,
+        internal_targets=lab.internal_targets, controls=[p.directory.name for p in lab.controls],
+        nodes=[p.directory.name for p in lab.nodes], snapshot=status)
+    try:
+        result = create_archive(destination, archive_key, files, record)
+        return dict(status='EJECUTADO', offline=True, encrypted=True, **result)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 class RestoredHACluster(HACluster):
-    def __init__(self, bundle, directory):
+    def __init__(self, bundle, directory, archive_key=None):
         self.bundle, self.directory = Path(bundle).resolve(), Path(directory).resolve()
         if self.directory.exists():
             raise FileExistsError(self.directory)
-        record = json.loads((self.bundle/'backup.json').read_text(encoding='utf-8'))
-        for name, expected in record['files'].items():
-            source = (self.bundle/name).resolve()
-            if not source.is_relative_to(self.bundle) or not source.is_file() or file_hash(source) != expected:
-                raise RuntimeError('BACKUP_INTEGRITY_FAILED')
-        self.directory.mkdir(parents=True)
-        protect(self.directory)
-        shutil.copytree(self.bundle/'payload', self.directory, dirs_exist_ok=True)
+        if archive_key is not None:
+            from dfsha.common.backup_archive import restore_archive
+            record = restore_archive(self.bundle, self.directory, archive_key)
+            self.bundle = self.directory
+        else:
+            record = json.loads((self.bundle/'backup.json').read_text(encoding='utf-8'))
+            for name, expected in record['files'].items():
+                source = (self.bundle/name).resolve()
+                if not source.is_relative_to(self.bundle) or not source.is_file() or file_hash(source) != expected:
+                    raise RuntimeError('BACKUP_INTEGRITY_FAILED')
+            self.directory.mkdir(parents=True)
+            protect(self.directory)
+            shutil.copytree(self.bundle/'payload', self.directory, dirs_exist_ok=True)
+        self.protected = record.get('protected', False)
+        self.metadata_key_path = self.directory/'secrets/metadata-at-rest.key' if self.protected else None
         self.control_ids, self.node_ids = record['control_ids'], record['node_ids']
         self.control_id = self.control_ids[0]
         self.public_targets, self.internal_targets = record['public_targets'], record['internal_targets']
@@ -133,10 +185,14 @@ class RestoredHACluster(HACluster):
                     etcd_certificate_dir=cfg['server']['certificate_dir'])
             else:
                 cfg['datanode']['service_epoch'] = epoch
-                with SQLiteMetadataStore(cfg['datanode']['sqlite_path']).transaction(True) as tx:
+                from dfsha.common.protected import MetadataCipher
+                with SQLiteMetadataStore(cfg['datanode']['sqlite_path'], MetadataCipher.configured(cfg['datanode'])).transaction(True) as tx:
                     for task in tx.all('task'):
                         task['reported'] = True  # Executors from the backed-up epoch cannot resume.
                         tx.put('task', task)
             process.config.write_text('\n'.join('['+section+']\n'+'\n'.join(k+' = '+json.dumps(v)
                 for k,v in values.items()) for section,values in cfg.items()), encoding='utf-8')
         self.migration = dict(status='RESTORED', epoch=epoch)
+        from hito2_runtime import write_toml
+        write_toml(self.directory/'client.toml', 'client', dict(public_targets=self.public_targets,
+            certificate_dir=self.certs.as_posix(), require_encrypted_session=self.protected))

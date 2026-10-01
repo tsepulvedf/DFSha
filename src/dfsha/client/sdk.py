@@ -56,6 +56,10 @@ class Client(AccessClient):
     def nodes(self):
         return self.call(self.cluster.ListNodes, nodes.ClusterQuery())
 
+    def set_node_authorization(self, node_id, revision, enabled):
+        return self.call(self.cluster.SetNodeAuthorization, nodes.SetNodeAuthorizationRequest(
+            node_id=node_id, expected_revision=revision, enabled=enabled))
+
     def protection(self, path=None, *, operation_id='', snapshot_id='', cursor=''):
         return self.call(self.cluster.GetProtection, nodes.ProtectionRequest(path=self.path(path) if path else None,
             operation_id=operation_id, snapshot_id=snapshot_id, page=c.PageRequest(limit=64, cursor=cursor)))
@@ -128,7 +132,7 @@ class Client(AccessClient):
         diagnostic_rpc.DiagnosticServiceStub(self.channel).Health(
             diagnostic.HealthRequest(request_id=str(uuid.uuid4())), timeout=10, wait_for_ready=True)
         self.session = self.authentication.Login(ident.LoginRequest(request_id=str(uuid.uuid4()),
-            username=username, password=password), timeout=self.control_timeout)
+            username=username, password=password), timeout=max(30, self.control_timeout) if isinstance(self.target, (list, tuple)) else self.control_timeout)
         self.cwd, self.cwd_id = '/', self.stat('/').object_id
         return self.session
 
@@ -181,6 +185,25 @@ class Client(AccessClient):
 
     def create_user(self, username, password):
         return self.call(self.identity.CreateUser, ident.CreateUserRequest(username=username, password=password))
+
+    def set_user(self, user_id, revision, disabled):
+        return self.call(self.identity.SetUser, ident.SetUserRequest(user_id=user_id,
+            expected_revision=revision, disabled=disabled))
+
+    def change_password(self, user_id, revision, password):
+        return self.call(self.identity.ChangePassword, ident.ChangePasswordRequest(user_id=user_id,
+            expected_revision=revision, password=password))
+
+    def create_group(self, name):
+        return self.call(self.identity.CreateGroup, ident.CreateGroupRequest(name=name))
+
+    def set_group_members(self, group_id, revision, user_ids):
+        return self.call(self.identity.SetGroupMembers, ident.SetGroupMembersRequest(group_id=group_id,
+            expected_revision=revision, user_ids=user_ids))
+
+    def set_acl(self, path, acl):
+        return self.call(self.identity.SetAcl, ident.SetAclRequest(path=self.path(path), acl=acl,
+            expected_revision=acl.authz_revision))
 
     def get_acl(self, path):
         return self.call(self.identity.GetAcl, ident.GetAclRequest(path=self.path(path)))

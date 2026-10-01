@@ -48,6 +48,7 @@ def report_patch(app, req, ctx):
     app.node_peer(ctx, req, receipt.node_id)
     with app.store.transaction(True) as tx:
         node = tx.get('datanode', receipt.node_id)
+        app.require_node(tx, receipt.node_id)
         need(node and receipt.boot_generation == int(node['location']['boot_generation']), 'VERSION_CONFLICT')
         user = tx.get('user', header.context.user_id)
         need(user and not user['disabled'] and header.context.service_epoch == app.system['epoch'], 'UNAUTHENTICATED')

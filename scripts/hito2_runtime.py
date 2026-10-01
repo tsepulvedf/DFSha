@@ -28,10 +28,15 @@ class Process:
     def start(self):
         self.ready.unlink(missing_ok=True)
         self.stop_file.unlink(missing_ok=True)
-        self.log = (self.directory / 'server.log').open('ab')
+        cfg = tomllib.loads(self.config.read_text(encoding='utf-8'))
+        protected = any(isinstance(section, dict) and section.get('metadata_key_path') for section in cfg.values())
+        self.log = None if protected else (self.directory / 'server.log').open('ab')
         self.process = subprocess.Popen([sys.executable, '-m', self.module, '--config', str(self.config),
             '--ready-file', str(self.ready), '--stop-file', str(self.stop_file)], cwd=ROOT,
-            stdout=self.log, stderr=subprocess.STDOUT, creationflags=PROCESS_FLAGS)
+            stdout=subprocess.PIPE if protected else self.log, stderr=subprocess.STDOUT, creationflags=PROCESS_FLAGS)
+        if protected:
+            from bounded_process_log import BoundedProcessLog
+            self.log = BoundedProcessLog(self.process.stdout, self.directory/'server.log')
         def ready():
             if self.process.poll() is not None:
                 self.log.close()
@@ -57,18 +62,27 @@ class Process:
 
 
 class Cluster:
-    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30, replication=False, default_replicas=3, extra_controls=0):
+    def __init__(self, directory, block_size=4194304, capacities=None, rf3=False, lease_seconds=30, replication=False, default_replicas=3, extra_controls=0, protected=False, admin_password='development-password'):
+        self.admin_password = admin_password
         rf3 = rf3 or replication
         self.directory = Path(directory).resolve()
         if self.directory.exists() and any(self.directory.iterdir()):
             raise ValueError('Use una raíz nueva; no se convierte ni sobrescribe H1')
         self.directory.mkdir(parents=True, exist_ok=True)
         protect(self.directory)
+        self.protected = protected
+        self.metadata_key_path = None
+        if protected:
+            self.metadata_key_path = self.directory/'secrets'/'metadata-at-rest.key'
+            self.metadata_key_path.parent.mkdir(parents=True)
+            protect(self.metadata_key_path.parent)
+            self.metadata_key_path.write_bytes(os.urandom(32))
+            protect(self.metadata_key_path)
         self.certs = self.directory / 'certificates'
         self.control_id = str(uuid4())
         self.control_ids = [self.control_id] + [str(uuid4()) for _ in range(extra_controls)]
         self.node_ids = [str(uuid4()) for _ in range(4)]
-        generate(self.certs, self.control_ids + self.node_ids)
+        generate(self.certs, self.control_ids + self.node_ids, peer_certificates=protected)
         # Provision only the authorized identity to each process; never expose the CA key to a server.
         import shutil
         authority = self.certs
@@ -111,9 +125,14 @@ class Cluster:
         template = template.replace('[client]', 'authorized_nodes_path = ' + json.dumps(allowed_path.as_posix()) +
             '\ntest_fault_dir = ' + json.dumps(self.faults.as_posix()) + '\nsuspect_ms = 2500\nunavailable_ms = 6000\n\n[client]')
         config.write_text(template, encoding='utf-8')
+        if protected:
+            template = template.replace('[distributed]', '[distributed]\nmetadata_key_path = '+json.dumps(self.metadata_key_path.as_posix()))
+            config.write_text(template, encoding='utf-8')
         parsed = tomllib.loads(template)
-        initialize({**parsed['server'], **parsed['distributed']}, 'admin', 'development-password')
-        with SQLiteMetadataStore(parsed['server']['sqlite_path']).transaction() as tx:
+        initialize({**parsed['server'], **parsed['distributed']}, 'admin', self.admin_password)
+        from dfsha.common.protected import MetadataCipher
+        cipher = MetadataCipher.configured(parsed['distributed'])
+        with SQLiteMetadataStore(parsed['server']['sqlite_path'], cipher).transaction() as tx:
             self.epoch = tx.get('settings', 'system')['epoch']
         self.control = Process(directory, config, 'dfsha.control.server')
         self.nodes = []
@@ -128,7 +147,13 @@ class Cluster:
             key_path = secret / 'content.key'
             key_path.write_bytes(content_key)
             protect(key_path)
-            metadata = SQLiteMetadataStore(directory / 'inventory.sqlite3')
+            inventory_cipher = None
+            if protected:
+                inventory_key = secret/'inventory.key'
+                inventory_key.write_bytes(os.urandom(32))
+                protect(inventory_key)
+                inventory_cipher = MetadataCipher(inventory_key.read_bytes())
+            metadata = SQLiteMetadataStore(directory / 'inventory.sqlite3', inventory_cipher)
             metadata.initialize()
             with metadata.transaction(True) as tx:
                 tx.put('settings', dict(id='node', id_node=identity, key_sha256=hashlib.sha256(content_key).hexdigest(), generation=0))
@@ -144,6 +169,8 @@ class Cluster:
             cfg['test_fault_dir'] = faults.as_posix()
             cfg['rf3_enabled'] = rf3
             cfg['replication_enabled'] = replication
+            if protected:
+                cfg['metadata_key_path'] = inventory_key.as_posix()
             write_toml(config, 'datanode', cfg)
             self.nodes.append(Process(directory, config, 'dfsha.datanode.server'))
         (self.directory / 'lab.json').write_text(json.dumps(dict(control_id=self.control_id, node_ids=self.node_ids,
@@ -164,7 +191,7 @@ class Cluster:
 
     def client(self):
         client = Client(self.target, self.certs)
-        client.login('admin', 'development-password')
+        client.login('admin', getattr(self, 'admin_password', 'development-password'))
         return client
 
     def statuses(self, client):

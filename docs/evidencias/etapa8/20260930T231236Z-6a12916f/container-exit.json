@@ -1,0 +1,30 @@
+{
+  "observed": "2026-09-30T23:16:36.971993+00:00",
+  "container": "dfsha-e8-linux-final-20260930",
+  "container_id": "d6eb6747c26adefb310e13ca4398e631a801786e11b56bad77cba438b9dafd42",
+  "image_id": "sha256:d2cdb867be5fdd5d36813b3366e87e600efd42b01ce97aeab85d4e933e7305c8",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-09-30T23:12:36.595121529Z",
+    "FinishedAt": "2026-09-30T23:15:29.931529084Z"
+  },
+  "network_mode": "none",
+  "memory_limit_bytes": 3221225472,
+  "nano_cpus": 2000000000,
+  "pids_limit": 512,
+  "mounts": [
+    {
+      "Type": "volume",
+      "Name": "dfsha-e8-linux-runtime-20260930",
+      "Destination": "/workspace/.runtime"
+    }
+  ]
+}

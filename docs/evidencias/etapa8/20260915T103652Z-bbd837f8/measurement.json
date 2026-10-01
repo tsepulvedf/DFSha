@@ -1,0 +1,15 @@
+{
+  "status": "EN_CURSO",
+  "timestamp": "2026-09-15T10:46:42.302299+00:00",
+  "runtime": "F:\\DFSha\\.runtime\\measure-e8\\865213fe-b22d-446b-a0c1-c6242095edf0",
+  "file_bytes": 536870912,
+  "block_size_bytes": 67108864,
+  "chunk_bytes": 262144,
+  "target_replicas": 3,
+  "minimum_durable": 2,
+  "metadata_majority": 2,
+  "failure_profile": "process-simulation",
+  "scope": "Un host Windows. Cliente y supervisor de proxies comparten proceso; no tolerancia de host.",
+  "phase": "starting",
+  "updated": "2026-09-15T10:46:42.302299+00:00"
+}

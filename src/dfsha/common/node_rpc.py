@@ -41,7 +41,13 @@ def register(server, app, services):
             def invoke(request, ctx, fn=fn, maximum=302 if method.client_streaming else app.cfg.get('control_rpc_timeout_seconds', 5)+2):
                 try:
                     need(ctx.time_remaining() is not None and ctx.time_remaining() <= maximum)
-                    return fn(request, ctx)
+                    result = fn(request, ctx)
+                    if app.cfg.get('metadata_key_path'):
+                        from dfsha.common.telemetry import event
+                        identities = ctx.auth_context().get('x509_common_name', ())
+                        actor = identities[0].decode() if len(identities) == 1 else 'authorized-capability'
+                        event('internal_audit', actor=actor, action=fn.__name__, code='OK')
+                    return result
                 except Fault as exc:
                     import traceback
                     from dfsha.common.telemetry import event

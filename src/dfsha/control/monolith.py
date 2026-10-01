@@ -70,7 +70,8 @@ class Monolith:
         self.collect(restart=True)
 
     def make_metadata(self, cfg):
-        return SQLiteMetadataStore(cfg['sqlite_path'])
+        from dfsha.common.protected import MetadataCipher
+        return SQLiteMetadataStore(cfg['sqlite_path'], MetadataCipher.configured(cfg))
 
     def credentials(self, context):
         values = [v for k, v in context.invocation_metadata() if k == 'authorization']
@@ -104,7 +105,8 @@ class Monolith:
         record = dict(id=self.ledger_id(user, request), method=method, digest=intent(request).hex(),
                       response=self.auth.encrypt(response.SerializeToString()))
         if hasattr(request, 'password'):
-            target = next(u for u in tx.all('user') if u['username'] == request.username)
+            target = (tx.get('user', request.user_id) if method == 'ChangePassword' else
+                      next(u for u in tx.all('user') if u['username'] == request.username))
             record['password_verifier'] = target['password']
         tx.put('ledger', record)
 
@@ -123,6 +125,21 @@ class Monolith:
 
     def Login(self, request, context):
         uuid(request.request_id)
+        need(1 <= len(request.username.encode()) <= 64 and len(request.password.encode()) <= 1024,
+             'UNAUTHENTICATED')
+        login_id = hashlib.sha256((request.username+'\0'+request.request_id).encode()).hexdigest()
+        if self.cfg.get('metadata_key_path'):
+            # Shared fixed-size buckets: random usernames cannot grow metadata without bound.
+            bucket = 'login-' + str(int(hashlib.sha256(request.username.encode()).hexdigest()[:8], 16) % 64)
+            window = now() // 60000
+            with self.store.transaction(True) as tx:
+                for identity, limit in (('login-global', 60), (bucket, 10)):
+                    rate = tx.get('auth-rate', identity) or dict(id=identity, window=window, count=0)
+                    if rate['window'] != window:
+                        rate.update(window=window, count=0)
+                    need(rate['count'] < limit, 'LIMIT_EXCEEDED')
+                    rate['count'] += 1
+                    tx.put('auth-rate', rate)
         with self.store.transaction() as tx:
             user = next((u for u in tx.all('user') if u['username'] == request.username), None)
         # A fixed valid hash prevents the unknown-user path from skipping Argon2.
@@ -135,7 +152,22 @@ class Monolith:
         with self.store.transaction(True) as tx:
             current = tx.get('user', user['id'])
             need(not current['disabled'] and current['password'] == user['password'], 'UNAUTHENTICATED')
+            if self.cfg.get('metadata_key_path'):
+                previous = tx.get('login-result', login_id)
+                if previous:
+                    live = tx.get('session', previous['session'])
+                    need(live and not live['revoked'] and live['expires'] > now(), 'UNAUTHENTICATED')
+                    if hasattr(tx, 'session_live'):
+                        need(tx.session_live(live), 'UNAUTHENTICATED')
+                    return ident.Session.FromString(self.auth.decrypt(previous['response']))
+                active = [s for s in tx.all('session') if not s['revoked'] and s['expires'] > now()]
+                need(len(active) < 128 and sum(s['user'] == user['id'] for s in active) < 8, 'LIMIT_EXCEEDED')
             tx.put('session', session)
+            if self.cfg.get('metadata_key_path'):
+                result = ident.Session(session_id=session['session_id'], user_id=user['id'], token=token,
+                    expires_at_unix_ms=session['expires'], service_epoch=self.system['epoch'])
+                tx.put('login-result', dict(id=login_id, session=session['id'], expires=session['expires'],
+                    response=self.auth.encrypt(result.SerializeToString())))
         return ident.Session(session_id=session['session_id'], user_id=user['id'], token=token,
                              expires_at_unix_ms=session['expires'], service_epoch=self.system['epoch'])
 
@@ -402,9 +434,22 @@ class Monolith:
                             # for a 300s caller deadline). Allow rounding plus clock
                             # conversion jitter, without accepting unbounded calls.
                             need(remaining is not None and remaining <= (302 if name == 'SealManifest' else
+                                32 if name == 'Login' and self.cfg.get('metadata_backend') == 'etcd' else
                                 self.cfg.get('control_rpc_timeout_seconds', 5)+2))
-                            return self.unary(name, response_type, req, context)
+                            response = self.unary(name, response_type, req, context)
+                            if self.cfg.get('metadata_key_path'):
+                                actor = response.user_id if name == 'Login' else req.context.user_id
+                                correlation = req.request_id if name == 'Login' else req.context.request_id
+                                resource = getattr(req, 'handle_id', '') or getattr(req, 'node_id', '') or getattr(req, 'user_id', '')
+                                event('audit', actor=actor, action=name, resource=resource,
+                                      request_id=correlation, code='OK')
+                            return response
                         except Fault as exc:
+                            if self.cfg.get('metadata_key_path'):
+                                # Claimed identifiers are not proof of authenticated identity.
+                                # Do not copy a username, credential or raw resource path.
+                                event('audit_rejected', actor='unverified', action=name,
+                                      resource='', code=exc.reason)
                             import traceback
                             location = traceback.extract_tb(exc.__traceback__)[-2]
                             event('rpc_rejected', code=f'{name}:{exc.reason}:{Path(location.filename).name}:{location.lineno}')

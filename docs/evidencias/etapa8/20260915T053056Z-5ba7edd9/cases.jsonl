@@ -1,0 +1,3 @@
+{"test": "tests/test_stage8_authorization.py::test_groups_shared_revocation_password_and_prepared_commit", "phase": "setup", "outcome": "passed", "duration_seconds": 0.014091599998209858, "time": "2026-09-15T05:31:00.498924+00:00"}
+{"test": "tests/test_stage8_authorization.py::test_groups_shared_revocation_password_and_prepared_commit", "phase": "call", "outcome": "failed", "duration_seconds": 105.94032570000127, "time": "2026-09-15T05:32:46.592139+00:00"}
+{"test": "tests/test_stage8_authorization.py::test_groups_shared_revocation_password_and_prepared_commit", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.00047110000014072284, "time": "2026-09-15T05:32:46.638965+00:00"}

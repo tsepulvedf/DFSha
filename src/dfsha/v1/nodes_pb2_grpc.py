@@ -414,6 +414,11 @@ class StorageAdministrationServiceStub:
                 request_serializer=dfsha_dot_v1_dot_nodes__pb2.DeleteRetiredBlockRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.FromString,
                 _registered_method=True)
+        self.GetKeyStatus = channel.unary_unary(
+                '/dfsha.v1.StorageAdministrationService/GetKeyStatus',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.KeyStatusRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_nodes__pb2.KeyStatus.FromString,
+                _registered_method=True)
 
 
 class StorageAdministrationServiceServicer:
@@ -443,6 +448,12 @@ class StorageAdministrationServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetKeyStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_StorageAdministrationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -465,6 +476,11 @@ def add_StorageAdministrationServiceServicer_to_server(servicer, server):
                     servicer.DeleteRetiredBlock,
                     request_deserializer=dfsha_dot_v1_dot_nodes__pb2.DeleteRetiredBlockRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_nodes__pb2.TaskStatus.SerializeToString,
+            ),
+            'GetKeyStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetKeyStatus,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.KeyStatusRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_nodes__pb2.KeyStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -585,6 +601,33 @@ class StorageAdministrationService:
             metadata,
             _registered_method=True)
 
+    @staticmethod
+    def GetKeyStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.StorageAdministrationService/GetKeyStatus',
+            dfsha_dot_v1_dot_nodes__pb2.KeyStatusRequest.SerializeToString,
+            dfsha_dot_v1_dot_nodes__pb2.KeyStatus.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
 
 class ClusterAdministrationServiceStub:
     """API administrativa de control por TLS + sesión admin, nunca identidad de nodo.
@@ -619,6 +662,11 @@ class ClusterAdministrationServiceStub:
         self.PromoteProtection = channel.unary_unary(
                 '/dfsha.v1.ClusterAdministrationService/PromoteProtection',
                 request_serializer=dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
+                _registered_method=True)
+        self.SetNodeAuthorization = channel.unary_unary(
+                '/dfsha.v1.ClusterAdministrationService/SetNodeAuthorization',
+                request_serializer=dfsha_dot_v1_dot_nodes__pb2.SetNodeAuthorizationRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
                 _registered_method=True)
 
@@ -657,6 +705,12 @@ class ClusterAdministrationServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetNodeAuthorization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ClusterAdministrationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -683,6 +737,11 @@ def add_ClusterAdministrationServiceServicer_to_server(servicer, server):
             'PromoteProtection': grpc.unary_unary_rpc_method_handler(
                     servicer.PromoteProtection,
                     request_deserializer=dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_common__pb2.MutationResult.SerializeToString,
+            ),
+            'SetNodeAuthorization': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetNodeAuthorization,
+                    request_deserializer=dfsha_dot_v1_dot_nodes__pb2.SetNodeAuthorizationRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_common__pb2.MutationResult.SerializeToString,
             ),
     }
@@ -821,6 +880,33 @@ class ClusterAdministrationService:
             target,
             '/dfsha.v1.ClusterAdministrationService/PromoteProtection',
             dfsha_dot_v1_dot_nodes__pb2.PromoteProtectionRequest.SerializeToString,
+            dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetNodeAuthorization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.ClusterAdministrationService/SetNodeAuthorization',
+            dfsha_dot_v1_dot_nodes__pb2.SetNodeAuthorizationRequest.SerializeToString,
             dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
             options,
             channel_credentials,

@@ -47,6 +47,27 @@ class ClusterQueries(Queries):
 
 
 class ClusterCommands(Commands):
+    def SetNodeAuthorization(self, tx, user, session, req):
+        need(user['admin'], 'PERMISSION_DENIED')
+        need(req.node_id in self.app.allowed, 'NOT_FOUND')
+        previous = tx.get('node-policy', req.node_id) or dict(id=req.node_id, revision=0, enabled=True)
+        need(previous['revision'] == req.expected_revision, 'VERSION_CONFLICT')
+        previous.update(enabled=req.enabled, revision=previous['revision']+1)
+        tx.put('node-policy', previous)
+        node = tx.get('datanode', req.node_id)
+        if node:
+            node['authorization_disabled'] = not req.enabled
+            if req.enabled:
+                node['reconciled'] = False
+            tx.put('datanode', node)
+        if not req.enabled:
+            for task in tx.all('task'):
+                if req.node_id in (task['src'], task['dest']) and task['status']['state'] in ('ACCEPTED', 'RUNNING'):
+                    task.update(expires=0, reserved=0)
+                    task['status']['state'] = 'FAILED'
+                    tx.put('task', task)
+        return self.result(req, previous['revision'])
+
     def CopyBlock(self, tx, user, session, req):
         need(user['admin'], 'PERMISSION_DENIED')
         block = tx.get('block', uuid(req.block.block_version_id))
@@ -116,7 +137,7 @@ class DistributedControl(Monolith):
                     x['block'] == block.block_version_id for x in tx.all('location')), 'DATA_UNAVAILABLE')
 
     def state(self, node):
-        if not node or now() - node['seen'] > self.cfg.get('unavailable_ms', 6000):
+        if not node or node.get('authorization_disabled') or now() - node['seen'] > self.cfg.get('unavailable_ms', 6000):
             return 'UNAVAILABLE'
         if not node['reconciled']:
             return 'STARTING'
@@ -183,6 +204,12 @@ class DistributedControl(Monolith):
         need(node_id in self.allowed and node_rpc.peer(context) == self.allowed[node_id]['identity'] and
              request.context.user_id == node_id and request.context.service_epoch == self.system['epoch'], 'PERMISSION_DENIED')
         uuid(request.context.request_id)
+        with self.store.transaction() as tx:
+            self.require_node(tx, node_id)
+
+    def require_node(self, tx, node_id):
+        policy = tx.get('node-policy', node_id)
+        need(node_id in self.allowed and (policy is None or policy['enabled']), 'PERMISSION_DENIED')
 
     def lease(self, node):
         return n.NodeLease(node_id=node['id'], boot_generation=int(node['location']['boot_generation']),
@@ -197,6 +224,7 @@ class DistributedControl(Monolith):
              req.node.boot_generation > 0, 'PERMISSION_DENIED')
         with self.store.transaction(True) as tx:
             old = tx.get('datanode', req.node.node_id)
+            self.require_node(tx, req.node.node_id)
             if old:
                 need(req.node.boot_generation >= int(old['location']['boot_generation']), 'VERSION_CONFLICT')
                 if req.node.boot_generation == int(old['location']['boot_generation']):
@@ -263,6 +291,8 @@ class DistributedControl(Monolith):
         return c.MutationResult(request_id=req.context.request_id, revision=req.page_index + 1)
 
     def AuthorizeBlock(self, req, ctx):
+        with self.store.transaction() as tx:
+            self.require_node(tx, req.node_id)
         if req.action == c.PATCH_DATA:
             from dfsha.control.patch_authority import authorize_patch
             return authorize_patch(self, req, ctx)
@@ -314,6 +344,7 @@ class DistributedControl(Monolith):
         self.node_peer(ctx, req, receipt.node_id)
         with self.store.transaction(True) as tx:
             node = tx.get('datanode', receipt.node_id)
+            self.require_node(tx, receipt.node_id)
             need(node and receipt.boot_generation == int(node['location']['boot_generation']), 'VERSION_CONFLICT')
             user = tx.get('user', req.client_context.user_id)
             need(user and not user['disabled'] and req.client_context.service_epoch == self.system['epoch'], 'UNAUTHENTICATED')
@@ -353,6 +384,9 @@ class DistributedControl(Monolith):
     def AuthorizeInternal(self, req, ctx):
         identity = node_rpc.peer(ctx)
         with self.store.transaction() as tx:
+            self.require_node(tx, req.destination_node_id)
+            if req.source_node_id:
+                self.require_node(tx, req.source_node_id)
             task = tx.get('task', req.task_id)
             need(task and task['expires'] > now() and task['status']['state'] in ('ACCEPTED', 'RUNNING') and
                  asdict(req.block) == task['block'] and hmac.compare_digest(req.task_capability, self.task_capability(task)) and
@@ -369,6 +403,7 @@ class DistributedControl(Monolith):
         self.node_peer(ctx, req, req.node_id)
         with self.store.transaction(True) as tx:
             task = tx.get('task', req.task.task_id)
+            self.require_node(tx, req.node_id)
             node = tx.get('datanode', req.node_id)
             need(task and task['dest'] == req.node_id and node and int(node['location']['boot_generation']) == req.boot_generation, 'PERMISSION_DENIED')
             if hasattr(self, 'validate_task_report'):

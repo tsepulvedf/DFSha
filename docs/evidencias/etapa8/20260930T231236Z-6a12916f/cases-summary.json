@@ -1,0 +1,201 @@
+[
+  {
+    "case": "tests.test_stage8_authorization::test_groups_shared_revocation_password_and_prepared_commit",
+    "seconds": "17.625",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "revocation",
+        "value": "group membership; W2-before-commit; password; disable/enable; across CNs"
+      },
+      {
+        "name": "session_expiry",
+        "value": "real time after shortened authoritative fixture deadline; rejected through another CN"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_block_authorization::test_scoped_capabilities_write_only_and_revoked_lease",
+    "seconds": "18.609",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "write_only_delta_bytes",
+        "value": "3"
+      },
+      {
+        "name": "content_sha256",
+        "value": "71efb781547d24cb83b5645460f39a9c8105e667caf05f5893e4b0298c8333d7"
+      },
+      {
+        "name": "rejections",
+        "value": "tampered capability; wider action than grant; wrong session; absent session; wrong destination; foreign result; revoked lease"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_bootstrap::test_protected_bootstrap_is_idempotent_without_reset",
+    "seconds": "0.088",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_certificates::test_expired_server_certificate_is_rejected",
+    "seconds": "0.417",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_certificates::test_rolling_peer_and_datanode_certificates_then_quorum_loss",
+    "seconds": "27.656",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "new_peer_serials_verified_by_tls",
+        "value": "[475307873776673421564764905226404239904894518973, 251236806360370630187722521450804298463234078970, 359020239363138682092451916135147806353432449221]"
+      },
+      {
+        "name": "quorum",
+        "value": "two members down: no read authorization or namespace publication; restored majority preserves snapshot"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_client_state::test_session_cache_requires_external_key_and_rejects_tampering",
+    "seconds": "0.012",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_client_state::test_ordinary_cli_ha_uses_encrypted_session_and_logout",
+    "seconds": "12.064",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_etcd_security::test_protected_etcd_rbac_peer_roles_and_auxiliary_scope",
+    "seconds": "9.789",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "auxiliary_endpoints",
+        "value": "loopback+mTLS; /metrics accessible to trusted CA identities, not KV RBAC"
+      },
+      {
+        "name": "peer_roles",
+        "value": "DataNode certificate rejected by peer CN allowlist; cluster still has three members"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_keys::test_old_key_reads_new_active_key_and_ciphertext_copy",
+    "seconds": "0.028",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_keys::test_backup_requires_key_and_recovers_independent_environment",
+    "seconds": "0.041",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_lifecycle::test_rotation_snapshots_and_revoked_node_existing_channel",
+    "seconds": "36.130",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "rotation",
+        "value": "loaded on 3 processes before activation; old snapshot and new writes readable"
+      },
+      {
+        "name": "node_revocation",
+        "value": "same established mTLS channel rejected; eligibility removed"
+      },
+      {
+        "name": "new_sha256",
+        "value": "2b5c54400fdeb935c9c3b29147dfe928d7409670a01bd07bdb054a6232bac1f2"
+      },
+      {
+        "name": "rotated_recovery",
+        "value": "new active keys and renewed control certificate restored without the source"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_limits::test_argon2_bounded_concurrency_and_effective_parameters",
+    "seconds": "0.153",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "argon2_cost",
+        "value": "{\"simultaneous\": 2, \"seconds\": 0.024729801000006546, \"memory\": {\"peak_resident_bytes\": 147513344}, \"memory_kib_per_hash\": 19456, \"time_cost\": 2, \"parallelism\": 1}"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_limits::test_audit_rejects_secrets_and_rotates",
+    "seconds": "0.007",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_process_log::test_native_output_is_drained_and_retention_bounded",
+    "seconds": "0.034",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_recovery::test_protected_ha_backup_and_restore",
+    "seconds": "19.322",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "sha256",
+        "value": "ee16dd9f1aa625e558699726095bdd95ae7af056a341e975361e09df7338fe5f"
+      },
+      {
+        "name": "backup",
+        "value": "{'status': 'EJECUTADO', 'offline': True, 'encrypted': True, 'files': 114, 'manifest_sha256': '9fe90fb1357870551772ae13eca4ef4683955375692d00c72b5ae71211407371', 'archive_key_id': 'e33e7f80db6bbe9feaa08c84ae1ecbd42c8664c88184d91fc494493eb7bf13de'}"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_retention::test_offline_retention_keeps_live_snapshot_and_replay_results",
+    "seconds": "16.276",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "retention",
+        "value": "{'scanned': 165, 'retained': 93, 'deleted': 72, 'offline': True, 'root_changed': False, 'replay_records_deleted': False, 'mvcc_compacted': False}"
+      }
+    ]
+  },
+  {
+    "case": "tests.test_stage8_storage::test_metadata_cipher_rejects_tamper_wrong_key_and_identity",
+    "seconds": "0.001",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_storage::test_sqlite_encrypted_bodies_and_names_survive_restart",
+    "seconds": "0.033",
+    "result": "APROBADO",
+    "properties": []
+  },
+  {
+    "case": "tests.test_stage8_storage::test_protected_metadata_real_ha",
+    "seconds": "12.503",
+    "result": "APROBADO",
+    "properties": [
+      {
+        "name": "encrypted_pages_verified",
+        "value": "176"
+      },
+      {
+        "name": "topology",
+        "value": "3CN/3etcd/3DN; real TLS and shared encrypted authority"
+      }
+    ]
+  }
+]

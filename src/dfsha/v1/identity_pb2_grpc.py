@@ -223,6 +223,11 @@ class IdentityServiceStub:
                 request_serializer=dfsha_dot_v1_dot_identity__pb2.SetAclRequest.SerializeToString,
                 response_deserializer=dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
                 _registered_method=True)
+        self.ChangePassword = channel.unary_unary(
+                '/dfsha.v1.IdentityService/ChangePassword',
+                request_serializer=dfsha_dot_v1_dot_identity__pb2.ChangePasswordRequest.SerializeToString,
+                response_deserializer=dfsha_dot_v1_dot_identity__pb2.User.FromString,
+                _registered_method=True)
 
 
 class IdentityServiceServicer:
@@ -264,6 +269,12 @@ class IdentityServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ChangePassword(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_IdentityServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -296,6 +307,11 @@ def add_IdentityServiceServicer_to_server(servicer, server):
                     servicer.SetAcl,
                     request_deserializer=dfsha_dot_v1_dot_identity__pb2.SetAclRequest.FromString,
                     response_serializer=dfsha_dot_v1_dot_common__pb2.MutationResult.SerializeToString,
+            ),
+            'ChangePassword': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangePassword,
+                    request_deserializer=dfsha_dot_v1_dot_identity__pb2.ChangePasswordRequest.FromString,
+                    response_serializer=dfsha_dot_v1_dot_identity__pb2.User.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -460,6 +476,33 @@ class IdentityService:
             '/dfsha.v1.IdentityService/SetAcl',
             dfsha_dot_v1_dot_identity__pb2.SetAclRequest.SerializeToString,
             dfsha_dot_v1_dot_common__pb2.MutationResult.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangePassword(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/dfsha.v1.IdentityService/ChangePassword',
+            dfsha_dot_v1_dot_identity__pb2.ChangePasswordRequest.SerializeToString,
+            dfsha_dot_v1_dot_identity__pb2.User.FromString,
             options,
             channel_credentials,
             insecure,

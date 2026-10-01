@@ -1,0 +1,419 @@
+[
+  {
+    "name": {
+      "classname": "tests.test_stage7_authorization",
+      "name": "test_shared_user_revocation_and_open_truncate_gc",
+      "file": "tests\\test_stage7_authorization.py",
+      "line": "12",
+      "time": "124.114"
+    },
+    "properties": {
+      "reader_snapshot_bytes": "24000",
+      "gc": "concurrent open/truncate across CNs; rm preserves valid snapshot; retirement after close",
+      "authorization_scenario": "CN0 creates/revokes; ordinary session on CN1; CN2 checks current rights"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_cross_control_session_handle_and_data",
+      "file": "tests\\test_stage7_control.py",
+      "line": "14",
+      "time": "155.126"
+    },
+    "properties": {
+      "members": "[{'member': 14803988944964173968, 'cluster': 11481101303185185525, 'leader': 14803988944964173968, 'revision': 505, 'members': [8307911210552842802, 11681977808351726905, 14803988944964173968], 'endpoint': '127.0.0.1:59672', 'pid': 26248}, {'member': 8307911210552842802, 'cluster': 11481101303185185525, 'leader': 14803988944964173968, 'revision': 505, 'members': [8307911210552842802, 11681977808351726905, 14803988944964173968], 'endpoint': '127.0.0.1:59673', 'pid': 37084}, {'member': 11681977808351726905, 'cluster': 11481101303185185525, 'leader': 14803988944964173968, 'revision': 505, 'members': [8307911210552842802, 11681977808351726905, 14803988944964173968], 'endpoint': '127.0.0.1:59674', 'pid': 35868}]",
+      "migration": "{'status': 'EJECUTADO', 'records': 7, 'original_sha256': 'd833b14f5c352c5ce76baa3174b9d041a45eb4740e4ba93612a24c95a5978531', 'imported_sha256': 'ab3b73888ca600369f3b638a5219e1f6fd2ef83cfd49bbd44f32a25f406d961a', 'epoch': '6f33b771-72fb-4796-873f-443ca540a879', 'retained_snapshots': 0, 'sqlite_disabled': True, 'backup': 'F:\\\\DFSha\\\\.runtime\\\\tests\\\\d2d64ee1-8c27-42be-b876-067f4960f47e\\\\ha7-1ddbd4b5-8ec4-4e00-945a-112a7ae79268\\\\migration\\\\sqlite-backup.sqlite3', 'root': 'b8c96d6bd80d19e4ba8bf7f9b19436acb6ffc091d2891c7e69a72a5d833941c8'}"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_cross_control_parallel_publication_and_lost_reply",
+      "file": "tests\\test_stage7_control.py",
+      "line": "39",
+      "time": "236.738"
+    },
+    "properties": {
+      "parallel": "two controls; barrier before PatchBlock; W2 on both before commits; final A1 B1",
+      "lost_response": "commit on control 0; result and identical replay on control 2"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_e6_migration_and_full_backup_restore",
+      "file": "tests\\test_stage7_control.py",
+      "line": "122",
+      "time": "105.689"
+    },
+    "properties": {
+      "backup": "{'status': 'EJECUTADO', 'files': 103, 'snapshot': {'hash': 76372273, 'revision': 138, 'totalKey': 230, 'totalSize': 606208, 'version': '3.6.0'}, 'offline': True, 'block_objects': 6}",
+      "migration": "{'status': 'EJECUTADO', 'records': 55, 'original_sha256': '933aa894c1ba4d3ef6726d3ab2395c6f7def8626ae987f10406bdd1a73d7ef73', 'imported_sha256': 'f2ceab24783091195b292786cc9029a2ee9a05f65ef9de3f306de189eefd2ecb', 'epoch': 'e4642c35-62ed-474e-8ebf-bc585bb9728e', 'retained_snapshots': 1, 'sqlite_disabled': True, 'backup': 'F:\\\\DFSha\\\\.runtime\\\\tests\\\\d2d64ee1-8c27-42be-b876-067f4960f47e\\\\migration7-6bbd01f1-7773-46bc-a6d7-e4f48f69a786\\\\migration\\\\sqlite-backup.sqlite3', 'root': '0d62d35f40b42daa4e60120b7537d51999e725c8699cd4f9e6f0e49636d7d4f1'}",
+      "sha256": "ef383a6fa2d1eb530d473bfdbb0d67884a2b5fe9bbd7241e1256496b665b3697"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_control_failover_network_partition_and_quorum",
+      "file": "tests\\test_stage7_control.py",
+      "line": "178",
+      "time": "128.646"
+    },
+    "properties": {
+      "partition_recovery_seconds": "2.7809999999990396",
+      "quorum_error_seconds": "5.110000000000582"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_expired_writer_with_two_copies_cannot_publish",
+      "file": "tests\\test_stage7_control.py",
+      "line": "248",
+      "time": "143.701"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_cross_control_capacity_reservations_are_atomic",
+      "file": "tests\\test_stage7_control.py",
+      "line": "288",
+      "time": "46.219"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_restart_entire_lab_preserves_epoch_and_unexpired_handle",
+      "file": "tests\\test_stage7_control.py",
+      "line": "325",
+      "time": "89.941"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_control",
+      "name": "test_maintenance_takeover_rejects_old_callback_and_preserves_snapshot",
+      "file": "tests\\test_stage7_control.py",
+      "line": "351",
+      "time": "100.892"
+    },
+    "properties": {
+      "maintenance_generations": "(1, 2)"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_paged_atomic_metadata_and_quorum",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "22",
+      "time": "14.357"
+    },
+    "properties": {
+      "membership": "[{'member': 8439956342254245743, 'cluster': 515745083968545578, 'leader': 8439956342254245743, 'revision': 8, 'members': [1814077853491030091, 8439956342254245743, 15210129841622717110], 'endpoint': '127.0.0.1:61593', 'pid': 26240}, {'member': 1814077853491030091, 'cluster': 515745083968545578, 'leader': 8439956342254245743, 'revision': 8, 'members': [1814077853491030091, 8439956342254245743, 15210129841622717110], 'endpoint': '127.0.0.1:61594', 'pid': 10040}, {'member': 15210129841622717110, 'cluster': 515745083968545578, 'leader': 8439956342254245743, 'revision': 8, 'members': [1814077853491030091, 8439956342254245743, 15210129841622717110], 'endpoint': '127.0.0.1:61595', 'pid': 38596}]"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_shared_lease_expiry_and_publication_fence",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "61",
+      "time": "12.537"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_watch_disconnect_and_compaction_rebuild",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "88",
+      "time": "7.984"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_partition_one_authority_client_without_stopping_etcd",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "115",
+      "time": "6.164"
+    },
+    "properties": {
+      "partition_error_seconds": "0.014999999999417923",
+      "transport_bytes": "[(5017, 5637), (3773, 5987), (0, 0)]"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_etcd_snapshot_restore_new_cluster",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "154",
+      "time": "11.939"
+    },
+    "properties": {
+      "snapshot_status": "{'hash': 1808599072, 'revision': 4, 'totalKey': 5, 'totalSize': 28672, 'version': '3.6.0'}",
+      "restored_membership": "[{'member': 821457409532489076, 'cluster': 13180252553138003390, 'leader': 821457409532489076, 'revision': 1000000004, 'members': [821457409532489076, 7528814044452409689, 7965673623401527202], 'endpoint': '127.0.0.1:51520', 'pid': 29084}, {'member': 7965673623401527202, 'cluster': 13180252553138003390, 'leader': 821457409532489076, 'revision': 1000000004, 'members': [821457409532489076, 7528814044452409689, 7965673623401527202], 'endpoint': '127.0.0.1:51521', 'pid': 17884}, {'member': 7528814044452409689, 'cluster': 13180252553138003390, 'leader': 821457409532489076, 'revision': 1000000004, 'members': [821457409532489076, 7528814044452409689, 7965673623401527202], 'endpoint': '127.0.0.1:51522', 'pid': 38356}]"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage7_metadata",
+      "name": "test_etcd_application_identity_is_prefix_restricted",
+      "file": "tests\\test_stage7_metadata.py",
+      "line": "183",
+      "time": "5.573"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_authorization",
+      "name": "test_groups_shared_revocation_password_and_prepared_commit",
+      "file": "tests\\test_stage8_authorization.py",
+      "line": "19",
+      "time": "154.293"
+    },
+    "properties": {
+      "revocation": "group membership; W2-before-commit; password; disable/enable; across CNs",
+      "session_expiry": "real time after shortened authoritative fixture deadline; rejected through another CN"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_block_authorization",
+      "name": "test_scoped_capabilities_write_only_and_revoked_lease",
+      "file": "tests\\test_stage8_block_authorization.py",
+      "line": "22",
+      "time": "156.946"
+    },
+    "properties": {
+      "write_only_delta_bytes": "3",
+      "content_sha256": "71efb781547d24cb83b5645460f39a9c8105e667caf05f5893e4b0298c8333d7",
+      "rejections": "tampered capability; wider action than grant; wrong session; absent session; wrong destination; foreign result; revoked lease"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_bootstrap",
+      "name": "test_protected_bootstrap_is_idempotent_without_reset",
+      "file": "tests\\test_stage8_bootstrap.py",
+      "line": "10",
+      "time": "0.252"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_certificates",
+      "name": "test_expired_server_certificate_is_rejected",
+      "file": "tests\\test_stage8_certificates.py",
+      "line": "23",
+      "time": "0.441"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_certificates",
+      "name": "test_rolling_peer_and_datanode_certificates_then_quorum_loss",
+      "file": "tests\\test_stage8_certificates.py",
+      "line": "52",
+      "time": "113.879"
+    },
+    "properties": {
+      "new_peer_serials_verified_by_tls": "[309659777757202402613799902905175258471796716754, 258666607580947188461756970485434805288742521811, 620639271376131785122872651209586846923900308084]",
+      "quorum": "two members down: no read authorization or namespace publication; restored majority preserves snapshot"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_client_state",
+      "name": "test_session_cache_requires_external_key_and_rejects_tampering",
+      "file": "tests\\test_stage8_client_state.py",
+      "line": "13",
+      "time": "0.165"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_client_state",
+      "name": "test_ordinary_cli_ha_uses_encrypted_session_and_logout",
+      "file": "tests\\test_stage8_client_state.py",
+      "line": "40",
+      "time": "49.846"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_etcd_security",
+      "name": "test_protected_etcd_rbac_peer_roles_and_auxiliary_scope",
+      "file": "tests\\test_stage8_etcd_security.py",
+      "line": "27",
+      "time": "33.685"
+    },
+    "properties": {
+      "auxiliary_endpoints": "loopback+mTLS; /metrics accessible to trusted CA identities, not KV RBAC",
+      "peer_roles": "DataNode certificate rejected by peer CN allowlist; cluster still has three members"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_gate_recovery",
+      "name": "test_failed_cleanup_discards_cached_gate_lease",
+      "file": "tests\\test_stage8_gate_recovery.py",
+      "line": "12",
+      "time": "9.263"
+    },
+    "properties": {
+      "recovery": "real TCP partition during cleanup; abandoned lease not renewed; publication resumes after etcd expiry"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_keys",
+      "name": "test_old_key_reads_new_active_key_and_ciphertext_copy",
+      "file": "tests\\test_stage8_keys.py",
+      "line": "12",
+      "time": "0.032"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_keys",
+      "name": "test_backup_requires_key_and_recovers_independent_environment",
+      "file": "tests\\test_stage8_keys.py",
+      "line": "35",
+      "time": "0.279"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_launcher",
+      "name": "test_private_bootstrap_and_resume_after_admin_password_change",
+      "file": "tests\\test_stage8_launcher.py",
+      "line": "16",
+      "time": "58.809"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_lifecycle",
+      "name": "test_rotation_snapshots_and_revoked_node_existing_channel",
+      "file": "tests\\test_stage8_lifecycle.py",
+      "line": "20",
+      "time": "241.194"
+    },
+    "properties": {
+      "rotation": "loaded on 3 processes before activation; old snapshot and new writes readable",
+      "node_revocation": "same established mTLS channel rejected; eligibility removed",
+      "new_sha256": "2b5c54400fdeb935c9c3b29147dfe928d7409670a01bd07bdb054a6232bac1f2",
+      "rotated_recovery": "new active keys and renewed control certificate restored without the source"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_limits",
+      "name": "test_argon2_bounded_concurrency_and_effective_parameters",
+      "file": "tests\\test_stage8_limits.py",
+      "line": "15",
+      "time": "0.164"
+    },
+    "properties": {
+      "argon2_cost": "{\"simultaneous\": 2, \"seconds\": 0.0236241999991762, \"memory\": {\"peak_resident_bytes\": 118317056, \"peak_commit_bytes\": 93360128}, \"memory_kib_per_hash\": 19456, \"time_cost\": 2, \"parallelism\": 1}"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_limits",
+      "name": "test_audit_rejects_secrets_and_rotates",
+      "file": "tests\\test_stage8_limits.py",
+      "line": "42",
+      "time": "0.095"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_process_log",
+      "name": "test_native_output_is_drained_and_retention_bounded",
+      "file": "tests\\test_stage8_process_log.py",
+      "line": "7",
+      "time": "0.199"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_recovery",
+      "name": "test_protected_ha_backup_and_restore",
+      "file": "tests\\test_stage8_recovery.py",
+      "line": "10",
+      "time": "122.712"
+    },
+    "properties": {
+      "sha256": "ee16dd9f1aa625e558699726095bdd95ae7af056a341e975361e09df7338fe5f",
+      "backup": "{'status': 'EJECUTADO', 'offline': True, 'encrypted': True, 'files': 114, 'manifest_sha256': '036f16357f4101bb2368c37f8609ce41a8584e504b5654563d88ff3f49b78679', 'archive_key_id': '035de97e141e6e6d01269f79a9776f90bc56a3bd372a711bffe67caa0d65da01'}"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_retention",
+      "name": "test_offline_retention_keeps_live_snapshot_and_replay_results",
+      "file": "tests\\test_stage8_retention.py",
+      "line": "12",
+      "time": "99.685"
+    },
+    "properties": {
+      "retention": "{'scanned': 220, 'retained': 95, 'deleted': 125, 'offline': True, 'root_changed': False, 'replay_records_deleted': False, 'mvcc_compacted': False}"
+    }
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_storage",
+      "name": "test_metadata_cipher_rejects_tamper_wrong_key_and_identity",
+      "file": "tests\\test_stage8_storage.py",
+      "line": "12",
+      "time": "0.001"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_storage",
+      "name": "test_sqlite_encrypted_bodies_and_names_survive_restart",
+      "file": "tests\\test_stage8_storage.py",
+      "line": "27",
+      "time": "0.037"
+    },
+    "properties": {}
+  },
+  {
+    "name": {
+      "classname": "tests.test_stage8_storage",
+      "name": "test_protected_metadata_real_ha",
+      "file": "tests\\test_stage8_storage.py",
+      "line": "56",
+      "time": "62.776"
+    },
+    "properties": {
+      "encrypted_pages_verified": "230",
+      "topology": "3CN/3etcd/3DN; real TLS and shared encrypted authority"
+    }
+  }
+]

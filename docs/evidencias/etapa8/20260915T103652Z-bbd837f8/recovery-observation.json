@@ -1,0 +1,90 @@
+{
+  "run_id": "20260915T103652Z-bbd837f8",
+  "observation_time": "2026-09-15T19:00:20.566758+00:00",
+  "status": "INTERRUMPIDO_DURANTE_ARRANQUE_MEDICION",
+  "measurement_exit_code": null,
+  "pytest_exit_code": 0,
+  "test_cases": [
+    {
+      "name": "test_groups_shared_revocation_password_and_prepared_commit",
+      "seconds": "161.037",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_protected_etcd_rbac_peer_roles_and_auxiliary_scope",
+      "seconds": "32.357",
+      "failed": false,
+      "properties": {
+        "auxiliary_endpoints": "loopback+mTLS; /metrics accessible to trusted CA identities, not KV RBAC",
+        "peer_roles": "DataNode certificate rejected by peer CN allowlist; cluster still has three members"
+      }
+    },
+    {
+      "name": "test_old_key_reads_new_active_key_and_ciphertext_copy",
+      "seconds": "0.029",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_backup_requires_key_and_recovers_independent_environment",
+      "seconds": "0.289",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_rotation_snapshots_and_revoked_node_existing_channel",
+      "seconds": "205.895",
+      "failed": false,
+      "properties": {
+        "rotation": "loaded on 3 processes before activation; old snapshot and new writes readable",
+        "node_revocation": "same established mTLS channel rejected; eligibility removed",
+        "new_sha256": "2b5c54400fdeb935c9c3b29147dfe928d7409670a01bd07bdb054a6232bac1f2"
+      }
+    },
+    {
+      "name": "test_argon2_bounded_concurrency_and_effective_parameters",
+      "seconds": "0.154",
+      "failed": false,
+      "properties": {
+        "argon2_cost": "{\"simultaneous\": 2, \"seconds\": 0.016095599999971455, \"memory\": {\"peak_resident_bytes\": 111013888, \"peak_commit_bytes\": 86056960}, \"memory_kib_per_hash\": 19456, \"time_cost\": 2, \"parallelism\": 1}"
+      }
+    },
+    {
+      "name": "test_audit_rejects_secrets_and_rotates",
+      "seconds": "0.074",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_protected_ha_backup_and_restore",
+      "seconds": "125.303",
+      "failed": false,
+      "properties": {
+        "sha256": "ee16dd9f1aa625e558699726095bdd95ae7af056a341e975361e09df7338fe5f"
+      }
+    },
+    {
+      "name": "test_metadata_cipher_rejects_tamper_wrong_key_and_identity",
+      "seconds": "0.001",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_sqlite_encrypted_bodies_and_names_survive_restart",
+      "seconds": "0.042",
+      "failed": false,
+      "properties": {}
+    },
+    {
+      "name": "test_protected_metadata_real_ha",
+      "seconds": "59.823",
+      "failed": false,
+      "properties": {
+        "encrypted_pages_verified": "221",
+        "topology": "3CN/3etcd/3DN; real TLS and shared encrypted authority"
+      }
+    }
+  ],
+  "observation": "Supervisor 31924 and measurement process 35832 absent; no remaining processes of that laboratory. Original reports and logs preserved."
+}

@@ -21,7 +21,8 @@ def counters(lab):
     result = {}
     for process in lab.nodes[:3]:
         cfg = tomllib.loads(process.config.read_text(encoding='utf-8'))['datanode']
-        with SQLiteMetadataStore(cfg['sqlite_path']).transaction() as tx:
+        from dfsha.common.protected import MetadataCipher
+        with SQLiteMetadataStore(cfg['sqlite_path'], MetadataCipher.configured(cfg)).transaction() as tx:
             values = tx.get('settings', 'traffic') or {}
         result[process.info['node_id']] = {key: value for key, value in values.items() if key != 'id'}
     return result

@@ -42,6 +42,14 @@ class EtcdMetadataStore:
         self.cache_guard = threading.Lock()
         self.root_key, self.gate_key = self.prefix+b'root', self.prefix+b'gate'
         self.rpc_timeout = cfg.get('etcd_timeout_seconds', 3)
+        from dfsha.common.protected import MetadataCipher
+        self.cipher = MetadataCipher.configured(cfg)
+
+    def page_address(self, payload):
+        return self.cipher.address(payload) if self.cipher else hashlib.sha256(payload).hexdigest()
+
+    def page_wire(self, digest, payload):
+        return self.cipher.seal(payload, self.prefix+b'pages/'+digest.encode()) if self.cipher else payload
 
     def rpc(self, method, request):
         try:
@@ -89,6 +97,7 @@ class EtcdMetadataStore:
                 self.keepalive(lease)
                 return lease
             except Fault as exc:
+                self.local.gate_lease = None
                 if exc.reason != 'LOCK_EXPIRED':
                     raise
         lease = self.grant(self.cfg.get('metadata_gate_lease_seconds', 10))
@@ -107,7 +116,7 @@ class EtcdMetadataStore:
 
     def page(self, payload):
         need(len(payload) <= PAGE_BYTES+1, 'LIMIT_EXCEEDED')
-        digest = hashlib.sha256(payload).hexdigest()
+        digest = self.page_address(payload)
         with self.cache_guard:
             cached = digest in self.cache
         if not cached:
@@ -116,7 +125,7 @@ class EtcdMetadataStore:
                 tx.pages[digest] = payload
                 need(sum(map(len, tx.pages.values())) <= 16*1048576, 'LIMIT_EXCEEDED')
             else:
-                self.rpc(self.kv.Put, pb.PutRequest(key=self.prefix+b'pages/'+digest.encode(), value=payload))
+                self.rpc(self.kv.Put, pb.PutRequest(key=self.prefix+b'pages/'+digest.encode(), value=self.page_wire(digest, payload)))
                 self.cache_put(digest, payload)
         return digest
 
@@ -125,7 +134,7 @@ class EtcdMetadataStore:
         def flush():
             if batch:
                 self.rpc(self.kv.Txn, pb.TxnRequest(success=[pb.RequestOp(request_put=pb.PutRequest(
-                    key=self.prefix+b'pages/'+digest.encode(), value=payload)) for digest, payload in batch]))
+                    key=self.prefix+b'pages/'+digest.encode(), value=self.page_wire(digest, payload))) for digest, payload in batch]))
                 for digest, payload in batch:
                     self.cache_put(digest, payload)
         for digest, payload in pages.items():
@@ -151,7 +160,9 @@ class EtcdMetadataStore:
             record = self.range(self.prefix+b'pages/'+digest.encode())
             need(record is not None, 'DATA_LOSS')
             payload = record.value
-            need(hashlib.sha256(payload).hexdigest() == digest, 'DATA_LOSS')
+            if self.cipher:
+                payload = self.cipher.open(payload, self.prefix+b'pages/'+digest.encode())
+            need(self.page_address(payload) == digest, 'DATA_LOSS')
             self.cache_put(digest, payload)
         if payload[:1] == b'L':
             return payload[1:]
@@ -242,6 +253,10 @@ class EtcdMetadataStore:
                 from dfsha.common.telemetry import event
                 event('metadata_timing', code=f'wait={acquired-started:.3f};work={max(0, prepared-acquired):.3f};publish={time.monotonic()-max(prepared, acquired):.3f};ok={released}')
             if lease and not released:
+                # A failed/uncertain cleanup can leave this lease attached to
+                # an abandoned gate. Never KeepAlive it on the next acquisition:
+                # repeated retries would otherwise prevent its real expiry.
+                self.local.gate_lease = None
                 try:
                     self.rpc(self.kv.Txn, pb.TxnRequest(compare=[compare(self.gate_key, owner)],
                         success=[pb.RequestOp(request_delete_range=pb.DeleteRangeRequest(key=self.gate_key))]))

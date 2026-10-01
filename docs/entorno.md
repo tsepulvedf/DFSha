@@ -1,4 +1,43 @@
-# DFSha — Entorno reproducible de etapas 2–7
+# DFSha — Entorno reproducible de etapas 2–8
+
+E8 verificada utiliza la misma Python 3.12 y toolchain fijada. El laboratorio
+protegido se selecciona con `HACluster(..., protected=True)` sobre una raíz nueva.
+No convierte bases anteriores ni requiere habilitar cifrado de toda una unidad.
+`scripts/verify_stage8.py` escribe resultados incrementales en
+`docs/evidencias/etapa8/<run_id>/` y logs privados en `.runtime/verification-e8/`.
+Los comandos de E8 y los límites están en [seguridad.md](seguridad.md).
+El cierre `20261001T034229Z-9d313040` aprobó 36 E7/E8 en Windows y repitió
+512 MiB protegidos; `20261001T034403Z-581a2df8` aprobó los mismos 36 en Linux,
+imagen `dfsha-e8-validation:closure`, contenedor `dfsha-e8-linux-closure-20260930`.
+[Comandos exactos y códigos observados](evidencias/etapa8/cierre.md).
+
+**Revisión E8, 2026-09-15:** el entorno cambió. `docker version` devuelve cliente
+y motor Linux 29.8.0, Docker Desktop 4.91.0 y kernel WSL2
+6.18.33.2-microsoft-standard-WSL2; `wsl --status` señala `docker-desktop`, versión 2.
+No hay otra distribución de usuario listada. Por tanto, el bloqueo histórico
+«WSL no instalado» que aparece abajo ya no describe el entorno actual. Hay
+contenedores preexistentes que este trabajo no modifica. Linux aprobó los 19 casos
+E8 en `20260916T002301Z-f5084da3`, dentro de un contenedor con paquete instalado,
+volumen nativo Linux, red externa deshabilitada y límite de 3 GiB/2 CPU.
+El primer intento falló únicamente la auditoría documental por documentos ausentes
+en la imagen; `deploy/Dockerfile.verify-e8` ya incorpora esos documentos.
+Windows conserva la medición protegida de 512 MiB. Ninguna de estas pruebas
+acredita hosts independientes. Los apartados de etapas anteriores son históricos.
+
+```powershell
+docker build --file deploy/Dockerfile.verify-e8 --tag dfsha-e8-validation:final .
+docker run --detach --name dfsha-e8-linux-final-20260930 --network none --cpus 2 --memory 3g --pids-limit 512 --mount type=volume,source=dfsha-e8-linux-runtime-20260930,target=/workspace/.runtime dfsha-e8-validation:final python scripts/verify_stage8.py
+docker logs dfsha-e8-linux-final-20260930
+docker inspect dfsha-e8-linux-final-20260930 --format '{{json .State}}'
+```
+
+Usar nombres nuevos en otra ejecución; no borrar volúmenes preexistentes. Copiar
+el directorio de evidencias del run mostrado por el verificador antes de retirar
+el contenedor. Su ExitCode solo es concluyente cuando State.Running es false.
+La imagen fija Python 3.12.10 por digest y reutiliza requirements.lock con hashes;
+no comparte venv Windows. Los datos etcd del contenedor residen en el volumen
+Linux, no en un montaje del filesystem Windows. Este es un ensayo local de
+compatibilidad, no un despliegue E9.
 
 E7 agrega el laboratorio `scripts/ha_runtime.py`, con tres procesos etcd 3.6.14
 del mismo clúster (membresía consultada), TLS en peers y clientes, y rol limitado

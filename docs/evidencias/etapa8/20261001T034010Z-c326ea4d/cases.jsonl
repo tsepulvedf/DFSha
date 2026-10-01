@@ -1,0 +1,6 @@
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "setup", "outcome": "passed", "duration_seconds": 0.0036817999971390236, "time": "2026-10-01T03:40:13.354286+00:00"}
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "call", "outcome": "passed", "duration_seconds": 9.684104700001626, "time": "2026-10-01T03:40:23.082093+00:00"}
+{"test": "tests/test_stage8_gate_recovery.py::test_failed_cleanup_discards_cached_gate_lease", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.0002967999971588142, "time": "2026-10-01T03:40:23.122535+00:00"}
+{"test": "tests/test_stage8_launcher.py::test_private_bootstrap_and_resume_after_admin_password_change", "phase": "setup", "outcome": "passed", "duration_seconds": 0.0002859999985957984, "time": "2026-10-01T03:40:23.201409+00:00"}
+{"test": "tests/test_stage8_launcher.py::test_private_bootstrap_and_resume_after_admin_password_change", "phase": "call", "outcome": "passed", "duration_seconds": 55.05398640000203, "time": "2026-10-01T03:41:18.273276+00:00"}
+{"test": "tests/test_stage8_launcher.py::test_private_bootstrap_and_resume_after_admin_password_change", "phase": "teardown", "outcome": "passed", "duration_seconds": 0.00022320000061881728, "time": "2026-10-01T03:41:18.293851+00:00"}

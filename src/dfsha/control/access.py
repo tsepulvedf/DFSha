@@ -103,6 +103,12 @@ class AccessCommands(ClusterCommands):
 
     def Open(self, tx, user, session, req):
         need(req.mode in READ_MODES + WRITE_MODES, 'UNSUPPORTED_MODE')
+        if self.app.cfg.get('metadata_key_path'):
+            # Quotas may conservatively count a lease until its declared deadline;
+            # they must not add hundreds of ownership guards to a publication.
+            active = [h for h in tx.all('handle') if not h['closed'] and
+                      h.get('control_epoch') == self.app.leases.epoch and h.get('deadline', 0) > self.app.leases.clock()]
+            need(len(active) < 512 and sum(h['user'] == user['id'] for h in active) < 32, 'LIMIT_EXCEEDED')
         creating = req.mode in (ctl.W, ctl.W_PLUS, ctl.X, ctl.X_PLUS)
         if creating:
             # Existing w requires traversal + file permissions; creation additionally needs parent wx.

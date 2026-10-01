@@ -22,6 +22,8 @@ from dfsha.v1.diagnostic_pb2_grpc import add_DiagnosticServiceServicer_to_server
 def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | None = None) -> None:
     configuration = read_config(config_path)
     cfg = configuration["server"]
+    if configuration.get('distributed', {}).get('metadata_key_path'):
+        configure(Path(cfg['sqlite_path']).parent/'audit'/'events.jsonl')
     app = None
     if configuration.get('monolith', {}).get('enabled'):
         from dfsha.control.monolith import Monolith

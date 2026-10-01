@@ -87,13 +87,23 @@ def test_cross_control_parallel_publication_and_lost_reply(run_dir, tmp_path, re
                 a.wait_durable(plan.operation.operation_id)
                 request = a.prepare(ctl.CommitWriteRequest(operation=plan.operation, handle_id=fresh.handle_id,
                     changes=changes, fences=plan.fences, expected_handle_revision=fresh.revision))
-                (lab.controls[0].directory/'faults'/'after_commit_drop_response').touch()
-                with pytest.raises(grpc.RpcError):
-                    a.files.CommitWrite(request, metadata=a.metadata, timeout=15)
+                dropped = lab.controls[0].directory/'faults'/'after_commit_drop_response'
+                dropped.touch()
                 alternate = lab.client(2, a.session)
                 try:
-                    status = alternate.operation(plan.operation.operation_id)
+                    for attempt in range(3):
+                        with pytest.raises(grpc.RpcError) as failure:
+                            a.files.CommitWrite(request, metadata=a.metadata, timeout=15)
+                        assert failure.value.code() in (grpc.StatusCode.UNAVAILABLE, grpc.StatusCode.DEADLINE_EXCEEDED)
+                        status = alternate.operation(plan.operation.operation_id)
+                        if status.state == c.COMMITTED:
+                            break
+                        # A bounded metadata-gate rejection is not the injected
+                        # lost reply. Query authority before retrying the exact
+                        # same request; never count PREPARING as committed.
+                        assert status.state == c.PREPARING and dropped.exists()
                     assert status.state == c.COMMITTED
+                    assert not dropped.exists()
                     replay = alternate.call(alternate.files.CommitWrite, request)
                     assert replay == status.result
                     fresh.snapshot.CopyFrom(replay.snapshot)

@@ -67,3 +67,25 @@ def test_junction_outside_block_root_is_denied(tmp_path):
     finally:
         # Remove only the junction, never its target or a recursive tree.
         junction.rmdir()
+
+
+@pytest.mark.skipif(os.name != 'nt', reason='Windows junction security check')
+def test_collection_does_not_follow_junction(tmp_path):
+    import _winapi
+    from uuid import uuid4
+    from dfsha.datanode.blocks import EncryptedBlockStore
+    store = EncryptedBlockStore(tmp_path/'store', os.urandom(32))
+    external = tmp_path/'external'
+    external.mkdir()
+    data = external/(str(uuid4())+'.blk')
+    data.write_bytes(b'must remain outside store')
+    staging = external/(str(uuid4())+'.staging')
+    staging.write_bytes(b'external staging')
+    junction = store.root/str(uuid4())
+    _winapi.CreateJunction(str(external), str(junction))
+    try:
+        store.collect(set())
+        assert data.read_bytes() == b'must remain outside store'
+        assert staging.read_bytes() == b'external staging'
+    finally:
+        junction.rmdir()

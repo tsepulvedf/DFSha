@@ -23,7 +23,8 @@ class DataNode:
 
     def __init__(self, cfg):
         self.cfg = cfg
-        self.store = SQLiteMetadataStore(cfg['sqlite_path'])
+        from dfsha.common.protected import MetadataCipher
+        self.store = SQLiteMetadataStore(cfg['sqlite_path'], MetadataCipher.configured(cfg))
         need(self.store.path.is_file(), 'NOT_FOUND')
         key_path = Path(cfg['key_path'])
         if not key_path.is_file() or len(key_path.read_bytes()) != 32:
@@ -53,7 +54,13 @@ class DataNode:
         self.generation = settings['generation']
         self.node_id = settings['id_node']
         self.inventory_id = uid()
-        self.blocks = EncryptedBlockStore(cfg['block_path'], key)
+        try:
+            read_keys = [Path(p).read_bytes() for p in cfg.get('content_read_key_paths', [])]
+            active_key = Path(cfg['content_active_key_path']).read_bytes() if cfg.get('content_active_key_path') else key
+            need(len(active_key) == 32 and all(len(k) == 32 for k in read_keys))
+        except (OSError, Fault):
+            raise RuntimeError('CONTENT_KEYRING_MISSING_OR_INVALID') from None
+        self.blocks = EncryptedBlockStore(cfg['block_path'], active_key, [key, *read_keys])
         self.recover_unindexed_objects()
         self.coordinator = LocalCoordinator()
         self.guard = threading.RLock()
@@ -325,6 +332,11 @@ class DataNode:
         need(identity in self.cfg.get('control_identities', [self.cfg['control_identity']]) and req.context.user_id == identity and
              req.context.service_epoch == self.cfg['service_epoch'], 'PERMISSION_DENIED')
 
+    def GetKeyStatus(self, req, ctx):
+        self.control_peer(ctx, req)
+        return n.KeyStatus(node_id=self.node_id, boot_generation=self.generation,
+            active_key_id=self.blocks.key_id, readable_key_ids=sorted(self.blocks.keys))
+
     def VerifyReceipt(self, req, ctx):
         self.control_peer(ctx, req)
         with self.store.transaction() as tx:
@@ -400,7 +412,7 @@ class DataNode:
                         first = next(frames)
                         need(first.WhichOneof('frame') == 'header' and first.header.block == req.block and
                              first.header.ciphertext_length == req.ciphertext_length and first.header.ciphertext_sha256 == req.ciphertext_sha256 and
-                             first.header.key_id == self.blocks.key_id, 'CHECKSUM_MISMATCH')
+                             first.header.key_id in self.blocks.keys, 'CHECKSUM_MISMATCH')
                         def chunks():
                             offset = 0
                             for frame in frames:
@@ -445,7 +457,8 @@ class DataNode:
         try:
             with self.coordinator.admit(min((b for b in DEADLINES if b >= req.block.size_bytes), default=134217728)), self.blocks.pin(req.block.block_version_id):
                 yield d.ReplicaFrame(header=d.ReplicaHeader(task_id=req.task_id, block=req.block,
-                    ciphertext_length=receipt.stored_size_bytes, ciphertext_sha256=receipt.ciphertext_sha256, key_id=self.blocks.key_id))
+                    ciphertext_length=receipt.stored_size_bytes, ciphertext_sha256=receipt.ciphertext_sha256,
+                    key_id=self.blocks.object_key_id(req.block)))
                 with self.blocks.path(req.block.file_id, req.block.block_version_id).open('rb') as stream:
                     while chunk := stream.read(CHUNK):
                         need(ctx.is_active() and now() < decision.valid_until_unix_ms, 'DEADLINE_EXCEEDED')

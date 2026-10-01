@@ -55,16 +55,21 @@ class EtcdCluster:
         self.members = []
         for i in range(3):
             directory = self.directory/f'm{i}'
+            identity = f'etcd-member-{i}' if (self.certs/f'etcd-member-{i}.crt').exists() else 'etcd-server'
             args = [str(binary), f'--name=m{i}', f'--data-dir={directory / "data"}',
                 f'--listen-client-urls=https://{self.targets[i]}', f'--advertise-client-urls=https://{self.targets[i]}',
                 f'--listen-peer-urls={peers[i]}', f'--initial-advertise-peer-urls={peers[i]}',
                 f'--initial-cluster={initial}', f'--initial-cluster-token={self.token}', '--initial-cluster-state=new',
-                f'--cert-file={self.certs / "etcd-server.crt"}', f'--key-file={self.certs / "etcd-server.key"}',
+                f'--cert-file={self.certs / (identity+".crt")}', f'--key-file={self.certs / (identity+".key")}',
                 f'--trusted-ca-file={self.certs / "ca.crt"}', '--client-cert-auth=true',
-                f'--peer-cert-file={self.certs / "etcd-server.crt"}', f'--peer-key-file={self.certs / "etcd-server.key"}',
+                f'--peer-cert-file={self.certs / (identity+".crt")}', f'--peer-key-file={self.certs / (identity+".key")}',
                 f'--peer-trusted-ca-file={self.certs / "ca.crt"}', '--peer-client-cert-auth=true',
                 '--quota-backend-bytes=1073741824', '--max-request-bytes=1572864', '--max-txn-ops=128',
                 '--enable-grpc-gateway=false', '--log-level=warn']
+            if identity != 'etcd-server':
+                args.append('--peer-cert-allowed-cn=dfsha-etcd-member-0,dfsha-etcd-member-1,dfsha-etcd-member-2')
+                args.extend(['--enable-log-rotation=true', f'--log-outputs={directory / "etcd-structured.log"}',
+                    '--log-rotation-config-json='+json.dumps(dict(maxsize=10, maxbackups=3, maxage=7))])
             self.members.append(EtcdMember(directory, args, self.targets[i]))
 
     def status(self):
@@ -123,9 +128,9 @@ class EtcdCluster:
 
 
 class HACluster(Cluster):
-    def __init__(self, directory, block_size=4194304, lease_seconds=30, capacities=None):
+    def __init__(self, directory, block_size=4194304, lease_seconds=30, capacities=None, protected=False, admin_password='development-password'):
         super().__init__(directory, block_size=block_size, lease_seconds=lease_seconds,
-            replication=True, extra_controls=2, capacities=capacities)
+            replication=True, extra_controls=2, capacities=capacities, protected=protected, admin_password=admin_password)
         self.etcd = EtcdCluster(self.directory/'etcd', self.authority, self.control_ids)
         self.controls = [self.control]
         self.proxies = []
@@ -140,9 +145,13 @@ class HACluster(Cluster):
         original = tomllib.loads(self.control.config.read_text(encoding='utf-8'))
         cfg = self.etcd.config(self.control_id)
         cfg['etcd_certificate_dir'] = str(self.directory/'identities'/self.control_id)
+        if self.protected:
+            cfg['metadata_key_path'] = self.metadata_key_path.as_posix()
         store = EtcdMetadataStore(cfg)
         try:
-            self.migration = migrate(original['server']['sqlite_path'], self.directory/'migration'/'sqlite-backup.sqlite3', store)
+            from dfsha.common.protected import MetadataCipher
+            self.migration = migrate(original['server']['sqlite_path'], self.directory/'migration'/'sqlite-backup.sqlite3', store,
+                                     MetadataCipher.configured(original['distributed']))
         finally:
             store.channel.close()
         self.epoch = self.migration['epoch']
@@ -184,19 +193,21 @@ class HACluster(Cluster):
                 control_identities=self.control_ids, control_rpc_timeout_seconds=15, heartbeat_seconds=3)
             write_toml(node.config, 'datanode', config)
         write_toml(self.directory/'client.toml', 'client', dict(public_targets=self.public_targets,
-            certificate_dir=self.certs.as_posix()))
+            certificate_dir=self.certs.as_posix(), require_encrypted_session=self.protected))
 
     def client(self, index=None, session=None):
         from dfsha.client.sdk import Client
         client = Client(self.public_targets if index is None else [self.public_targets[index]], self.certs, session)
         if session is None:
-            client.login('admin', 'development-password')
+            client.login('admin', getattr(self, 'admin_password', 'development-password'))
         return client
 
     def metadata(self):
         from dfsha.control.etcd_metadata import EtcdMetadataStore
         cfg = self.etcd.config(self.control_id)
         cfg['etcd_certificate_dir'] = str(self.directory/'identities'/self.control_id)
+        if getattr(self, 'protected', False):
+            cfg['metadata_key_path'] = self.metadata_key_path.as_posix()
         return EtcdMetadataStore(cfg)
 
     def seed_e6(self, callback):
@@ -207,7 +218,7 @@ class HACluster(Cluster):
         try:
             for node in self.nodes[:3]:
                 node.start()
-            client.login('admin', 'development-password')
+            client.login('admin', getattr(self, 'admin_password', 'development-password'))
             self.wait_ready(3, client)
             return callback(self, client)
         finally:

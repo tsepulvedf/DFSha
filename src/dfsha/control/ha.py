@@ -70,7 +70,7 @@ class HAControl(ReplicatedControl):
         return EtcdMetadataStore(cfg)
 
     def state(self, node):
-        if not node or node.get('deadline', 0) <= time.time() or not self.store.lease_live(node):
+        if not node or node.get('authorization_disabled') or node.get('deadline', 0) <= time.time() or not self.store.lease_live(node):
             return 'UNAVAILABLE'
         if not node['reconciled']:
             return 'STARTING'

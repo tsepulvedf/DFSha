@@ -1,0 +1,17 @@
+# Local verification only: no ports exposed and no production deployment.
+FROM python:3.12.10-slim@sha256:fd95fa221297a88e1cf49c55ec1828edd7c5a428187e67b5d1805692d11588db
+WORKDIR /workspace
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 PYTHONUTF8=1
+COPY requirements.lock ./
+RUN python -m pip install --require-hashes -r requirements.lock
+COPY pyproject.toml README.md ./
+COPY src/ src/
+COPY proto/ proto/
+COPY third_party/ third_party/
+COPY scripts/ scripts/
+COPY tests/ tests/
+COPY deploy/ deploy/
+COPY docs/ docs/
+RUN python -m pip install --no-deps --no-build-isolation .
+RUN python scripts/fetch_etcd.py --platform linux-amd64 --tools
+CMD ["python", "scripts/verify_stage8.py", "--test", "tests/test_stage8_storage.py", "--test", "tests/test_stage8_keys.py", "--test", "tests/test_stage8_client_state.py"]

@@ -159,6 +159,19 @@
       "source": "proto/dfsha/v1/identity.proto"
     },
     {
+      "rpc": "dfsha.v1.IdentityService.ChangePassword",
+      "path": "/dfsha.v1.IdentityService/ChangePassword",
+      "request": "dfsha.v1.ChangePasswordRequest",
+      "response": "dfsha.v1.User",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "HITO1",
+      "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
+      "replication_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/identity.proto"
+    },
+    {
       "rpc": "dfsha.v1.NamespaceService.List",
       "path": "/dfsha.v1.NamespaceService/List",
       "request": "dfsha.v1.ListRequest",
@@ -692,6 +705,19 @@
       "source": "proto/dfsha/v1/nodes.proto"
     },
     {
+      "rpc": "dfsha.v1.StorageAdministrationService.GetKeyStatus",
+      "path": "/dfsha.v1.StorageAdministrationService/GetKeyStatus",
+      "request": "dfsha.v1.KeyStatusRequest",
+      "response": "dfsha.v1.KeyStatus",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
+      "replication_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
       "rpc": "dfsha.v1.ClusterAdministrationService.ListNodes",
       "path": "/dfsha.v1.ClusterAdministrationService/ListNodes",
       "request": "dfsha.v1.ClusterQuery",
@@ -753,6 +779,19 @@
       "implementation": "UNIMPLEMENTED",
       "distributed_implementation": "UNIMPLEMENTED",
       "rf3_implementation": "UNIMPLEMENTED",
+      "replication_implementation": "IMPLEMENTED",
+      "source": "proto/dfsha/v1/nodes.proto"
+    },
+    {
+      "rpc": "dfsha.v1.ClusterAdministrationService.SetNodeAuthorization",
+      "path": "/dfsha.v1.ClusterAdministrationService/SetNodeAuthorization",
+      "request": "dfsha.v1.SetNodeAuthorizationRequest",
+      "response": "dfsha.v1.MutationResult",
+      "client_streaming": false,
+      "server_streaming": false,
+      "implementation": "UNIMPLEMENTED",
+      "distributed_implementation": "IMPLEMENTED",
+      "rf3_implementation": "IMPLEMENTED",
       "replication_implementation": "IMPLEMENTED",
       "source": "proto/dfsha/v1/nodes.proto"
     }
