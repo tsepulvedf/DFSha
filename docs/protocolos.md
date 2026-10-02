@@ -1,5 +1,10 @@
 # DFSha — Contratos de comunicación v1
 
+E9 Academy (2026-10-02) no cambia RPC/TTL. IP públicas automáticas pueden cambiar
+al detener VM: actualizar SAN/anuncios y allowlist administrativa, registrar nueva
+generación del DN y resolver por control, sin editar mapas de bloques del cliente.
+[Procedimiento y validación pendiente](aws-academy.md#ip-y-certificado-al-reanudar).
+
 E9 conserva los 61 RPC y el transporte de contenido directo. Perfil de red
 explícito: C/S TLS 7443 CN y 7444 DN; S/S mTLS 7445 CN y 7446 DN; etcd privado
 2379/2380. Se distinguen bind y endpoint anunciado para NAT, con SAN verificado.

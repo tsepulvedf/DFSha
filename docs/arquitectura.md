@@ -1,5 +1,10 @@
 # DFSha — Arquitectura y evolución
 
+D68 concreta AWS Academy: tres VMs, una AZ inicialmente propuesta, medium 4 GiB,
+16+12 GiB cifrados por host y plazo de parada absoluto sin scheduler externo.
+Las IP públicas automáticas requieren reemitir SAN/reanunciar al cambiar;
+la autoridad y los bloques conservan identidad/época. [Preparación, no despliegue](aws-academy.md).
+
 E9 prepara el perfil nativo `private-vm`: tres hosts distintos con CN+DN+etcd
 por host, endpoints C/S públicos y S/S enlazados a IP privada. Los listeners
 públicos usan wildcard/IP privada para permitir NAT; no enlazan la IP pública

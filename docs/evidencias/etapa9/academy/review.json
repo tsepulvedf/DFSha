@@ -1,0 +1,7 @@
+{
+  "status": "APROBADO",
+  "files_checked": 31,
+  "local_links": 322,
+  "findings": [],
+  "scope": "Staged diff review; not a complete secret scanner or cloud acceptance"
+}

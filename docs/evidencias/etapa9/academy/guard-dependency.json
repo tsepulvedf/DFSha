@@ -1,0 +1,107 @@
+{
+  "command": ".venv-win/Scripts/python.exe -m pytest -q tests/test_academy_preparation.py --junitxml=.runtime/academy/guard-dependency.xml",
+  "cases": [
+    {
+      "id": "tests.test_academy_preparation::test_profile_requires_session_token_and_preserves_other_profiles",
+      "seconds": 0.425,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[wrong_account]",
+      "seconds": 0.014,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[expired]",
+      "seconds": 0.015,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[missing_token]",
+      "seconds": 0.009,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[free_tier_denied]",
+      "seconds": 0.073,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_plan_has_persistence_and_no_unlimited_or_paid_extras",
+      "seconds": 0.037,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[-1]",
+      "seconds": 0.002,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[0]",
+      "seconds": 0.002,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[9]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[valid]",
+      "seconds": 0.007,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[expired]",
+      "seconds": 0.007,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[missing]",
+      "seconds": 0.002,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_cost_counts_three_hosts_and_stopped_storage",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[1]",
+      "seconds": 0.014,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[-1]",
+      "seconds": 0.008,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[9]",
+      "seconds": 0.006,
+      "status": "APROBADO"
+    }
+  ],
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "16",
+      "time": "0.793",
+      "timestamp": "2026-10-02T01:08:28.000118-05:00",
+      "hostname": "DESKTOP-S2N4JO9"
+    }
+  ],
+  "source_sha256": {
+    "scripts/academy_window.py": "88bb98defcf1fb5c3d1bbeeb582ae47f7b18ef55e6f1bc6e6c9496c442958903",
+    "scripts/academy_plan.py": "5bae031d938047d35c027b7ad6bc6efac0d8c1015f823218dec76b2f793d03bd",
+    "scripts/academy_profile.py": "e3415bb97eb8b216011d83b23767db82b36fb06960cc7b144c88d5b15f573b8b",
+    "scripts/academy_cost.py": "3fe6f0831433fea88d48c5960908023bdf8ae67f23416eec1d345bc350e2e82e",
+    "scripts/cloud_preflight.py": "89aa9f098553caf45da5df5d7609ca6284d2e426dbffa4921f2951db0e07e3a4",
+    "tests/test_academy_preparation.py": "e279f98edb2b002313199093408c40da38f0ba1418e65e1ad74a0e1fa22c10b5",
+    "deploy/cloud/install-host.sh": "21ab5689d3c68e5ae6ceb7bf6f0636f6613fe54352a727ca6e6587c04418472b"
+  },
+  "observed_exit_code": 0
+}

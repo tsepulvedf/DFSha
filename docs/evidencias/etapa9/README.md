@@ -1,5 +1,10 @@
 # Evidencias E9 — preparación parcial
 
+**Actualización 2026-10-02:** AWS Academy confirmado. [Preparación de acceso,
+coste y parada](academy/README.md) conserva bloqueo real de credenciales/región,
+34 casos locales finales y propuesta no autorizada. El informe siguiente es la
+preparación del 1 de octubre; el proveedor ya no está pendiente.
+
 Fecha local: 2026-10-01. Los run_id usan UTC y pueden comenzar por 20261002.
 **E9 no está completa.** Proveedor académico y presupuesto no definidos;
 no se aprovisionaron recursos. [Propuesta, scripts y límites](../../despliegue.md).

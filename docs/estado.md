@@ -1,5 +1,32 @@
 # DFSha — Estado del proyecto y continuidad
 
+**2026-10-02 · E9 PARCIAL: AWS Academy confirmado, sin permiso de gasto.**
+Se verificó `main` limpio y `origin/main` en `7a5a00b` al retomar. Los USD 50
+indicados son presupuesto general; USD 5/8 h no estaban autorizados. No se encontró
+CLI/perfil AWS en las rutas comprobadas. Faltan cuenta académica, token temporal,
+región permitida, cuotas/beneficios y aprobación de coste/duración. No hubo
+operaciones AWS autenticadas, creación de recursos ni mediciones cloud.
+
+Se preparó perfil `academy` con entrada privada de tres credenciales, preflight
+de lectura ampliado (sin fallback personal), cálculo conservador, solicitudes
+EC2 de tres hosts y timer/guardia systemd de parada absoluta. Referencia económica
+us-east-1, no región asumida como permitida. Propuesta revisada: tres medium de
+4 GiB, 84 GiB EBS total, cuatro horas y tope propuesto USD 4 con siete días de
+retención; NO AUTORIZADO. [Acceso, cálculo y comandos](aws-academy.md).
+
+Verificación final: 34 casos locales aprobados en 10,49 s, exit 0 observado:
+16 de preparación Academy y 18 de preparación E9 anteriores. Hubo dos corridas
+previas de 31 aprobados; al añadir tres casos, un error del doble urllib produjo
+tres fallos (usaba `.method` en vez de `get_method()`), corregidos y repetidos.
+Después se ajustó únicamente la dependencia del servicio al timer; los 16 casos
+Academy se repitieron: 16 aprobados en 0,83 s, exit 0, sin sumarlos como nuevos.
+Guardia y AWS usan simulación aislada para decisiones; el test etcd usa procesos
+reales locales. No demuestran parada de VM ni acceso académico. La ejecución final
+y huellas se registran en [evidencias de preparación Academy](evidencias/etapa9/academy/README.md).
+Los 93 previos y sus 18 repeticiones siguen identificados; no sumarlos como nuevos.
+No se modificó el paquete de servicio ni dependencias, ni se ejecutó E10.
+Los registros anteriores siguientes son históricos; proveedor ya no está pendiente.
+
 **2026-10-01 · E9 PARCIAL; despliegue BLOQUEADO POR ENTORNO.**
 Se comprobó `main` limpio/sincronizado en `fe63534` antes de editar. PDF conserva
 su SHA-256 y se leyó la extracción íntegra de siete páginas. E8 sigue siendo

@@ -1,11 +1,20 @@
 # E9 — despliegue académico reproducible
 
-**Estado: PARCIAL; validación cloud BLOQUEADA POR ENTORNO.** No hay proveedor
-académico, cuenta/proyecto, región ni presupuesto verificados. No se crearon VMs,
+**2026-10-02: PARCIAL; validación cloud BLOQUEADA POR ENTORNO.** AWS Academy
+confirmado; cuenta, región, saldo y autorización económica pendientes. No se crearon VMs,
 discos, direcciones públicas ni snapshots. Los artefactos locales no acreditan
 acceso Internet, tolerancia a pérdida de host ni E9 completa. No se ejecuta E10.
 
-## Propuesta concreta para autorizar el laboratorio
+## Propuesta vigente para autorizar el laboratorio
+
+[AWS Academy: configuración, costes y parada independiente](aws-academy.md)
+actualiza la propuesta siguiente: tres VMs de 4 GiB, raíz 16 GiB + datos 12 GiB
+por host, una AZ como base, IP automáticas, cuatro horas propuestas y USD 4
+incluyendo margen y siete días de retención. **No autorizados.** USD 50 generales
+no son saldo verificado ni autorización. `us-east-1` es solo referencia de precios.
+Los scripts de ventana/plan generan archivos, no ejecutan aprovisionamiento.
+
+### Propuesta histórica del 1 de octubre (sustituida; no ejecutar)
 
 Proveedor efectivo: **pendiente**. Si está disponible AWS Academy, propuesta:
 us-east-1, tres VMs Ubuntu 24.04 amd64 con imagen fijada por ID antes de crear,
@@ -39,10 +48,8 @@ cuotas, snapshot/egreso y saldo deben consultarse para la cuenta antes de crear.
 Discos retenidos: aproximadamente USD 16,80/mes a esa tarifa; tres IP retenidas,
 USD 10,80/mes de 30 días. No afirmar gratuidad por ser académico.
 
-Si el acceso disponible es GCP académico, verificar proyecto, región, cuotas y
-precios antes de sustituir esta propuesta. Los listeners y unidades Linux son
-independientes del proveedor; la validación administrativa de inventario GCP
-sigue pendiente de disponer del proyecto. No se escoge AWS por tener un ejemplo.
+El usuario confirmó AWS Academy el 2 de octubre. No se sigue la alternativa GCP.
+La comparación histórica anterior no autoriza USD 5 ni ocho horas.
 
 ## Topología propuesta; no inventario ejecutado
 
@@ -78,7 +85,7 @@ por etiqueta `DFShaDeployment`; GCP por etiqueta `dfsha-deployment`.
 ```powershell
 .\.venv-win\Scripts\python.exe scripts/cloud_preflight.py
 # Después de habilitar el acceso académico fuera de Git:
-.\.venv-win\Scripts\python.exe scripts/cloud_preflight.py --provider aws --profile academic --account <cuenta> --region us-east-1 --deployment-id <uuid> --output .runtime/cloud/preflight.json
+.\.venv-win\Scripts\python.exe scripts/cloud_preflight.py --provider aws --profile academy --account CUENTA_ACADEMY --region REGION_PERMITIDA --deployment-id UUID_PROYECTO --output .runtime/cloud/preflight.json
 .\.venv-win\Scripts\python.exe scripts/cloud_bundle.py --inventory .runtime/cloud/inventory.json --preflight .runtime/cloud/preflight.json --output .runtime/cloud/bundle
 ```
 
@@ -266,9 +273,9 @@ y clúster nuevos con etcdutl 3.6.14, nueva identidad/época y revisiones/caché
 invalidadas. Comprobar hashes/permisos antes de activarlo. No es failover ni recupera
 escrituras posteriores al backup. No se declara comprobado por describirlo.
 
-Al disponer del proveedor se completará el aprovisionador específico sobre esta
-propuesta, con etiquetas, IDs y comprobaciones de reuso; no se añadió un segundo
-framework IaC especulativo. Política de apagado propuesta: ocho horas, detener
-VMs identificadas y dejar discos/backups hasta revisión. Debe acordarse y probarse
-antes del despliegue. Estado actual de recursos creados por E9: **ninguno**; coste
+Con AWS confirmado, `academy_plan.py` prepara solicitudes EC2 idempotentes y
+`academy_window.py` prepara el plazo absoluto persistente. Falta acceso para
+completar IDs y ejecutar la política actual de [Academy](aws-academy.md).
+Debe autorizarse y comprobarse en VMs antes de acreditar apagado. No se añadió
+otro framework IaC. Estado actual de recursos creados por E9: **ninguno**; coste
 cloud generado por estas acciones: **ninguno**, saldo/coste total de cuenta desconocido.

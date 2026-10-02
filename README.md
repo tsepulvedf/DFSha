@@ -1,7 +1,9 @@
 # DFSha
 
-**E9 parcial: preparación local verificada; cloud bloqueado por acceso académico
-y presupuesto aún no definidos.** [Despliegue, propuesta y comandos](docs/despliegue.md),
+**E9 parcial: AWS Academy confirmado; faltan credenciales, región y autorización
+económica.** Los USD 50 indicados son presupuesto general, no permiso de gasto.
+[Acceso, costes y parada por plazo](docs/aws-academy.md),
+[despliegue y comandos](docs/despliegue.md),
 [evidencias E9](docs/evidencias/etapa9/README.md). No hay VMs creadas ni prueba
 Internet/caída de host. No se ejecutó E10. Los perfiles anteriores se conservan.
 

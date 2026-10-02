@@ -15,6 +15,7 @@ dist/
 htmlcov/
 .env
 .env.*
+.aws/
 !.env.example
 *.key
 *.pem

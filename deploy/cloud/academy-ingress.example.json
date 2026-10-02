@@ -1,0 +1,6 @@
+[
+  {"IpProtocol":"tcp","FromPort":22,"ToPort":22,"IpRanges":[{"CidrIp":"REPLACE_ADMIN_IP_32","Description":"DFSha administrator"}]},
+  {"IpProtocol":"tcp","FromPort":7443,"ToPort":7444,"IpRanges":[{"CidrIp":"REPLACE_CLIENT_IP_32","Description":"DFSha external client TLS"}]},
+  {"IpProtocol":"tcp","FromPort":2379,"ToPort":2380,"UserIdGroupPairs":[{"GroupId":"REPLACE_DFSHA_SECURITY_GROUP","Description":"DFSha etcd private mTLS"}]},
+  {"IpProtocol":"tcp","FromPort":7445,"ToPort":7446,"UserIdGroupPairs":[{"GroupId":"REPLACE_DFSHA_SECURITY_GROUP","Description":"DFSha internal mTLS"}]}
+]

@@ -4,12 +4,13 @@
 
 | Requisito/obligación | Artefacto | Criterio / evidencia | Estado |
 | --- | --- | --- | --- |
-| INF, PDF p. 5, VMs académicas | Inventario/preflight con cuenta esperada y recursos por deployment | Tres IDs VM/discos, cuotas/región reales | BLOQUEADO: proveedor/acceso/budget pendientes |
+| INF, PDF p. 5, VMs académicas | Inventario/preflight con cuenta esperada y recursos por deployment | Tres IDs VM/discos, cuotas/región reales | AWS Academy confirmado; BLOQUEADO por acceso/región/autorización económica |
 | COM opción 1, PDF p. 2/4/5 | Listeners privados, C/S públicos NAT, SAN y firewall | TLS externo y mTLS privado; puertos internos inaccesibles desde Internet | Configuración y regresión local EJECUTADAS; Internet PENDIENTE |
 | RNF2/3/4/7 | CN+DN+etcd por host, R3/W2, inventario de dominios | Parada VM completa, servicio útil en dos hosts, reincorporación R3 | BLOQUEADO, no sustituir por procesos locales |
 | RNF6 | Unidades Linux, claves por rol, cifrado aplicativo conservado | ACL/usuarios efectivos, discos/snapshots cifrados, recuperación independiente | Plantillas/pruebas locales EJECUTADAS; controles VM y backup cloud PENDIENTES |
 | RF1/2/3, RNF5 | Verificador externo por SDK, 512 MiB y delta 4 KiB | Hashes, snapshots/locks, tráfico y métricas por host | Script preparado, ejecución externa BLOQUEADA |
 | USR-EVID | Journal por run y códigos observados | Fallidos conservados y campos no medidos null | EJECUTADO local; [evidencias E9](evidencias/etapa9/README.md) |
+| USR-COSTE, D68 | Perfil dedicado, cálculo sin beneficio supuesto, Standard, discos conservados, plazo absoluto systemd | Tests de identidad/token, conservación de perfiles, tres hosts, parada simulada y coste residual | EJECUTADO local; [Academy](aws-academy.md); parada real y cotización de cuenta BLOQUEADAS |
 
 No se atribuyen resultados E8 a E9. [Propuesta y condiciones de cierre](despliegue.md).
 

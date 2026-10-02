@@ -8,6 +8,10 @@ bundle=$(realpath -- "$1")
 wheel=$(realpath -- "$2")
 etcd_bin=$(realpath -- "$3")
 for command in python3.12 systemctl nft findmnt timedatectl sshd; do command -v "$command" >/dev/null; done
+# A deployment without its independent stop guard must not proceed to installation.
+[[ -x /usr/local/sbin/dfsha-window-check ]] || { echo 'Approved window guard missing'; exit 2; }
+systemctl is-active --quiet dfsha-window.timer || { echo 'Stop timer is not active'; exit 2; }
+/usr/local/sbin/dfsha-window-check
 # No automatic mounting/formatting; operator must verify encrypted cloud disks first.
 mountpoint -q /var/lib/dfsha || { echo 'Persistent data mount required at /var/lib/dfsha'; exit 2; }
 python3.12 - "$bundle" "$wheel" <<'PY'

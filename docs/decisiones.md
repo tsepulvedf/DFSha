@@ -1,12 +1,19 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
+**D68 — AWS Academy y consumo mínimo (usuario, 2026-10-02):** proveedor confirmado.
+USD 50 generales no autorizan gasto. Perfil academy, token temporal obligatorio,
+cuenta/región explícitas, sin descuento Free Tier no comprobado. Tres VMs medium,
+84 GiB cifrados, Standard, IP automáticas, una AZ inicialmente propuesta; ventana
+absoluta systemd y apagado EC2=stop, sin borrado automático ni scheduler de pago.
+[Costes, acceso y límites](aws-academy.md). Sigue pendiente validación del host.
+
 **D65 — Perfil de red E9 explícito:** conservar loopback por defecto. `private-vm`
 requiere cifrado de metadatos, CIDR RFC1918, listener S/S en IP privada y endpoint
 C/S distinto del bind para NAT. Certificados con SAN reales; sin bypass TLS.
 **D66 — Preparación académica sin cuenta implícita:** inventario/read-only del
 proveedor seleccionado y presupuesto antes de crear recursos. Ejecución nativa
-systemd en tres VMs dedicadas, claves por rol y CA fuera de las VMs. Propuesta AWS
-no equivale a elección/autorización; GCP se concretará si es el acceso disponible.
+systemd en tres VMs dedicadas, claves por rol y CA fuera de las VMs. AWS quedó
+confirmado en D68; la autorización económica sigue pendiente y GCP no se utiliza.
 **D67 — Evidencia E9 por alcance:** un renderer o test local no acredita Internet,
 cifrado de disco cloud ni caída de host. Verificador externo parcial conserva
 campos sin medir como null y no cierra E9 por aprobar RF1/RF2/RF3.

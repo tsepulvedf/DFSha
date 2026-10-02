@@ -1,0 +1,99 @@
+{
+  "status": "ESTIMACION_CONDICIONAL_NO_AUTORIZADA",
+  "date": "2026-10-02",
+  "reference_region": "us-east-1",
+  "actual_region": null,
+  "reported_general_credit_usd": 50,
+  "verified_balance": null,
+  "free_benefits_verified": [],
+  "rates": {
+    "t3_medium_hour": 0.0418,
+    "t3a_medium_hour": 0.0376,
+    "gp3_gb_month": 0.08,
+    "ipv4_hour": 0.005,
+    "internet_gb": 0.09,
+    "snapshot_gb_month": 0.05,
+    "interzone_gb_each_end": 0.01
+  },
+  "sessions": [
+    {
+      "hours": 2,
+      "instance_hours": 6,
+      "compute": 0.25079999999999997,
+      "ebs": 0.018666666666666665,
+      "ipv4": 0.03,
+      "internet_allowance_gb": 10,
+      "internet": 0.9,
+      "paid_snapshots": 0,
+      "extra_components": 0,
+      "total_usd": 1.1994666666666667,
+      "t3a_total_if_permitted": 1.1742666666666668
+    },
+    {
+      "hours": 4,
+      "instance_hours": 12,
+      "compute": 0.5015999999999999,
+      "ebs": 0.03733333333333333,
+      "ipv4": 0.06,
+      "internet_allowance_gb": 10,
+      "internet": 0.9,
+      "paid_snapshots": 0,
+      "extra_components": 0,
+      "total_usd": 1.4989333333333332,
+      "t3a_total_if_permitted": 1.4485333333333332
+    },
+    {
+      "hours": 8,
+      "instance_hours": 24,
+      "compute": 1.0031999999999999,
+      "ebs": 0.07466666666666666,
+      "ipv4": 0.12,
+      "internet_allowance_gb": 10,
+      "internet": 0.9,
+      "paid_snapshots": 0,
+      "extra_components": 0,
+      "total_usd": 2.0978666666666665,
+      "t3a_total_if_permitted": 1.9970666666666665
+    }
+  ],
+  "stopped": [
+    {
+      "days": 7,
+      "ebs_usd": 1.568,
+      "auto_public_ip_usd": 0,
+      "optional_3gib_snapshot_usd": 0.03500000000000001,
+      "elastic_ip_if_retained_usd": 2.52
+    },
+    {
+      "days": 30,
+      "ebs_usd": 6.72,
+      "auto_public_ip_usd": 0,
+      "optional_3gib_snapshot_usd": 0.15000000000000002,
+      "elastic_ip_if_retained_usd": 10.799999999999999
+    }
+  ],
+  "optional_fourth_vm_2h": {
+    "compute": 0.0836,
+    "ipv4": 0.01,
+    "ebs": 0.006222222222222223,
+    "retained_7days": 0.5226666666666667
+  },
+  "multi_zone_example": {
+    "ss_gb": 10,
+    "extra_usd": 0.2
+  },
+  "assumptions": [
+    "3 independent VMs; 16 GiB root + 12 GiB data each; 30-day/720h cost divisor",
+    "Conservative 10 GB total Internet egress including encrypted local backup; no free allowance deduction",
+    "No paid snapshots by default; local encrypted backup on existing external disk",
+    "Regional EBS/traffic quotes, Academy restrictions, taxes and account eligibility still need verification",
+    "No fourth VM authorized; no automatic deletion; residual storage accrues until explicitly retired"
+  ],
+  "sources": [
+    "https://aws.amazon.com/ec2/instance-types/t3/",
+    "https://aws.amazon.com/ebs/pricing/",
+    "https://aws.amazon.com/ebs/volume-types/",
+    "https://aws.amazon.com/vpc/pricing/",
+    "https://aws.amazon.com/ec2/pricing/on-demand/"
+  ]
+}

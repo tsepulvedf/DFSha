@@ -1,0 +1,32 @@
+{
+  "run_id": "f11e971d-3c5b-43cf-a6d0-6bd13b57781f",
+  "start": "2026-10-02T05:59:23.706472+00:00",
+  "status": "BLOQUEADO_POR_ENTORNO",
+  "provider": "aws",
+  "commands": [],
+  "resources_created": [],
+  "tools": {
+    "aws": null,
+    "gcloud": null,
+    "ssh": "c:\\windows\\system32\\openssh\\ssh.EXE",
+    "scp": "c:\\windows\\system32\\openssh\\scp.EXE",
+    "docker": "C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.EXE"
+  },
+  "credential_environment_names": [],
+  "missing": [
+    "Perfil temporal dedicado incompleto: acceso, secreto y session token requeridos",
+    "Region academica permitida pendiente; no se adopta region de ejemplo",
+    "CLI del proveedor no disponible en PATH; no se instal\u00f3 otra ruta"
+  ],
+  "benefits": "NO_VERIFICADOS; sin descuento en estimacion",
+  "economic_authorization": false,
+  "profile": {
+    "profile": "academy",
+    "configured": false,
+    "temporary_credentials_complete": false,
+    "region": null
+  },
+  "end": "2026-10-02T05:59:23.725880+00:00",
+  "deployment_acceptance": "PENDIENTE: lectura no acredita presupuesto, aprovisionamiento ni acceso externo",
+  "observed_exit_code": 2
+}

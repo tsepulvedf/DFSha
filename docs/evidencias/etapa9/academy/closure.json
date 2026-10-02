@@ -1,0 +1,188 @@
+{
+  "command": ".venv-win/Scripts/python.exe -m pytest -q tests/test_academy_preparation.py tests/test_stage9_deployment.py --junitxml=.runtime/academy/closure.xml",
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "tests": "34",
+      "time": "10.718",
+      "timestamp": "2026-10-02T01:04:12.245527-05:00",
+      "hostname": "DESKTOP-S2N4JO9"
+    }
+  ],
+  "cases": [
+    {
+      "id": "tests.test_academy_preparation::test_profile_requires_session_token_and_preserves_other_profiles",
+      "seconds": 0.413,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[wrong_account]",
+      "seconds": 0.014,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[expired]",
+      "seconds": 0.012,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[missing_token]",
+      "seconds": 0.009,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_preflight_does_not_confuse_access_with_benefit[free_tier_denied]",
+      "seconds": 0.068,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_plan_has_persistence_and_no_unlimited_or_paid_extras",
+      "seconds": 0.025,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[-1]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[0]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_window_rejects_invalid_duration[9]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[valid]",
+      "seconds": 0.006,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[expired]",
+      "seconds": 0.006,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_guard_orders_poweroff_only_after_expiry_or_missing_state[missing]",
+      "seconds": 0.002,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_cost_counts_three_hosts_and_stopped_storage",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[1]",
+      "seconds": 0.009,
+      "status": "FALLIDO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[-1]",
+      "seconds": 0.002,
+      "status": "FALLIDO"
+    },
+    {
+      "id": "tests.test_academy_preparation::test_boot_refresh_uses_absolute_authorized_deadline[9]",
+      "seconds": 0.003,
+      "status": "FALLIDO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[placeholder]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[shared_vm]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[shared_volume]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[public_ssh]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[wrong_private]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[same_role]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[budget]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_render_keeps_private_listeners_and_draft_disabled",
+      "seconds": 0.146,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change0]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change1]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change2]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change3]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change4]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_loopback_default_and_nat_address_rules",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_attestation_requires_real_matching_observations",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_private_material_has_real_sans_unique_keys_and_encrypted_seed",
+      "seconds": 3.593,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_activation_never_changes_epoch_on_restart",
+      "seconds": 0.177,
+      "status": "APROBADO"
+    },
+    {
+      "id": "tests.test_stage9_deployment::test_rendered_etcd_security_config_real_three_members",
+      "seconds": 5.95,
+      "status": "APROBADO"
+    }
+  ],
+  "observed_exit_code": 1
+}

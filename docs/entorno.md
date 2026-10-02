@@ -1,5 +1,11 @@
 # DFSha — Entorno reproducible de etapas 2–8
 
+**2026-10-02, E9:** AWS Academy confirmado. Perfil propuesto `academy`, pero
+CLI/perfil no encontrados y región/cuenta no verificadas. Helper interactivo
+sin eco/token obligatorio y comandos en [AWS Academy](aws-academy.md).
+Ninguna credencial se solicita en chat; ejecución de la configuración queda al
+usuario en su terminal privada. No se modifican versiones del stack.
+
 **Preparación E9, 2026-10-01:** checkout `F:\DFSha`, Windows PowerShell,
 Python 3.12.10 y dependencias fijadas. SSH/SCP disponibles; no se encontró
 configuración/CLI AWS o GCP en las rutas revisadas. Docker Desktop instalado en

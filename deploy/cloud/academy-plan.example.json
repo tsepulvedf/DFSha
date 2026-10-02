@@ -1,0 +1,18 @@
+{
+  "status": "PROPOSAL_NOT_AUTHORIZED",
+  "profile": "academy",
+  "account": "REPLACE_ACADEMY_ACCOUNT_12_DIGITS",
+  "region": "REPLACE_ALLOWED_REGION",
+  "deployment_id": "REPLACE_UUID",
+  "instance_type": "t3.medium",
+  "image_id": "REPLACE_VERIFIED_CANONICAL_AMD64_AMI",
+  "root_device": "REPLACE_ROOT_DEVICE_FROM_AMI",
+  "key_name": "REPLACE_EXISTING_PROJECT_SSH_KEY",
+  "security_group": "REPLACE_PROJECT_RESTRICTED_SECURITY_GROUP",
+  "deadline_utc": "REPLACE_AUTHORIZED_ABSOLUTE_UTC_DEADLINE",
+  "nodes": [
+    {"slot": "a", "subnet_id": "REPLACE_ALLOWED_SUBNET"},
+    {"slot": "b", "subnet_id": "REPLACE_ALLOWED_SUBNET"},
+    {"slot": "c", "subnet_id": "REPLACE_ALLOWED_SUBNET"}
+  ]
+}

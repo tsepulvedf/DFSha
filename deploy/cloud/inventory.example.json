@@ -2,20 +2,20 @@
   "schema": 1,
   "status": "DRAFT_NOT_DEPLOYED",
   "deployment_id": "REPLACE_UUID",
-  "provider": "SELECT_ACADEMIC_PROVIDER",
+  "provider": "aws",
   "account_project": "REPLACE_ACADEMIC_ACCOUNT_OR_PROJECT",
   "region": "REPLACE_AUTHORIZED_REGION",
   "private_cidr": "10.83.0.0/24",
   "admin_cidr": "REPLACE_ADMIN_IPV4_32",
   "client_cidrs": ["REPLACE_CLIENT_IPV4_32"],
   "budget_usd": null,
-  "duration_hours": 8,
+  "duration_hours": 4,
   "artifact_commit": "REPLACE_TESTED_COMMIT",
   "artifact_sha256": "REPLACE_WHEEL_SHA256",
   "image_id": "REPLACE_PROVIDER_PINNED_UBUNTU_24_04_IMAGE",
   "nodes": [
-    {"slot": "a", "vm_id": "REPLACE_VM_A", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.11", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 21474836480},
-    {"slot": "b", "vm_id": "REPLACE_VM_B", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.12", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 21474836480},
-    {"slot": "c", "vm_id": "REPLACE_VM_C", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.13", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 21474836480}
+    {"slot": "a", "vm_id": "REPLACE_VM_A", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.11", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 4294967296},
+    {"slot": "b", "vm_id": "REPLACE_VM_B", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.12", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 4294967296},
+    {"slot": "c", "vm_id": "REPLACE_VM_C", "zone": "REPLACE_ZONE", "private_ip": "10.83.0.13", "public_host": "REPLACE_PUBLIC_DNS_OR_IP", "control_id": "REPLACE_UUID", "node_id": "REPLACE_UUID", "volume_id": "REPLACE_ENCRYPTED_VOLUME", "capacity_bytes": 4294967296}
   ]
 }

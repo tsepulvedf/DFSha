@@ -1,0 +1,54 @@
+{
+  "start": "2026-10-02T06:04:49.538836+00:00",
+  "scope": "Help and Bash syntax only; no Linux service installed",
+  "commands": [
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/cloud_preflight.py",
+        "--help"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/academy_profile.py",
+        "--help"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/academy_plan.py",
+        "--help"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/academy_window.py",
+        "--help"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "argv": [
+        "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+        "scripts/academy_cost.py",
+        "--help"
+      ],
+      "observed_exit_code": 0
+    },
+    {
+      "argv": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "-n",
+        "deploy/cloud/install-host.sh"
+      ],
+      "observed_exit_code": 0
+    }
+  ]
+}
