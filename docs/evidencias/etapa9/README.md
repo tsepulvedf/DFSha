@@ -29,8 +29,13 @@ Se descargaron herramientas Linux etcd 3.6.14 con archivo oficial verificado:
 `ffe840ff9295808e88cce2794a18a5ac87f12a5203c8314d0bf6aa119b41bac5`.
 No se ejecutaron esas herramientas en una VM Linux. El artefacto inicial en
 `.runtime/cloud-artifacts-e9-initial` se identifica como dirty/base E8; no se
-presenta como un despliegue del commit E8. Construir nuevamente desde el commit
-E9 limpio antes de instalar en las tres VMs y registrar su hash.
+presenta como un despliegue del commit E8. Después se construyó el artefacto final
+desde `94dbc639d2ec42b3fe9049b80bf74be1bb0d164d`, árbol limpio y exit 0 observado.
+[Identidad y hashes](artifact.json); wheel privado en
+`.runtime/cloud-artifacts-e9-94dbc63/dfsha-0.3.0-py3-none-any.whl`, SHA-256
+`fde02754f291a35eded59ae9fd3bcb1711bada09c98c1bf2396ed6511fdb6382`.
+Los cambios posteriores a ese commit son documentación/evidencia, no aplicación.
+El commit se publicó sin force push y fetch confirmó la misma referencia local/remota.
 
 Reproducción PowerShell desde `F:\DFSha`:
 

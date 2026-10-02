@@ -29,7 +29,15 @@ local. El primer intento de preparación tuvo 17 aprobados/1 fallido: etcd exige
 Recursos cloud creados: ninguno. No hay hashes, memoria, tráfico ni tiempos cloud;
 no reutilizar los de E8 como si lo fueran. Falta validar Internet, parada/reingreso
 de VM, quórum, controles Linux efectivos, cifrado de discos/snapshots, backup y
-restauración externa. E10 no empieza. Publicación Git se registrará al verificarla.
+restauración externa. E10 no empieza. La repetición final de preparación pasó
+18 casos (superpuestos a los 93), incluida identidad peer incorrecta. Siete
+comandos del paquete instalado pasaron.
+
+Preparación E9 publicada en `94dbc63`; fetch posterior comprobó HEAD y origin/main
+en `94dbc639d2ec42b3fe9049b80bf74be1bb0d164d`, árbol limpio. Desde ese commit
+se construyó el wheel sin cambios locales y con exit 0 observado; hash y herramientas
+en [artefacto identificado](evidencias/etapa9/artifact.json). Este registro documental
+posterior no cambia el código del artefacto. No hay pruebas ni mediciones activas.
 El historial E8 siguiente conserva sus resultados originales.
 
 **2026-10-01 · E8 completa en el perfil protegido del laboratorio.**

@@ -1,0 +1,15 @@
+{
+  "status": "ARTEFACTO_LOCAL",
+  "base_commit": "94dbc639d2ec42b3fe9049b80bf74be1bb0d164d",
+  "dirty": false,
+  "wheel": "dfsha-0.3.0-py3-none-any.whl",
+  "sha256": "fde02754f291a35eded59ae9fd3bcb1711bada09c98c1bf2396ed6511fdb6382",
+  "etcd": {
+    "etcd": "4962e541409b178680a73c6914b7f6cae77f5d3093b5b3bf71f68315d2102421",
+    "etcdctl": "dba085f02f045d6fc0cd59c533ef2a8dc922ad82418c0e538b194525c715450b",
+    "etcdutl": "373c24bc46035055bd19f59e3933bbd8c7c479122636fa080853263f2decd021"
+  },
+  "observed_exit_code": 0,
+  "command": ".venv-win/Scripts/python.exe scripts/cloud_artifacts.py --output .runtime/cloud-artifacts-e9-94dbc63",
+  "scope": "Built locally; Linux binaries downloaded and verified, not executed on cloud VMs"
+}
