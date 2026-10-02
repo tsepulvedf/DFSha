@@ -25,6 +25,11 @@ reales locales. No demuestran parada de VM ni acceso académico. La ejecución f
 y huellas se registran en [evidencias de preparación Academy](evidencias/etapa9/academy/README.md).
 Los 93 previos y sus 18 repeticiones siguen identificados; no sumarlos como nuevos.
 No se modificó el paquete de servicio ni dependencias, ni se ejecutó E10.
+Preparación Academy publicada en `c59e38b`; fetch confirmó local/origin/main
+en `c59e38b5271e345a2873f4ff9818516a020e4e42` y árbol limpio. Este registro de
+publicación es documental. Para continuar: instalar CLI/configurar perfil academy
+fuera de Git, confirmar cuenta/región y autorizar una propuesta económica concreta.
+No hay mediciones ni procesos de prueba pendientes; recursos cloud creados: cero.
 Los registros anteriores siguientes son históricos; proveedor ya no está pendiente.
 
 **2026-10-01 · E9 PARCIAL; despliegue BLOQUEADO POR ENTORNO.**

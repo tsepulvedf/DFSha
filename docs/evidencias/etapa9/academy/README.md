@@ -41,6 +41,11 @@ Los JSON publicables incluyen resultados individuales y hashes de fuentes finale
 Los comandos con secretos son interactivos y **no se ejecutaron** aquí.
 No hay pruebas activas pendientes de consultar.
 
+Preparación publicada en `c59e38b5271e345a2873f4ff9818516a020e4e42`.
+Push sin force, fetch y árbol limpio comprobados antes de este registro documental.
+El [review](review.json) no encontró patrones de secretos ni enlaces locales rotos;
+no es una garantía absoluta de un escáner de secretos.
+
 [Propuesta económica y runbook completo](../../../aws-academy.md).
 Antes de declarar E9 completa faltan cuenta/región/permiso económico, creación
 autorizada, controles Linux efectivos, timer/stop real, prueba Internet 512 MiB,
