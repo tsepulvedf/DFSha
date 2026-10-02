@@ -1,0 +1,6 @@
+{
+  "session": 66170,
+  "exit_code": 0,
+  "observed": "2026-10-02T00:26:18.045802+00:00",
+  "source": "exec write_stdin completed result; actual process exit"
+}

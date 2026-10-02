@@ -1,0 +1,21 @@
+{
+  "run_id": "383faf41-cce7-4ab4-99c4-3b9b90a98dc1",
+  "start": "2026-10-02T00:18:51.579474+00:00",
+  "status": "BLOQUEADO_POR_ENTORNO",
+  "provider": null,
+  "commands": [],
+  "resources_created": [],
+  "tools": {
+    "aws": null,
+    "gcloud": null,
+    "ssh": "c:\\windows\\system32\\openssh\\ssh.EXE",
+    "scp": "c:\\windows\\system32\\openssh\\scp.EXE",
+    "docker": "C:\\Users\\Tommysepf\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.EXE"
+  },
+  "credential_environment_names": [],
+  "missing": [
+    "Proveedor acad\u00e9mico, perfil/proyecto, regi\u00f3n y autorizaci\u00f3n de presupuesto no definidos"
+  ],
+  "end": "2026-10-02T00:18:51.596722+00:00",
+  "deployment_acceptance": "PENDIENTE: lectura no acredita presupuesto, aprovisionamiento ni acceso externo"
+}

@@ -1,5 +1,18 @@
 # DFSha — Matriz de requisitos y trazabilidad
 
+## E9 — preparación parcial; infraestructura bloqueada
+
+| Requisito/obligación | Artefacto | Criterio / evidencia | Estado |
+| --- | --- | --- | --- |
+| INF, PDF p. 5, VMs académicas | Inventario/preflight con cuenta esperada y recursos por deployment | Tres IDs VM/discos, cuotas/región reales | BLOQUEADO: proveedor/acceso/budget pendientes |
+| COM opción 1, PDF p. 2/4/5 | Listeners privados, C/S públicos NAT, SAN y firewall | TLS externo y mTLS privado; puertos internos inaccesibles desde Internet | Configuración y regresión local EJECUTADAS; Internet PENDIENTE |
+| RNF2/3/4/7 | CN+DN+etcd por host, R3/W2, inventario de dominios | Parada VM completa, servicio útil en dos hosts, reincorporación R3 | BLOQUEADO, no sustituir por procesos locales |
+| RNF6 | Unidades Linux, claves por rol, cifrado aplicativo conservado | ACL/usuarios efectivos, discos/snapshots cifrados, recuperación independiente | Plantillas/pruebas locales EJECUTADAS; controles VM y backup cloud PENDIENTES |
+| RF1/2/3, RNF5 | Verificador externo por SDK, 512 MiB y delta 4 KiB | Hashes, snapshots/locks, tráfico y métricas por host | Script preparado, ejecución externa BLOQUEADA |
+| USR-EVID | Journal por run y códigos observados | Fallidos conservados y campos no medidos null | EJECUTADO local; [evidencias E9](evidencias/etapa9/README.md) |
+
+No se atribuyen resultados E8 a E9. [Propuesta y condiciones de cierre](despliegue.md).
+
 ## Cierre E8 — perfil protegido de laboratorio
 
 | Requisito | Mecanismo/implementación | Evidencia | Límite pendiente |

@@ -58,5 +58,9 @@ if __name__ == '__main__':
     parser.add_argument('--identity', required=True)
     parser.add_argument('--common-name')
     parser.add_argument('--days', type=int, default=7)
+    parser.add_argument('--dns', action='append', help='SAN DNS explícito; se puede repetir')
+    parser.add_argument('--ip', action='append', help='SAN IP explícito; se puede repetir')
     args = parser.parse_args()
-    print(json.dumps(issue(args.ca_dir, args.output, args.identity, args.common_name, days=args.days)))
+    print(json.dumps(issue(args.ca_dir, args.output, args.identity, args.common_name,
+        dns=tuple(args.dns or (() if args.ip else ('localhost',))),
+        ips=tuple(args.ip or (() if args.dns else ('127.0.0.1',))), days=args.days)))

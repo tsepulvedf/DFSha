@@ -1,0 +1,98 @@
+{
+  "status": "FALLIDO",
+  "observed_exit_code": 1,
+  "cases": [
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[placeholder]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[shared_vm]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[shared_volume]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[public_ssh]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[wrong_private]",
+      "seconds": 0.001,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[same_role]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_inventory_rejects_unsafe_or_incomplete[budget]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_render_keeps_private_listeners_and_draft_disabled",
+      "seconds": 0.206,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change0]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change1]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change2]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change3]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_vm_network_rejects_unsafe_settings[change4]",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_loopback_default_and_nat_address_rules",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_attestation_requires_real_matching_observations",
+      "seconds": 0.0,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_private_material_has_real_sans_unique_keys_and_encrypted_seed",
+      "seconds": 3.167,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_activation_never_changes_epoch_on_restart",
+      "seconds": 0.173,
+      "status": "APROBADO"
+    },
+    {
+      "name": "tests.test_stage9_deployment::test_rendered_etcd_security_config_real_three_members",
+      "seconds": 3.127,
+      "status": "FALLIDO"
+    }
+  ],
+  "scope": "Local Windows only; test IDs are fixtures, not cloud resources",
+  "diagnosis": "etcd JSON allowed-cn expects []string; comma-separated flag syntax was corrected to list"
+}

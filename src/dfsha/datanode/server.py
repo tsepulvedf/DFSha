@@ -8,7 +8,7 @@ import signal
 import threading
 import tomllib
 import grpc
-from dfsha.common.config import loopback_address
+from dfsha.common.config import listener_address
 from dfsha.common.limits import GRPC_OPTIONS
 from dfsha.common import node_rpc
 from dfsha.common.telemetry import configure, event
@@ -18,6 +18,8 @@ from dfsha.datanode.service import DataNode
 
 def serve(path, ready_file, stop_file):
     cfg = tomllib.loads(path.read_text(encoding='utf-8'))['datanode']
+    listener_address(cfg, False)
+    listener_address(cfg, True)
     if cfg.get('metadata_key_path'):
         configure(Path(cfg['sqlite_path']).parent/'audit'/'events.jsonl')
     app = DataNode(cfg)
@@ -35,7 +37,7 @@ def serve(path, ready_file, stop_file):
             creds = grpc.ssl_server_credentials([((certs / (identity + '.key')).read_bytes(),
                 (certs / (identity + '.crt')).read_bytes())], root_certificates=(certs / 'ca.crt').read_bytes() if internal else None,
                 require_client_auth=internal)
-            port = server.add_secure_port(loopback_address(cfg['internal_bind' if internal else 'public_bind']), creds)
+            port = server.add_secure_port(listener_address(cfg, internal), creds)
             if not port:
                 raise RuntimeError('LISTENER_UNAVAILABLE')
             implemented = node_rpc.register(server, app, [('nodes', 'StorageAdministrationService'), ('data', 'ReplicaService')]

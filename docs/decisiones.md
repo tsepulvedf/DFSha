@@ -1,5 +1,17 @@
 # DFSha — Registro de decisiones y fuentes técnicas
 
+**D65 — Perfil de red E9 explícito:** conservar loopback por defecto. `private-vm`
+requiere cifrado de metadatos, CIDR RFC1918, listener S/S en IP privada y endpoint
+C/S distinto del bind para NAT. Certificados con SAN reales; sin bypass TLS.
+**D66 — Preparación académica sin cuenta implícita:** inventario/read-only del
+proveedor seleccionado y presupuesto antes de crear recursos. Ejecución nativa
+systemd en tres VMs dedicadas, claves por rol y CA fuera de las VMs. Propuesta AWS
+no equivale a elección/autorización; GCP se concretará si es el acceso disponible.
+**D67 — Evidencia E9 por alcance:** un renderer o test local no acredita Internet,
+cifrado de disco cloud ni caída de host. Verificador externo parcial conserva
+campos sin medir como null y no cierra E9 por aprobar RF1/RF2/RF3.
+[Estado y procedimientos](despliegue.md). Q03/Q05 siguen sin respuesta.
+
 E8 verificada en laboratorio: [D59–D64](seguridad.md) definen cifrado de metadatos,
 custodia por propósito, administración/revocación y evidencia recuperable.
 Se conserva la toolchain fijada. La evidencia de RNF6 y sus límites están en

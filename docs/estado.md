@@ -1,5 +1,37 @@
 # DFSha — Estado del proyecto y continuidad
 
+**2026-10-01 · E9 PARCIAL; despliegue BLOQUEADO POR ENTORNO.**
+Se comprobó `main` limpio/sincronizado en `fe63534` antes de editar. PDF conserva
+su SHA-256 y se leyó la extracción íntegra de siete páginas. E8 sigue siendo
+antecedente: 177 casos agrupados Windows, 36 E7/E8 Linux; no una suite Linux completa.
+
+No hay AWS Academy/GCP seleccionado ni perfil académico, región/cuotas/saldo o
+presupuesto verificados. AWS/GCP CLI y configuración no se encontraron en las
+rutas comprobadas; no se eligió una cuenta personal. Docker Desktop tiene cliente
+instalado; su motor estaba detenido. Python 3.12.10/lock se conservan; pip check pasó.
+La pregunta de proveedor/perfil/cuenta/región/presupuesto/duración quedó enviada
+sin pedir secretos. Propuesta concreta: [despliegue](despliegue.md).
+
+Trabajo local: perfil `private-vm` explícito sin debilitar loopback anterior;
+listeners privados separados de anuncios públicos; renderer de tres hosts,
+unidades systemd/firewall, inspección del proveedor en modo lectura, material
+privado por rol/SAN, bootstrap/migración y activación de época idempotente,
+artefacto Linux/wheel y verificador externo de alcance limitado. Los scripts
+de instalación/provisión sobre VM y backup cloud siguen pendientes de ejecución
+y ajuste con la infraestructura real. No afirmar arranque desatendido comprobado.
+
+Run `20261002T001950Z-7ab94a83`: 93 aprobados, 112,45 s; dependencias/contratos/
+pytest/supervisor exit 0 observado. UTC 2 de octubre corresponde al 1 de octubre
+local. El primer intento de preparación tuvo 17 aprobados/1 fallido: etcd exige
+`allowed-cn` como lista JSON; corregido sin quitar mTLS y repetido con clúster real.
+[Evidencia, repeticiones y pendientes](evidencias/etapa9/README.md).
+
+Recursos cloud creados: ninguno. No hay hashes, memoria, tráfico ni tiempos cloud;
+no reutilizar los de E8 como si lo fueran. Falta validar Internet, parada/reingreso
+de VM, quórum, controles Linux efectivos, cifrado de discos/snapshots, backup y
+restauración externa. E10 no empieza. Publicación Git se registrará al verificarla.
+El historial E8 siguiente conserva sus resultados originales.
+
 **2026-10-01 · E8 completa en el perfil protegido del laboratorio.**
 La ejecución Windows `20261001T034229Z-9d313040` terminó con 36 casos aprobados
 en 2299,16 s y medición protegida de 512 MiB. El supervisor persistió APROBADO,

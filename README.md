@@ -1,5 +1,10 @@
 # DFSha
 
+**E9 parcial: preparación local verificada; cloud bloqueado por acceso académico
+y presupuesto aún no definidos.** [Despliegue, propuesta y comandos](docs/despliegue.md),
+[evidencias E9](docs/evidencias/etapa9/README.md). No hay VMs creadas ni prueba
+Internet/caída de host. No se ejecutó E10. Los perfiles anteriores se conservan.
+
 **E8 completa en el perfil protegido de laboratorio (cierre: 2026-10-01).**
 [Cobertura y límites](docs/seguridad.md), [estado recuperable](docs/estado.md) y
 [relación de evidencias del hito 3](docs/hito3.md). Verificar con

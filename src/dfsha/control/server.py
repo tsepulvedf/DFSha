@@ -63,7 +63,7 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
                 raise RuntimeError(f"No se pudo abrir listener {listener}")
             implemented = set()
             if app is not None and not internal:
-                app.placement.endpoint = f'localhost:{port}'
+                app.placement.endpoint = cfg.get('client_endpoint', f'localhost:{port}')
                 implemented = app.register(server)
             if app is not None and internal and hasattr(app, 'register_internal'):
                 implemented = app.register_internal(server)
@@ -71,7 +71,7 @@ def serve(config_path: Path, ready_file: Path | None = None, stop_file: Path | N
             add_DiagnosticServiceServicer_to_server(Diagnostic(listener, app is not None, getattr(app, 'health', None)), server)
             server.start()
             servers.append(server)
-            ready[f"{listener}_target"] = f"localhost:{port}"
+            ready[f"{listener}_target"] = cfg.get('private_endpoint' if internal else 'client_endpoint', f'localhost:{port}')
             event("listening", listener=listener, pid=os.getpid())
         if ready_file:
             ready_file.parent.mkdir(parents=True, exist_ok=True)

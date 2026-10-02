@@ -1,5 +1,12 @@
 # DFSha — Contratos de comunicación v1
 
+E9 conserva los 61 RPC y el transporte de contenido directo. Perfil de red
+explícito: C/S TLS 7443 CN y 7444 DN; S/S mTLS 7445 CN y 7446 DN; etcd privado
+2379/2380. Se distinguen bind y endpoint anunciado para NAT, con SAN verificado.
+No cambian TTL/deadlines ni numeración Protobuf. [Puertos y validación pendiente
+sobre Internet](despliegue.md#puertos-y-direcciones). CN→etcd→CN sigue mediado;
+Q05 no se declara resuelto mediante un RPC decorativo.
+
 Adición E8 compatible: 61 RPC, incluyendo contraseña, autorización administrativa de DataNodes y disponibilidad de claves.
 
 Login HA usa un deadline finito de 30 s para admisión compartida y publicación de

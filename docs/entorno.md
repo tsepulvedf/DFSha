@@ -1,5 +1,14 @@
 # DFSha — Entorno reproducible de etapas 2–8
 
+**Preparación E9, 2026-10-01:** checkout `F:\DFSha`, Windows PowerShell,
+Python 3.12.10 y dependencias fijadas. SSH/SCP disponibles; no se encontró
+configuración/CLI AWS o GCP en las rutas revisadas. Docker Desktop instalado en
+el perfil de usuario, cliente disponible y motor detenido: eso no es ausencia de
+Docker ni evidencia de Linux ejecutado en esta etapa. El Linux de E8 es histórico.
+etcd 3.6.14 Linux y herramientas descargados con SHA-256 fijado para preparar
+artefactos; no se ejecutaron en VM. Bash de Git permite comprobar sintaxis, no
+systemd/nftables efectivos. [Entorno académico pendiente](despliegue.md).
+
 E8 verificada utiliza la misma Python 3.12 y toolchain fijada. El laboratorio
 protegido se selecciona con `HACluster(..., protected=True)` sobre una raíz nueva.
 No convierte bases anteriores ni requiere habilitar cifrado de toda una unidad.

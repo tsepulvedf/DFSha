@@ -1,0 +1,74 @@
+[
+  {
+    "argv": [
+      "C:/Program Files/Git/bin/bash.exe",
+      "-n",
+      "deploy/cloud/install-host.sh"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "C:/Program Files/Git/bin/bash.exe",
+      "-n",
+      "deploy/cloud/provision-host.sh"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_preflight.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_artifacts.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_bundle.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_secrets.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_initialize.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/cloud_host.py",
+      "--help"
+    ],
+    "exit_code": 0
+  },
+  {
+    "argv": [
+      "F:\\DFSha\\.venv-win\\Scripts\\python.exe",
+      "scripts/verify_stage9.py",
+      "--help"
+    ],
+    "exit_code": 0
+  }
+]

@@ -1,5 +1,13 @@
 # DFSha — Arquitectura y evolución
 
+E9 prepara el perfil nativo `private-vm`: tres hosts distintos con CN+DN+etcd
+por host, endpoints C/S públicos y S/S enlazados a IP privada. Los listeners
+públicos usan wildcard/IP privada para permitir NAT; no enlazan la IP pública
+del proveedor. Se mantiene R3/W2 y mayoría etcd 2/3. La asignación administrativa
+de dominios exige inventario comprobado por API; las etiquetas de fixtures no
+acreditan infraestructura. [Topología propuesta, no desplegada](despliegue.md).
+No se ha ejecutado cloud ni se ha demostrado tolerancia a pérdida de host.
+
 E8 añade un perfil protegido opcional conservando la misma autoridad y CQRS:
 `MetadataCipher` cifra las páginas antes de persistir en etcd y los cuerpos del
 adaptador SQLite. El HMAC de contenido mantiene páginas direccionables sin
